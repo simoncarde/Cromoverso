@@ -1,0 +1,30 @@
+{
+  "name": "cromoverso",
+  "version": "1.0.0",
+  "description": "Cromoverso is an interactive platform built with React that combines a website with the experience of collecting and completing sticker albums. Users can collect stickers, trade them with other players, and communicate through an integrated chat. The platform supports accessibility features and is available in Spanish (ES) and English (EN).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simoncarde/Cromoverso.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simoncarde/Cromoverso/issues"
+  },
+  "homepage": "https://github.com/simoncarde/Cromoverso#readme",
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.4"
+  },
+  "type": "module"
+}
