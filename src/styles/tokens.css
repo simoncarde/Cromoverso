@@ -1,1 +1,82 @@
+:root {
+  /* Fondos */
+  --fondo-pagina: #fff8ec;
+  --fondo-superficie: #ffffff;
+  --fondo-sutil: #f5eee0;
+  --fondo-inverso: #1a1033;
+  --fondo-inverso-2: #2b1f52;
 
+  /* Marcas */
+  --marca-primario: #6c3bff;
+  --marca-primario-hover: #5527e6;
+  --marca-primario-suave: #ede6ff;
+  --marca-acento: #ffd23f;
+  --marca-acento-suave: #fff3c4;
+  --marca-rosa: #ff4d7a;
+
+  /* Textos */
+  --texto-principal: #1a1033;
+  --texto-secundario: #4a4166;
+  --texto-terciario: #6b6386;
+  --texto-inverso: #ffffff;
+  --texto-inverso-suave: #c9c1e8;
+  --texto-marca: #5527e6;
+
+  /* Bordes */
+  --borde-sutil: #e8ddc9;
+  --borde-fuerte: #1a1033;
+  --borde-inverso: #40326e;
+
+  /* Estados */
+  --estado-exito: #1a7f45;
+  --estado-exito-suave: #dff5e7;
+  --estado-alerta: #9a5b00;
+  --estado-alerta-suave: #fff0cc;
+  --estado-error: #d12c1f;
+  --estado-error-suave: #fde6e3;
+  --estado-info: #2457d6;
+  --estado-info-suave: #e3ecff;
+
+  /* Mundos */
+  --mundo-neon: #7c4dff;
+  --mundo-neon-suave: #eee8ff;
+  --mundo-coral: #00a3a3;
+  --mundo-coral-suave: #ddf6f4;
+  --mundo-bosque: #2e9e4f;
+  --mundo-bosque-suave: #e2f5e6;
+  --mundo-forja: #f2541b;
+  --mundo-forja-suave: #ffe7dc;
+  --mundo-orbita: #2563eb;
+  --mundo-orbita-suave: #e1eaff;
+  --mundo-niebla: #c026d3;
+  --mundo-niebla-suave: #f9e3fb;
+
+  /* Rareza */
+  --rareza-comun: #7d7690;
+  --rareza-rara: #2f6bff;
+  --rareza-epica: #8b3dff;
+  --rareza-legendaria: #d99a00;
+  --rareza-legendaria-suave: #fff1c2;
+
+  /* Espaciados y radios */
+  --radio-s: 8px;
+  --radio-m: 12px;
+  --radio-l: 16px;
+  --radio-xl: 24px;
+  --radio-pildora: 999px;
+  --espacio-1: 4px;
+  --espacio-2: 8px;
+  --espacio-3: 12px;
+  --espacio-4: 16px;
+  --espacio-5: 24px;
+  --espacio-6: 32px;
+  --espacio-7: 48px;
+  --espacio-8: 64px;
+  --borde-grosor: 2px;
+
+  /* Sombras y efectos */
+  --sombra-pop: 4px 4px 0px 0px #1a1033;
+  --sombra-pop-pequeña: 2px 2px 0px 0px #1a1033;
+  --sombra-flotante: 0px 16px 40px -8px #1a10332e;
+  --brillo-legendaria:  0px 0px 24px 2px #ffc71a8c;
+}
