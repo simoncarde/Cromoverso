@@ -22,6 +22,18 @@ const DESTINOS = {
     notificaciones: "#notificaciones",
 };
 
+const ICONOS_MENU_MOVIL = {
+    inicio: "inicio",
+    album: "album",
+    sobres: "sobre",
+    intercambios: "intercambio",
+    mundos: "globo",
+    ranking: "trofeo",
+    miColeccion: "album",
+    perfilYLogros: "usuario",
+    notificaciones: "campana",
+};
+
 const Navbar = ({
     textos,
     cargando,
@@ -36,9 +48,15 @@ const Navbar = ({
     const [busqueda, setBusqueda] = useState("");
     const [menuAbierto, setMenuAbierto] = useState(null);
     const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
+
+    const [seccionActiva, setSeccionActiva] = useState(
+        activo || "inicio"
+    );
+
     const [tamanoTexto, setTamanoTexto] = useState(
         textoGrande ? "grande" : "mediano"
     );
+
     const [altoContraste, setAltoContraste] = useState(false);
     const [reducirMovimiento, setReducirMovimiento] = useState(false);
     const [subrayarEnlaces, setSubrayarEnlaces] = useState(false);
@@ -54,6 +72,12 @@ const Navbar = ({
     const accesibilidadAbierta = menuAbierto === "accesibilidad";
     const notificacionesAbiertas =
         menuAbierto === "notificaciones";
+
+    useEffect(() => {
+        if (activo) {
+            setSeccionActiva(activo);
+        }
+    }, [activo]);
 
     useEffect(() => {
         function manejarEscape(evento) {
@@ -78,7 +102,11 @@ const Navbar = ({
         document.addEventListener("mousedown", manejarClickFuera);
 
         return () => {
-            document.removeEventListener("keydown", manejarEscape);
+            document.removeEventListener(
+                "keydown",
+                manejarEscape
+            );
+
             document.removeEventListener(
                 "mousedown",
                 manejarClickFuera
@@ -108,6 +136,11 @@ const Navbar = ({
         );
 
         document.body.classList.toggle(
+            "accesibilidad-texto-pequeno",
+            tamanoTexto === "pequeno"
+        );
+
+        document.body.classList.toggle(
             "accesibilidad-texto-grande",
             tamanoTexto === "grande"
         );
@@ -118,6 +151,7 @@ const Navbar = ({
                 "accesibilidad-movimiento",
                 "accesibilidad-subrayado",
                 "accesibilidad-fuente",
+                "accesibilidad-texto-pequeno",
                 "accesibilidad-texto-grande"
             );
         };
@@ -149,6 +183,7 @@ const Navbar = ({
         setMenuAbierto((actual) =>
             actual === nombre ? null : nombre
         );
+
         setMenuMovilAbierto(false);
     }
 
@@ -158,7 +193,12 @@ const Navbar = ({
     }
 
     function navegar(destino) {
-        window.location.hash = DESTINOS[destino];
+        setSeccionActiva(destino);
+
+        if (DESTINOS[destino]) {
+            window.location.hash = DESTINOS[destino];
+        }
+
         setMenuAbierto(null);
         setMenuMovilAbierto(false);
     }
@@ -190,7 +230,7 @@ const Navbar = ({
         }
     }
 
-    const cantidadSobres = 0;
+    const cantidadSobres = 2;
 
     const textoSobres =
         cantidadSobres === 1
@@ -206,7 +246,11 @@ const Navbar = ({
     return (
         <nav
             ref={navbarRef}
-            className="navbar"
+            className={
+                menuMovilAbierto
+                    ? "navbar navbar-movil-abierto"
+                    : "navbar"
+            }
         >
             <div className="navbar-interior">
                 <a
@@ -215,7 +259,13 @@ const Navbar = ({
                     aria-label={nav?.logo?.aria}
                     onClick={() => navegar("inicio")}
                 >
-                    <Icono nombre="logo" />
+                    <span className="navbar-logo-normal">
+                        <Icono nombre="logo" />
+                    </span>
+
+                    <span className="navbar-logo-inverso">
+                        <Icono nombre="logoInverso" />
+                    </span>
                 </a>
 
                 <nav
@@ -226,9 +276,14 @@ const Navbar = ({
                         <a
                             key={item}
                             href={DESTINOS[item]}
+                            className={
+                                seccionActiva === item
+                                    ? "activo"
+                                    : ""
+                            }
                             onClick={() => navegar(item)}
                             aria-current={
-                                activo === item
+                                seccionActiva === item
                                     ? "page"
                                     : undefined
                             }
@@ -255,9 +310,7 @@ const Navbar = ({
                         type="search"
                         value={busqueda}
                         onChange={manejarBusqueda}
-                        placeholder={
-                            nav?.buscador?.placeholder
-                        }
+                        placeholder={nav?.buscador?.placeholder}
                         aria-label={nav?.buscador?.aria}
                     />
                 </form>
@@ -278,9 +331,11 @@ const Navbar = ({
                             aria-expanded={idiomaAbierto}
                         >
                             <Icono nombre="globo" />
+
                             <span>
                                 {idioma.toUpperCase()}
                             </span>
+
                             <Icono nombre="chevronAbajo" />
                         </button>
 
@@ -296,15 +351,14 @@ const Navbar = ({
                                         idioma === "es"
                                     }
                                     onClick={() =>
-                                        seleccionarIdioma(
-                                            "es"
-                                        )
+                                        seleccionarIdioma("es")
                                     }
                                 >
                                     <span>
                                         <strong>
                                             Español
                                         </strong>
+
                                         <small>
                                             lang="es-CO"
                                         </small>
@@ -322,15 +376,14 @@ const Navbar = ({
                                         idioma === "en"
                                     }
                                     onClick={() =>
-                                        seleccionarIdioma(
-                                            "en"
-                                        )
+                                        seleccionarIdioma("en")
                                     }
                                 >
                                     <span>
                                         <strong>
                                             English
                                         </strong>
+
                                         <small>
                                             lang="en"
                                         </small>
@@ -382,9 +435,7 @@ const Navbar = ({
                                         type="button"
                                         className="navbar-accesibilidad-cerrar"
                                         onClick={() =>
-                                            setMenuAbierto(
-                                                null
-                                            )
+                                            setMenuAbierto(null)
                                         }
                                         aria-label="Cerrar opciones de accesibilidad"
                                     >
@@ -468,6 +519,7 @@ const Navbar = ({
                                         <strong>
                                             Alto contraste
                                         </strong>
+
                                         <small>
                                             Más diferencia entre texto y fondo
                                         </small>
@@ -499,6 +551,7 @@ const Navbar = ({
                                         <strong>
                                             Reducir movimiento
                                         </strong>
+
                                         <small>
                                             Abre los sobres sin animación
                                         </small>
@@ -530,6 +583,7 @@ const Navbar = ({
                                         <strong>
                                             Subrayar enlaces
                                         </strong>
+
                                         <small>
                                             Los enlaces no dependen del color
                                         </small>
@@ -561,6 +615,7 @@ const Navbar = ({
                                         <strong>
                                             Fuente para lectura fácil
                                         </strong>
+
                                         <small>
                                             Letras más espaciadas y sin mayúsculas fijas
                                         </small>
@@ -591,9 +646,7 @@ const Navbar = ({
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            setMenuAbierto(
-                                                null
-                                            )
+                                            setMenuAbierto(null)
                                         }
                                     >
                                         Declaración de accesibilidad
@@ -633,6 +686,8 @@ const Navbar = ({
                             }
                         >
                             <Icono nombre="campana" />
+
+                            <span className="navbar-notificaciones-punto" />
                         </button>
 
                         {notificacionesAbiertas && (
@@ -649,11 +704,11 @@ const Navbar = ({
                     </div>
 
                     <a
-                        className="navbar-icono"
+                        className="navbar-icono navbar-usuario"
                         href={DESTINOS.perfilYLogros}
                         aria-label={nav?.usuario?.perfil}
                         onClick={() =>
-                            setMenuAbierto(null)
+                            navegar("perfilYLogros")
                         }
                     >
                         <Icono nombre="usuario" />
@@ -673,10 +728,40 @@ const Navbar = ({
                 </div>
 
                 <div className="navbar-movil-acciones">
+                    <a
+                        className="navbar-estado"
+                        href={DESTINOS.sobres}
+                        aria-label={textoSobres}
+                        onClick={() =>
+                            navegar("sobres")
+                        }
+                    >
+                        <Icono nombre="sobre" />
+                        <span>{cantidadSobres}</span>
+                    </a>
+
+                    <button
+                        type="button"
+                        className="navbar-icono navbar-movil-campana"
+                        onClick={() =>
+                            alternarMenu("notificaciones")
+                        }
+                        aria-label={
+                            nav?.aria?.notificaciones
+                        }
+                        aria-expanded={
+                            notificacionesAbiertas
+                        }
+                    >
+                        <Icono nombre="campana" />
+
+                        <span className="navbar-notificaciones-punto" />
+                    </button>
+
                     <button
                         ref={botonMenu}
                         type="button"
-                        className="navbar-icono"
+                        className="navbar-icono navbar-movil-menu-boton"
                         onClick={alternarMenuMovil}
                         aria-label={
                             menuMovilAbierto
@@ -700,51 +785,58 @@ const Navbar = ({
 
             {menuMovilAbierto && (
                 <div className="navbar-panel">
-                    <form
-                        className="navbar-panel-buscador"
-                        onSubmit={enviarResultadosBusqueda}
-                        role="search"
-                    >
-                        <button
-                            type="submit"
-                            className="navbar-buscador-boton"
-                            aria-label={
-                                nav?.buscador?.aria
-                            }
-                        >
-                            <Icono nombre="buscar" />
-                        </button>
-
-                        <input
-                            type="search"
-                            value={busqueda}
-                            onChange={manejarBusqueda}
-                            placeholder={
-                                nav?.buscador?.placeholder
-                            }
-                            aria-label={
-                                nav?.buscador?.aria
-                            }
-                        />
-                    </form>
-
                     <nav
                         className="navbar-panel-enlaces"
                         aria-label="Navegación móvil"
                     >
                         {Object.entries(
                             menuMovil?.enlaces ?? {}
-                        ).map(([item, etiqueta]) => (
-                            <a
-                                key={item}
-                                href={DESTINOS[item]}
-                                onClick={() =>
-                                    navegar(item)
-                                }
-                            >
-                                {etiqueta}
-                            </a>
-                        ))}
+                        ).map(([item, etiqueta]) => {
+                            const esActivo =
+                                seccionActiva === item;
+
+                            return (
+                                <a
+                                    key={item}
+                                    href={DESTINOS[item]}
+                                    className={
+                                        esActivo
+                                            ? "navbar-panel-enlace activo"
+                                            : "navbar-panel-enlace"
+                                    }
+                                    onClick={() =>
+                                        navegar(item)
+                                    }
+                                    aria-current={
+                                        esActivo
+                                            ? "page"
+                                            : undefined
+                                    }
+                                >
+                                    <span className="navbar-panel-enlace-icono">
+                                        <Icono
+                                            nombre={
+                                                ICONOS_MENU_MOVIL[
+                                                    item
+                                                ]
+                                            }
+                                        />
+                                    </span>
+
+                                    <span className="navbar-panel-enlace-texto">
+                                        {etiqueta}
+                                    </span>
+
+                                    {esActivo ? (
+                                        <span className="navbar-panel-enlace-activo">
+                                            ESTÁS AQUÍ
+                                        </span>
+                                    ) : (
+                                        <Icono nombre="chevronAbajo" />
+                                    )}
+                                </a>
+                            );
+                        })}
                     </nav>
                 </div>
             )}
