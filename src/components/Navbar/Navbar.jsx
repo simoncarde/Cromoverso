@@ -3,12 +3,10 @@ import Icono from "./Iconos.jsx";
 import "./Navbar.css";
 
 const ENLACES = ["inicio", "mundos"];
-
 const DESTINOS = {
     inicio: "#inicio",
     mundos: "#mundos",
 };
-
 function Navbar({
     textos,
     idioma,
@@ -18,22 +16,17 @@ function Navbar({
     alternarTexto,
 }) {
     const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
-
     const nav = textos?.navbar;
     const menuMovil = textos?.menuMovil;
-
     function seleccionarIdioma(nuevoIdioma) {
         cambiarIdioma(nuevoIdioma);
     }
-
     function navegar() {
         setMenuMovilAbierto(false);
     }
-
     return (
         <header className={`navbar ${menuMovilAbierto ? "menu-abierto" : ""}`}>
             <div className="navbar-interior">
-                {/* Logo */}
                 <a
                     className="navbar-marca"
                     href="#inicio"
@@ -49,7 +42,6 @@ function Navbar({
                     </span>
                 </a>
 
-                {/* Enlaces de escritorio */}
                 <nav
                     className="navbar-enlaces"
                     aria-label="Navegación principal"
@@ -66,12 +58,29 @@ function Navbar({
                     ))}
                 </nav>
 
-                {/* Acciones de escritorio */}
                 <div className="navbar-acciones">
+
+                    <button
+                        type="button"
+                        className="navbar-accesibilidad-boton"
+                        onClick={alternarTexto}
+                        aria-label={
+                            nav?.aria?.accesibilidad ??
+                            "Abrir opciones de accesibilidad"
+                        }
+                        aria-pressed={Boolean(textoGrande)}
+                        title={
+                            nav?.aria?.accesibilidad ??
+                            "Accesibilidad"
+                        }
+                    >
+                        <Icono nombre="accesibilidad" />
+                    </button>
+
                     <div
                         className="navbar-idiomas"
                         role="group"
-                        aria-label="Seleccionar idioma"
+                        aria-label={nav?.aria?.idioma ?? "Seleccionar idioma"}
                     >
                         <button
                             type="button"
@@ -101,7 +110,6 @@ function Navbar({
                     </a>
                 </div>
 
-                {/* Acciones móviles */}
                 <div className="navbar-acciones-movil">
                     <a className="navbar-movil-ingresar" href="#ingresar">
                         {nav?.botones?.ingresar}
@@ -127,7 +135,6 @@ function Navbar({
                 </div>
             </div>
 
-            {/* Menú desplegable móvil */}
             {menuMovilAbierto && (
                 <div className="navbar-panel">
                     <nav
@@ -177,15 +184,15 @@ function Navbar({
                         })}
                     </nav>
 
-                    {/* Opciones inferiores: idioma, accesibilidad y acciones */}
                     <div className="navbar-panel-opciones">
                         <div className="navbar-panel-idioma">
-                            <span>Idioma</span>
-
+                            <span>
+                                {menuMovil?.secciones?.idioma ?? "Idioma"}
+                            </span>
                             <div
                                 className="navbar-idiomas"
                                 role="group"
-                                aria-label="Seleccionar idioma"
+                                aria-label={nav?.aria?.idioma ?? "Seleccionar idioma"}
                             >
                                 <button
                                     type="button"
@@ -212,7 +219,10 @@ function Navbar({
                         </div>
 
                         <div className="navbar-panel-accesibilidad">
-                            <span>{menuMovil?.accesibilidad ?? "Accesibilidad"}</span>
+                            <span>
+                                {menuMovil?.secciones?.accesibilidad ??
+                                    "Accesibilidad"}
+                            </span>
 
                             <button
                                 type="button"

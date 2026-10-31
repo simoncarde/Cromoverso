@@ -185,6 +185,48 @@
     display: none;
 }
 
+
+/* Botón de accesibilidad de escritorio */
+.navbar-accesibilidad-boton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 2px solid var(--borde-fuerte);
+    border-radius: 50%;
+    background: var(--fondo-superficie);
+    color: var(--texto-principal);
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.navbar-accesibilidad-boton svg {
+    display: block;
+    width: 21px;
+    height: 21px;
+}
+
+.navbar-accesibilidad-boton:hover {
+    background: var(--marca-primario-suave);
+}
+
+.navbar-accesibilidad-boton[aria-pressed="true"] {
+    background: var(--marca-primario);
+    color: var(--texto-inverso);
+}
+
+.navbar-accesibilidad-boton:focus-visible {
+    outline: 3px solid var(--marca-primario);
+    outline-offset: 3px;
+}
+
+
 /* =====================================================
 MENÚ MÓVIL
 ===================================================== */
