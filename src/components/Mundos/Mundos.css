@@ -1,0 +1,202 @@
+
+.mundos-seccion {
+    width: 100%;
+    padding: 30px 34px 24px;
+    background: var(--fondo-pagina, #FFF8EC);
+}
+
+.mundos-interior {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+}
+
+.mundos-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.mundos-titulos h2 {
+    margin: 0 0 4px;
+    color: var(--texto-principal, #1B1230);
+    font-family: var(--fuente-unbounded, sans-serif);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.mundos-titulos p {
+    margin: 0;
+    color: var(--texto-principal, #34294A);
+    font-family: var(--fuente-rubik, sans-serif);
+    font-size: 12px;
+}
+
+.mundos-enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--marca-primario, #6C3BFF);
+    font-family: var(--fuente-rubik, sans-serif);
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.mundos-enlace:hover {
+    text-decoration: underline;
+}
+
+.mundos-enlace svg {
+    width: 13px;
+    height: 13px;
+}
+
+.mundos-lista {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.mundo-tarjeta {
+    display: flex;
+    min-width: 0;
+    min-height: 94px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 11px;
+    background: color-mix(
+        in srgb,
+        var(--color-mundo) 13%,
+        #FFF8EC
+    );
+    border: 1.5px solid var(--texto-principal, #1B1230);
+    border-radius: 14px;
+    box-shadow: 3px 4px 0 var(--fondo-inverso, #1B1033);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.mundo-tarjeta:hover {
+    transform: translateY(-3px);
+}
+
+.mundo-tarjeta-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.mundo-icono {
+    display: flex;
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: var(--color-mundo);
+    border: 1px solid var(--texto-principal, #1B1230);
+    border-radius: 50%;
+}
+
+.mundo-icono svg {
+    width: 15px;
+    height: 15px;
+}
+
+.mundo-etiqueta {
+    padding: 4px 7px;
+    color: #8C5600;
+    background: #FFE7A6;
+    border-radius: 20px;
+    font-family: var(--fuente-rubik, sans-serif);
+    font-size: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.mundo-tarjeta h3 {
+    margin: 8px 0 0;
+    color: var(--texto-principal, #1B1230);
+    font-family: var(--fuente-rubik, sans-serif);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.mundo-tarjeta p {
+    margin: 7px 0 0;
+    color: #493F5B;
+    font-family: var(--fuente-rubik, sans-serif);
+    font-size: 10px;
+}
+
+.estado-mundos {
+    grid-column: 1 / -1;
+    font-family: var(--fuente-rubik, sans-serif);
+    font-size: 12px;
+}
+
+/* TABLET */
+@media (max-width: 1000px) {
+    .mundos-lista {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        row-gap: 12px;
+    }
+}
+
+/* MÓVIL */
+@media (max-width: 600px) {
+    .mundos-seccion {
+        padding: 20px 26px 18px;
+    }
+
+    .mundos-cabecera {
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .mundos-titulos h2 {
+        font-size: 17px;
+    }
+
+    .mundos-titulos p {
+        max-width: 240px;
+        font-size: 10px;
+        line-height: 1.4;
+    }
+
+    .mundos-enlace {
+        margin-top: 5px;
+        font-size: 9px;
+    }
+
+    .mundos-lista {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 132px;
+        grid-template-columns: none;
+        gap: 10px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2px 3px 8px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .mundos-lista::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mundo-tarjeta {
+        min-height: 84px;
+        scroll-snap-align: start;
+    }
+}
