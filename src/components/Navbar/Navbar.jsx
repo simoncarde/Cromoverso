@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Icono from "./Iconos.jsx";
+import Icono from "../Iconos.jsx";
 import "./Navbar.css";
 
 const ENLACES = ["inicio", "mundos"];
