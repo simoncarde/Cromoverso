@@ -1,3 +1,41 @@
 * {
     box-sizing: border-box;
 }
+
+body {
+    margin: 0;
+    font-family: var(--fuente-rubik);
+    color: var(--texto-principal);
+    background: var(--fondo-pagina);
+}
+
+h1, h2, h3 {
+    font-family: var(--fuente-unbounded);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+a {
+    color: var(--marca-primario);
+}
+
+a:hover {
+    color: var(--marca-primario-hover);
+}
+
+.contenedor {
+    width: calc(100% - 2rem);
+    margin-inline: auto;
+}
