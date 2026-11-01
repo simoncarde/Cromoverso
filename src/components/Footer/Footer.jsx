@@ -8,14 +8,13 @@ const DESTINOS_FOOTER = {
     ingresar: "/login",
     crearCuenta: "/registro",
     terminos: "/terminos",
-    accesibilidad: "/accesibilidad"
+    accesibilidad: "/accesibilidad",
 };
 
 function Footer({ textos }) {
     const footer = textos?.footer;
     const nombreSitio = textos?.sitio?.nombre ?? "cromoverso";
 
-    // Esperamos a que lleguen los textos de la API.
     if (!footer) {
         return null;
     }
@@ -23,19 +22,18 @@ function Footer({ textos }) {
     const columnas = [
         {
             id: "explora",
-            datos: footer.columnas?.explora
+            datos: footer.columnas?.explora,
         },
         {
             id: "cuenta",
-            datos: footer.columnas?.cuenta
+            datos: footer.columnas?.cuenta,
         },
         {
             id: "legal",
-            datos: footer.columnas?.legal
-        }
+            datos: footer.columnas?.legal,
+        },
     ];
 
-    // Sustituimos el marcador {anio} por el año actual.
     const derechos = footer.legal?.derechos?.replace(
         "{anio}",
         String(new Date().getFullYear())
@@ -44,10 +42,7 @@ function Footer({ textos }) {
     return (
         <footer className="footer-cromoverso" id="footer">
             <div className="footer-interior">
-
                 <div className="footer-superior">
-
-                    {/* IDENTIDAD DEL PROYECTO */}
                     <div className="footer-marca">
                         <a href="#inicio" className="footer-logo">
                             <span className="footer-logo-icono">
@@ -60,7 +55,6 @@ function Footer({ textos }) {
                         <p>{footer.lema}</p>
                     </div>
 
-                    {/* COLUMNAS DE NAVEGACIÓN */}
                     <nav
                         className="footer-navegacion"
                         aria-label="Navegación del pie de página"
@@ -93,7 +87,6 @@ function Footer({ textos }) {
                     </nav>
                 </div>
 
-                {/* INFORMACIÓN LEGAL */}
                 <div className="footer-inferior">
                     <p>{derechos}</p>
 
@@ -103,7 +96,6 @@ function Footer({ textos }) {
                         </p>
                     )}
                 </div>
-
             </div>
         </footer>
     );
