@@ -1,32 +1,46 @@
+
 import { useState } from "react";
+
 import Icono from "../Iconos.jsx";
 import "./Navbar.css";
 
 const ENLACES = ["inicio", "mundos"];
+
 const DESTINOS = {
     inicio: "#inicio",
     mundos: "#mundos",
 };
+
 function Navbar({
     textos,
     idioma,
     cambiarIdioma,
     activo = "inicio",
-    textoGrande = false,
-    alternarTexto,
+    abrirPanelAccesibilidad,
 }) {
     const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
+
     const nav = textos?.navbar;
     const menuMovil = textos?.menuMovil;
+    const idiomas = textos?.idioma;
+
     function seleccionarIdioma(nuevoIdioma) {
         cambiarIdioma(nuevoIdioma);
     }
+
     function navegar() {
         setMenuMovilAbierto(false);
     }
+
+    function abrirAccesibilidad(evento) {
+        setMenuMovilAbierto(false);
+        abrirPanelAccesibilidad(evento);
+    }
+
     return (
         <header className={`navbar ${menuMovilAbierto ? "menu-abierto" : ""}`}>
             <div className="navbar-interior">
+
                 <a
                     className="navbar-marca"
                     href="#inicio"
@@ -58,21 +72,16 @@ function Navbar({
                     ))}
                 </nav>
 
+                {/* ACCIONES DE ESCRITORIO */}
                 <div className="navbar-acciones">
 
                     <button
                         type="button"
                         className="navbar-accesibilidad-boton"
-                        onClick={alternarTexto}
-                        aria-label={
-                            nav?.aria?.accesibilidad ??
-                            "Abrir opciones de accesibilidad"
-                        }
-                        aria-pressed={Boolean(textoGrande)}
-                        title={
-                            nav?.aria?.accesibilidad ??
-                            "Accesibilidad"
-                        }
+                        onClick={abrirAccesibilidad}
+                        aria-label={nav?.aria?.accesibilidad}
+                        title={nav?.aria?.accesibilidad}
+                        aria-haspopup="dialog"
                     >
                         <Icono nombre="accesibilidad" />
                     </button>
@@ -80,7 +89,7 @@ function Navbar({
                     <div
                         className="navbar-idiomas"
                         role="group"
-                        aria-label={nav?.aria?.idioma ?? "Seleccionar idioma"}
+                        aria-label={nav?.aria?.idioma}
                     >
                         <button
                             type="button"
@@ -88,7 +97,7 @@ function Navbar({
                             onClick={() => seleccionarIdioma("es")}
                             aria-pressed={idioma === "es"}
                         >
-                            ES
+                            {idiomas?.codigos?.es}
                         </button>
 
                         <button
@@ -97,7 +106,7 @@ function Navbar({
                             onClick={() => seleccionarIdioma("en")}
                             aria-pressed={idioma === "en"}
                         >
-                            EN
+                            {idiomas?.codigos?.en}
                         </button>
                     </div>
 
@@ -110,7 +119,9 @@ function Navbar({
                     </a>
                 </div>
 
+                {/* ACCIONES MÓVILES */}
                 <div className="navbar-acciones-movil">
+
                     <a className="navbar-movil-ingresar" href="#ingresar">
                         {nav?.botones?.ingresar}
                     </a>
@@ -135,8 +146,10 @@ function Navbar({
                 </div>
             </div>
 
+            {/* MENÚ DESPLEGABLE MÓVIL */}
             {menuMovilAbierto && (
                 <div className="navbar-panel">
+
                     <nav
                         className="navbar-panel-enlaces"
                         aria-label="Navegación móvil"
@@ -170,73 +183,68 @@ function Navbar({
                                         {menuMovil?.enlaces?.[item]}
                                     </span>
 
-                                    {esActivo ? (
-                                        <span className="navbar-panel-etiqueta">
-                                            ESTÁS AQUÍ
-                                        </span>
-                                    ) : (
-                                        <span className="navbar-panel-flecha">
-                                            <Icono nombre="chevronAbajo" />
-                                        </span>
-                                    )}
+                                    <span className="navbar-panel-flecha">
+                                        <Icono nombre="chevronAbajo" />
+                                    </span>
                                 </a>
                             );
                         })}
                     </nav>
 
                     <div className="navbar-panel-opciones">
+
+                        {/* IDIOMA */}
                         <div className="navbar-panel-idioma">
                             <span>
-                                {menuMovil?.secciones?.idioma ?? "Idioma"}
+                                {menuMovil?.secciones?.idioma}
                             </span>
+
                             <div
                                 className="navbar-idiomas"
                                 role="group"
-                                aria-label={nav?.aria?.idioma ?? "Seleccionar idioma"}
+                                aria-label={nav?.aria?.idioma}
                             >
                                 <button
                                     type="button"
-                                    className={
-                                        idioma === "es" ? "seleccionado" : ""
-                                    }
+                                    className={idioma === "es" ? "seleccionado" : ""}
                                     onClick={() => seleccionarIdioma("es")}
                                     aria-pressed={idioma === "es"}
                                 >
-                                    ES
+                                    {idiomas?.codigos?.es}
                                 </button>
 
                                 <button
                                     type="button"
-                                    className={
-                                        idioma === "en" ? "seleccionado" : ""
-                                    }
+                                    className={idioma === "en" ? "seleccionado" : ""}
                                     onClick={() => seleccionarIdioma("en")}
                                     aria-pressed={idioma === "en"}
                                 >
-                                    EN
+                                    {idiomas?.codigos?.en}
                                 </button>
                             </div>
                         </div>
 
+                        {/* ACCESIBILIDAD */}
                         <div className="navbar-panel-accesibilidad">
                             <span>
-                                {menuMovil?.secciones?.accesibilidad ??
-                                    "Accesibilidad"}
+                                {menuMovil?.secciones?.accesibilidad}
                             </span>
 
                             <button
                                 type="button"
                                 className="navbar-panel-accesibilidad-boton"
-                                onClick={alternarTexto}
-                                aria-label="Alternar texto grande"
-                                aria-pressed={Boolean(textoGrande)}
-                                title="Accesibilidad"
+                                onClick={abrirAccesibilidad}
+                                aria-label={nav?.aria?.accesibilidad}
+                                title={nav?.aria?.accesibilidad}
+                                aria-haspopup="dialog"
                             >
                                 <Icono nombre="accesibilidad" />
                             </button>
                         </div>
 
+                        {/* INGRESO Y REGISTRO */}
                         <div className="navbar-panel-botones">
+
                             <a
                                 href="#ingresar"
                                 className="navbar-panel-ingresar"

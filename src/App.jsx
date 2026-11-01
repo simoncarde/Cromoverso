@@ -1,41 +1,107 @@
-
 import { useState } from "react";
-
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Hero from "./components/Hero/Hero.jsx";
 import Mundos from "./components/Mundos/Mundos.jsx";
 import Footer from "./components/Footer/Footer.jsx";
-
+import PanelAccesibilidad from "./components/PanelAccesibilidad/PanelAccesibilidad.jsx";
 import useTextos from "./hooks/useTextos.js";
 import useCromos from "./hooks/useCromos.js";
 import useMundos from "./hooks/useMundos.js";
+import useAccesibilidad from "./hooks/useAccesibilidad.js";
 
 function App() {
     const [idioma, setIdioma] = useState("es");
 
-    // TEXTOS DEL SITIO.
+    const [panelAbierto, setPanelAbierto] = useState(false);
+
+    const [posicionPanel, setPosicionPanel] = useState({
+        top: 100,
+        left: 12,
+    });
+
+    /* TEXTOS DEL SITIO */
     const {
         textos,
         cargando,
-        error
+        error,
     } = useTextos(idioma);
 
-    // CROMOS DESTACADOS DEL HERO.
+    /* CROMOS DESTACADOS DEL HERO */
     const {
         cromos,
         cargandoCromos,
-        errorCromos
+        errorCromos,
     } = useCromos();
 
-    // SEIS MUNDOS DESDE LA API.
+    /* SEIS MUNDOS DESDE LA API */
     const {
         mundos,
         cargandoMundos,
-        errorMundos
+        errorMundos,
     } = useMundos();
 
+    // PREFERENCIAS DE ACCESIBILIDAD
+    const {
+        preferencias,
+        cambiarPreferencia,
+        restablecerPreferencias,
+    } = useAccesibilidad();
+
+    // CAMBIAR IDIOMA
     function cambiarIdioma(nuevoIdioma) {
         setIdioma(nuevoIdioma);
+    }
+
+    // ABRIR PANEL DE ACCESIBILIDAD
+    function abrirPanelAccesibilidad(evento) {
+        const rectangulo = evento.currentTarget.getBoundingClientRect();
+        const margen = 12;
+        const esMovil = window.innerWidth <= 900;
+        let left;
+        let top;
+
+        if (esMovil) {
+            const altoPanel = Math.min(
+                440,
+                window.innerHeight * 0.68
+            );
+
+            left = 0;
+            top = window.innerHeight - altoPanel;
+
+        } else {
+            const anchoPanel = 432;
+            const altoPanel = 630;
+
+            left = rectangulo.right - anchoPanel;
+            left = Math.max(
+                margen,
+                Math.min(
+                    left,
+                    window.innerWidth - anchoPanel - margen
+                )
+            );
+
+            top = rectangulo.bottom + 8;
+
+            top = Math.min(
+                top,
+                window.innerHeight - altoPanel - margen
+            );
+
+            top = Math.max(margen, top);
+        }
+
+        setPosicionPanel({
+            top,
+            left,
+        });
+
+        setPanelAbierto(true);
+    }
+
+    function cerrarPanelAccesibilidad() {
+        setPanelAbierto(false);
     }
 
     return (
@@ -47,8 +113,8 @@ function App() {
                 idioma={idioma}
                 cambiarIdioma={cambiarIdioma}
                 activo="inicio"
+                abrirPanelAccesibilidad={abrirPanelAccesibilidad}
             />
-
             <main>
                 {/* HERO */}
                 <Hero
@@ -59,7 +125,6 @@ function App() {
                     cargandoCromos={cargandoCromos}
                     errorCromos={errorCromos}
                 />
-
                 {/* SECCIÓN DE LOS SEIS MUNDOS */}
                 <Mundos
                     mundos={mundos}
@@ -68,9 +133,19 @@ function App() {
                     textos={textos}
                 />
             </main>
-
             {/* FOOTER */}
             <Footer textos={textos} />
+            {/* PANEL DE ACCESIBILIDAD */}
+            {panelAbierto && (
+                <PanelAccesibilidad
+                    textos={textos}
+                    preferencias={preferencias}
+                    cambiarPreferencia={cambiarPreferencia}
+                    restablecerPreferencias={restablecerPreferencias}
+                    cerrarPanel={cerrarPanelAccesibilidad}
+                    posicion={posicionPanel}
+                />
+            )}
         </>
     );
 }
