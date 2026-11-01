@@ -39,3 +39,40 @@ a:hover {
     width: calc(100% - 2rem);
     margin-inline: auto;
 }
+
+
+/* Tamaño global del texto */
+html[data-tamano-texto="grande"] {
+    font-size: 18px;
+}
+
+html[data-tamano-texto="muyGrande"] {
+    font-size: 20px;
+}
+
+/* Alto contraste */
+html[data-alto-contraste="true"] {
+    filter: contrast(1.35);
+}
+
+/* Reducir movimiento */
+html[data-reducir-movimiento="true"] *,
+html[data-reducir-movimiento="true"] *::before,
+html[data-reducir-movimiento="true"] *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+}
+
+/* Subrayar enlaces */
+html[data-subrayar-enlaces="true"] a {
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+}
+
+/* Fuente de lectura fácil */
+html[data-fuente-lectura-facil="true"] body {
+    font-family: Arial, Verdana, sans-serif !important;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+}
