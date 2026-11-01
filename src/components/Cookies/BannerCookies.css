@@ -1,0 +1,123 @@
+.banner-cookies {
+    position: absolute;
+    z-index: 1000;
+    top: 92px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+
+    width: calc(100% - 64px);
+    max-width: 1200px;
+    min-height: 100px;
+    padding: 24px 32px;
+
+    background: var(--fondo-superficie);
+    color: var(--texto-principal);
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: var(--radio-xl);
+    box-shadow: var(--sombra-pop);
+
+    font-family: var(--fuente-rubik);
+}
+
+.banner-cookies__contenido {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.banner-cookies__titulo {
+    margin: 0;
+    color: var(--texto-principal);
+    font-family: var(--fuente-rubik);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.banner-cookies__texto {
+    margin: 0;
+    color: var(--texto-secundario);
+    font-family: var(--fuente-rubik);
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.banner-cookies__acciones {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
+}
+
+.banner-cookies__boton {
+    min-height: 44px;
+    padding: 0 20px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: var(--radio-pildora);
+    font-family: var(--fuente-rubik);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.banner-cookies__boton--rechazar {
+    background: var(--fondo-superficie);
+    color: var(--texto-principal);
+}
+
+.banner-cookies__boton--rechazar:hover {
+    background: var(--fondo-sutil);
+}
+
+.banner-cookies__boton--aceptar {
+    background: var(--marca-primario);
+    color: var(--texto-inverso);
+}
+
+.banner-cookies__boton--aceptar:hover {
+    background: var(--marca-primario-hover);
+}
+
+.banner-cookies__boton:focus-visible {
+    outline: 3px solid var(--marca-acento);
+    outline-offset: 3px;
+}
+
+@media (max-width: 650px) {
+    .banner-cookies {
+        top: 70px;
+        width: calc(100% - 32px);
+        max-width: 358px;
+        min-height: 196px;
+        padding: 20px;
+
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .banner-cookies__contenido {
+        gap: 6px;
+    }
+
+    .banner-cookies__acciones {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .banner-cookies__boton {
+        width: 100%;
+        min-height: 44px;
+        padding: 0 10px;
+    }
+}

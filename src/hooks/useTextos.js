@@ -23,11 +23,7 @@ function validarTextos(datos) {
         hero?.botones?.crearCuentaGratis,
         hero?.botones?.explorarMundos,
     ];
-    if (
-        !etiquetas.every(
-            (item) => typeof item === "string" && item.trim()
-        )
-    ) {
+    if (!etiquetas.every((item) => typeof item === "string" && item.trim())) {
         throw new Error(
             "La respuesta no contiene los textos necesarios del Navbar y el Hero."
         );
