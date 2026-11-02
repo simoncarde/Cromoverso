@@ -2,64 +2,121 @@ import { Link } from "react-router-dom";
 import Icono from "../Iconos.jsx";
 import "./Mundos.css";
 
-function Mundos({ mundos = [], cargandoMundos, errorMundos, textos }) {
+function Mundos({
+    mundos = [],
+    cargandoMundos,
+    errorMundos,
+    textos,
+    idioma
+}) {
     const contenido = textos?.paginas?.inicio?.mundos;
     const nombres = contenido?.nombres ?? {};
 
     if (!contenido) return null;
 
+    // Colores suaves definidos en tokens.css.
+    const coloresMundos = [
+        "var(--mundo-neon-suave)",
+        "var(--mundo-coral-suave)",
+        "var(--mundo-bosque-suave)",
+        "var(--mundo-forja-suave)",
+        "var(--mundo-orbita-suave)",
+        "var(--mundo-niebla-suave)"
+    ];
+
+    // Texto alternativo según el idioma seleccionado.
+    const textoVerCiudad =
+        idioma === "en" ? "View Neon City" : "Ver Ciudad Neón";
+
     return (
         <section className="mundos-seccion" id="mundos">
             <div className="mundos-interior">
+
                 <header className="mundos-cabecera">
                     <div className="mundos-titulos">
                         <h2>{contenido.titulo}</h2>
                         <p>{contenido.descripcion}</p>
                     </div>
-                    {!cargandoMundos && !errorMundos && mundos.length > 0 && (
-                        <Link to="/mundos/neon" className="mundos-enlace">
-                            <Icono nombre="flechaDer" />
-                            <span>{contenido.verCiudad}</span>
-                        </Link>
-                    )}
+
+                    {!cargandoMundos &&
+                        !errorMundos &&
+                        mundos.length > 0 && (
+                            <Link
+                                to="/mundos/neon"
+                                className="mundos-enlace"
+                            >
+                                <Icono nombre="flechaDer" />
+                                <span>
+                                    {contenido.verCiudad || textoVerCiudad}
+                                </span>
+                            </Link>
+                        )}
                 </header>
 
                 <div className="mundos-lista">
-                    {cargandoMundos && <p className="estado-mundos">{contenido.cargando}</p>}
-                    {errorMundos && <p className="estado-mundos">{contenido.error}</p>}
-
-                    {!cargandoMundos && !errorMundos && mundos.map((mundo, indice) => {
-                        const nombre = nombres[mundo.id] ?? mundo.nombre;
-                        return (
-                            <Link
-                                key={mundo.id}
-                                to={`/mundos/${mundo.id}`}
-                                className="mundo-tarjeta"
-                                style={{ "--color-mundo": mundo.color }}
-                                aria-label={nombre}
-                            >
-                                <div className="mundo-tarjeta-superior">
-                                    <img
-                                        className="mundo-icono-imagen"
-                                        src={`/assets/mundos/${mundo.id}.svg`}
-                                        alt=""
-                                        aria-hidden="true"
-                                    />
-                                    {indice === 0 && (
-                                        <span className="mundo-etiqueta">
-                                            {contenido.etiquetaMundo} 1
-                                        </span>
-                                    )}
-                                </div>
-                                <h3>{nombre}</h3>
-                                <p>{mundo.totalCromos} {contenido.cromos}</p>
-                            </Link>
-                        );
-                    })}
-
-                    {!cargandoMundos && !errorMundos && mundos.length === 0 && (
-                        <p className="estado-mundos">{contenido.vacio}</p>
+                    {cargandoMundos && (
+                        <p className="estado-mundos">
+                            {contenido.cargando}
+                        </p>
                     )}
+
+                    {errorMundos && (
+                        <p className="estado-mundos">
+                            {contenido.error}
+                        </p>
+                    )}
+
+                    {!cargandoMundos &&
+                        !errorMundos &&
+                        mundos.map((mundo, indice) => {
+                            const nombre =
+                                nombres[mundo.id] ?? mundo.nombre;
+
+                            return (
+                                <Link
+                                    key={mundo.id}
+                                    to={`/mundos/${mundo.id}`}
+                                    className="mundo-tarjeta"
+                                    style={{
+                                        "--color-mundo": mundo.color,
+                                        "--fondo-mundo":
+                                            coloresMundos[indice] ??
+                                            "var(--fondo-superficie)"
+                                    }}
+                                    aria-label={nombre}
+                                >
+                                    <div className="mundo-tarjeta-superior">
+                                        <img
+                                            className="mundo-icono-imagen"
+                                            src={`/assets/mundos/${mundo.id}.svg`}
+                                            alt=""
+                                            aria-hidden="true"
+                                        />
+
+                                        {indice === 0 && (
+                                            <span className="mundo-etiqueta">
+                                                {contenido.etiquetaMundo} 1
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <h3>{nombre}</h3>
+
+                                    <p>
+                                        {mundo.totalCromos}{" "}
+                                        {contenido.cromos}
+                                    </p>
+                                </Link>
+                            );
+                        })}
+
+                    {!cargandoMundos &&
+                        !errorMundos &&
+                        mundos.length === 0 && (
+                            <p className="estado-mundos">
+                                {contenido.vacio}
+                            </p>
+                        )}
                 </div>
             </div>
         </section>
