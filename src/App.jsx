@@ -93,6 +93,7 @@ function Aplicacion() {
                                     cargandoMundos={cargandoMundos}
                                     errorMundos={errorMundos}
                                     textos={textos}
+                                    idioma={idioma}
                                 />
                                 <Cookies textos={textos?.cookies} />
                             </div>
