@@ -1,6 +1,26 @@
 .sitio {
-    min-height: 100vh;
-    min-height: 100dvh;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: clip;
+    background: var(--fondo-pagina);
+}
+
+.sitio > main {
+    flex: 1 0 auto;
+    width: 100%;
+    min-width: 0;
+}
+
+.sitio > .navbar,
+.sitio > .footer-cromoverso {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 650px) {
+    .sitio-vista-mundo > .navbar {
+        display: none;
+    }
 }
