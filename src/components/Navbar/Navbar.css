@@ -316,6 +316,106 @@
         letter-spacing: .03em;
     }
 
+    .navbar-overlay-grupo-mundos {
+    display: grid;
+    gap: 5px;
+    }
+
+    .navbar-overlay-mundos {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        min-height: 48px;
+        padding: 0 14px;
+        border: 1.5px solid transparent;
+        border-radius: var(--radio-m);
+        background: transparent;
+        color: var(--texto-principal);
+        font: 700 14px/1 var(--fuente-rubik);
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .navbar-overlay-mundos > span {
+        flex: 1;
+    }
+
+    .navbar-overlay-mundos.activo {
+        border-color: var(--borde-fuerte);
+        background: var(--marca-primario-suave);
+        color: var(--marca-primario);
+    }
+
+    .navbar-overlay-mundos > svg:last-child {
+        transition: transform 180ms ease;
+    }
+
+    .navbar-overlay-mundos.expandido > svg:last-child {
+        transform: rotate(90deg);
+    }
+
+    .navbar-overlay-lista-mundos {
+        display: grid;
+        gap: 5px;
+        padding: 3px 0 8px 38px;
+    }
+
+    .navbar-overlay-mundo {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-height: 43px;
+        padding: 5px 10px;
+        border-radius: var(--radio-m);
+        color: var(--texto-principal);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .navbar-overlay-mundo:hover,
+    .navbar-overlay-mundo:focus-visible {
+        background: var(--marca-primario-suave);
+        color: var(--marca-primario);
+    }
+
+    .navbar-overlay-mundo-icono {
+        display: inline-grid;
+        flex: 0 0 30px;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border: 1.5px solid var(--borde-fuerte);
+        border-radius: 50%;
+        background: var(--fondo-superficie);
+        font-size: 16px;
+    }
+
+    .navbar-overlay-mundo-icono.mundo-neon {
+        color: #6C3BFF;
+    }
+
+    .navbar-overlay-mundo-icono.mundo-coral {
+        color: #00A6A6;
+    }
+
+    .navbar-overlay-mundo-icono.mundo-bosque {
+        color: #269B50;
+    }
+
+    .navbar-overlay-mundo-icono.mundo-forja {
+        color: #F4511E;
+    }
+
+    .navbar-overlay-mundo-icono.mundo-orbita {
+        color: #2864E8;
+    }
+
+    .navbar-overlay-mundo-icono.mundo-niebla {
+        color: #B829D5;
+    }
+
     /* IDIOMA Y ACCESIBILIDAD ABAJO */
 
     .navbar-overlay-ajustes {
