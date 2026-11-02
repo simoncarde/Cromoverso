@@ -4,8 +4,9 @@
   "description": "Cromoverso is an interactive platform built with React that combines a website with the experience of collecting and completing sticker albums. Users can collect stickers, trade them with other players, and communicate through an integrated chat. The platform supports accessibility features and is available in Spanish (ES) and English (EN).",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
