@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-const API_MUNDOS = "https://yanethm-cromoverso-api.fly.dev/api/v1/mundos";
+import { API_ENDPOINTS } from "../services/api.js";
 
 let cacheMundos = null;
 let cacheTotalAlbum = 0;
@@ -25,7 +24,7 @@ function useMundos() {
         async function obtenerMundos() {
             try {
                 if (!promesaMundos) {
-                    promesaMundos = fetch(API_MUNDOS)
+                    promesaMundos = fetch(API_ENDPOINTS.mundos)
                         .then((respuesta) => {
                             if (!respuesta.ok) {
                                 throw new Error("No se pudieron obtener los mundos");

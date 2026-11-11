@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
@@ -110,6 +110,8 @@ function Navbar({
 }) {
     const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
     const [mundosAbiertos, setMundosAbiertos] = useState(false);
+    const dialogoMovilRef = useRef(null);
+    const disparadorMenuRef = useRef(null);
 
     const listaMundos = Array.isArray(mundos) && mundos.length > 0 ? mundos : [
         { id: "neon", nombre: "Ciudad Neón" },
@@ -146,6 +148,7 @@ function Navbar({
     function cerrarMenu() {
         setMenuMovilAbierto(false);
         setMundosAbiertos(false);
+        requestAnimationFrame(() => disparadorMenuRef.current?.focus());
     }
 
     useEffect(() => {
@@ -153,9 +156,29 @@ function Navbar({
 
         const overflowAnterior = document.body.style.overflow;
         document.body.style.overflow = "hidden";
+        dialogoMovilRef.current?.querySelector("button")?.focus();
 
         function manejarEscape(evento) {
-            if (evento.key === "Escape") cerrarMenu();
+            if (evento.key === "Escape") {
+                cerrarMenu();
+                return;
+            }
+
+            if (evento.key === "Tab") {
+                const controles = dialogoMovilRef.current?.querySelectorAll(
+                    'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                );
+                if (!controles?.length) return;
+                const primero = controles[0];
+                const ultimo = controles[controles.length - 1];
+                if (evento.shiftKey && document.activeElement === primero) {
+                    evento.preventDefault();
+                    ultimo.focus();
+                } else if (!evento.shiftKey && document.activeElement === ultimo) {
+                    evento.preventDefault();
+                    primero.focus();
+                }
+            }
         }
 
         window.addEventListener("keydown", manejarEscape);
@@ -197,6 +220,7 @@ function Navbar({
 
                 <div className="navbar-acciones-escritorio">
                     <button
+                        ref={disparadorMenuRef}
                         type="button"
                         className="navbar-accesibilidad"
                         onClick={abrirPanelAccesibilidad}
@@ -262,6 +286,7 @@ function Navbar({
 
             {menuMovilAbierto && (
                 <div
+                    ref={dialogoMovilRef}
                     className="navbar-overlay-movil"
                     role="dialog"
                     aria-modal="true"

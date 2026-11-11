@@ -8,7 +8,6 @@
     background: var(--fondo-pagina);
 }
 
-/* El banner de cookies se posiciona respecto a la sección de mundos */
 .mundos-con-banner {
     position: relative;
 }

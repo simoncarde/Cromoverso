@@ -8,9 +8,6 @@ const ICONOS_RAREZA = {
     epica: "estrella",
     legendaria: "corona"
 };
-
-// Se usan como respaldo cuando no existe un SVG individual para ese ID.
-// CV-081 (azul), CV-041 (verde) y CV-101 (rosado) son los cromos de referencia exportados.
 const PLANTILLAS_POR_MUNDO = {
     neon: "CV-001.svg",
     coral: "CV-081.svg",

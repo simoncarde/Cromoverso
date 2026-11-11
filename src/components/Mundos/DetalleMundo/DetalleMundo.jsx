@@ -78,21 +78,21 @@ function DetalleMundo({
 
     if (cargandoMundos || cargando) {
         return (
-            <main className="detalle-mundo estado-pagina">
+            <main className="detalle-mundo estado-pagina" id="contenido-principal" tabIndex="-1" role="status" aria-live="polite">
                 {estados?.cargando || (es ? "Cargando colección…" : "Loading collection…")}
             </main>
         );
     }
     if (errorMundos || error) {
         return (
-            <main className="detalle-mundo estado-pagina">
+            <main className="detalle-mundo estado-pagina" id="contenido-principal" tabIndex="-1" role="alert">
                 {estados?.error?.texto || (es ? "No fue posible cargar los mundos o sus cromos. Intenta nuevamente." : "Could not load worlds or cards. Please try again.")}
             </main>
         );
     }
     if (!mundo) {
         return (
-            <main className="detalle-mundo estado-pagina">
+            <main className="detalle-mundo estado-pagina" id="contenido-principal" tabIndex="-1">
                 <h1>{estados?.noEncontrado?.titulo || (es ? "Mundo no encontrado" : "World not found")}</h1>
                 <Link to="/mundos/neon">
                     {estados?.noEncontrado?.botones?.irAlInicio || (es ? "Ir a Ciudad Neón" : "Go to Neon City")}
@@ -142,7 +142,7 @@ function DetalleMundo({
         : (es ? `Cromos de ${mundo.nombre}` : `Cards of ${mundo.nombre}`);
 
     return (
-        <main className="detalle-mundo" style={{ "--color-mundo": mundo.color }}>
+        <main className="detalle-mundo" id="contenido-principal" tabIndex="-1" style={{ "--color-mundo": mundo.color }}>
             <header className="detalle-mundo-hero">
                 <div className="detalle-mundo-hero-interior">
                     <nav className="detalle-mundo-migas" aria-label={ariaMigas}>

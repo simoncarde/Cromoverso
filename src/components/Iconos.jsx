@@ -55,8 +55,6 @@ const TRAZOS = {
 export default function Icono({ nombre }) {
     return TRAZOS[nombre] ?? null;
 }
-
-// Renderiza únicamente el trazo del icono, sin el logotipo horizontal que usa el Navbar.
 export function IconoUI({ nombre, size = 18, className = "" }) {
     const trazo = TRAZOS[nombre];
     if (!trazo) return null;

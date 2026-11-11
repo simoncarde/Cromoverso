@@ -11,23 +11,19 @@ function Hero({
     const { cromos, cargandoCromos, errorCromos } = useCromos();
     const hero = textos?.paginas?.inicio?.hero;
     const es = idioma === "es";
-
-    // Estado de carga del contenido del Hero.
     if (cargando) {
         return (
             <section className="hero-cromoverso">
-                <p className="estado-cromos">
+                <p className="estado-cromos" role="status" aria-live="polite">
                     {textos?.estados?.cargando || (es ? "Cargando…" : "Loading…")}
                 </p>
             </section>
         );
     }
-
-    // Error al cargar los textos.
     if (error || !hero) {
         return (
             <section className="hero-cromoverso">
-                <p className="estado-cromos">
+                <p className="estado-cromos" role="alert">
                     {textos?.estados?.error?.titulo || (es ? "No se pudo cargar el contenido." : "Could not load content.")}
                 </p>
             </section>
@@ -35,9 +31,6 @@ function Hero({
     }
 
     const listaCromos = Array.isArray(cromos) ? cromos : [];
-
-    // Se conservan los tres cromos destacados para determinar
-    // si debe mostrarse la etiqueta holográfica.
     const cromoIzquierdo = listaCromos.find(
         (cromo) => cromo.id === "CV-041"
     );
@@ -64,7 +57,6 @@ function Hero({
         <section className="hero-cromoverso" id="inicio">
             <div className="interior-cromoverso">
 
-                {/* COLUMNA DE TEXTO */}
                 <div className="texto-cromoverso">
                     <h1>{hero.titulo}</h1>
 
@@ -100,7 +92,6 @@ function Hero({
                     </p>
                 </div>
 
-                {/* ILUSTRACIÓN DE LOS TRES CROMOS */}
                 <div className="hero-ilustracion">
                     <div className="hero-figuras">
 
@@ -113,21 +104,18 @@ function Hero({
                                 </span>
                             )}
 
-                        {/* CARGA DE CROMOS */}
                         {cargandoCromos && (
-                            <p className="estado-cromos">
+                            <p className="estado-cromos" role="status" aria-live="polite">
                                 {textos?.estados?.cargando || (es ? "Cargando cromos…" : "Loading cards…")}
                             </p>
                         )}
 
-                        {/* ERROR DE CARGA */}
                         {errorCromos && (
-                            <p className="estado-cromos">
+                            <p className="estado-cromos" role="alert">
                                 {textos?.estados?.error?.texto || (es ? "No se pudieron cargar los cromos." : "Could not load cards.")}
                             </p>
                         )}
 
-                        {/* ILUSTRACIÓN DESCARGADA */}
                         {!cargandoCromos &&
                             !errorCromos &&
                             listaCromos.length > 0 && (
@@ -138,7 +126,6 @@ function Hero({
                                 />
                             )}
 
-                        {/* LISTADO VACÍO */}
                         {!cargandoCromos &&
                             !errorCromos &&
                             listaCromos.length === 0 && (

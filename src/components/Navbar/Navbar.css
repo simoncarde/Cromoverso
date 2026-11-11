@@ -26,8 +26,6 @@
     gap: 32px;
 }
 
-/* LOGO */
-
 .navbar-marca {
     display: inline-flex;
     flex: 0 0 auto;
@@ -36,7 +34,7 @@
     color: var(--texto-principal);
     text-decoration: none;
     font-family: var(--fuente-unbounded);
-    font-size: 20px;
+    font-size: calc(20px * var(--escala-texto, 1));
     font-weight: 700;
     letter-spacing: -0.8px;
     white-space: nowrap;
@@ -49,8 +47,6 @@
     height: 40px;
 }
 
-/* NAVEGACIÓN ESCRITORIO */
-
 .navbar-enlaces {
     display: flex;
     align-items: center;
@@ -60,7 +56,7 @@
 .navbar-enlaces a {
     color: var(--texto-principal);
     text-decoration: none;
-    font-size: 14px;
+    font-size: calc(14px * var(--escala-texto, 1));
     font-weight: 700;
 }
 
@@ -68,8 +64,6 @@
 .navbar-enlaces a.activo {
     color: var(--marca-primario);
 }
-
-/* ACCIONES ESCRITORIO */
 
 .navbar-acciones-escritorio {
     display: flex;
@@ -117,7 +111,7 @@
     border-radius: var(--radio-pildora);
     background: transparent;
     color: var(--texto-principal);
-    font: 700 13px/1 var(--fuente-rubik);
+    font: 700 calc(13px * var(--escala-texto, 1))/1 var(--fuente-rubik);
     cursor: pointer;
 }
 
@@ -126,8 +120,6 @@
     background: var(--marca-primario);
     color: var(--texto-inverso);
 }
-
-/* BOTONES */
 
 .navbar-boton {
     display: inline-flex;
@@ -142,7 +134,7 @@
     text-decoration: none;
     text-align: center;
     white-space: nowrap;
-    font: 700 13px/1 var(--fuente-rubik);
+    font: 700 calc(13px * var(--escala-texto, 1))/1 var(--fuente-rubik);
 }
 
 .navbar-boton-claro {
@@ -164,8 +156,6 @@
     outline-offset: 3px;
 }
 
-/* VISTA MÓVIL */
-
 @media (max-width: 900px) {
     .navbar {
         min-height: 74px;
@@ -182,7 +172,7 @@
 
     .navbar-barra > .navbar-marca {
         color: var(--texto-inverso);
-        font-size: clamp(16px, 4.3vw, 20px);
+        font-size: clamp(calc(16px * var(--escala-texto, 1)), calc(4.3vw * var(--escala-texto, 1)), calc(20px * var(--escala-texto, 1)));
     }
 
     .navbar-barra > .navbar-marca .navbar-marca-simbolo circle:first-child {
@@ -212,7 +202,7 @@
         background: var(--fondo-superficie);
         color: var(--fondo-inverso);
         text-decoration: none;
-        font-size: 15px;
+        font-size: calc(15px * var(--escala-texto, 1));
         font-weight: 700;
         white-space: nowrap;
     }
@@ -224,8 +214,6 @@
         background: var(--fondo-inverso-2);
         color: var(--texto-inverso);
     }
-
-    /* MENÚ QUE CUBRE TODA LA PANTALLA */
 
     .navbar-overlay-movil {
         position: fixed;
@@ -255,15 +243,13 @@
 
     .navbar-overlay-cabecera .navbar-marca {
         color: var(--texto-principal);
-        font-size: 19px;
+        font-size: calc(19px * var(--escala-texto, 1));
     }
 
     .navbar-cerrar-menu {
         width: 44px;
         height: 44px;
     }
-
-    /* CONTENIDO DEL MENÚ */
 
     .navbar-overlay-contenido {
         display: flex;
@@ -293,7 +279,7 @@
         border-radius: var(--radio-m);
         color: var(--texto-principal);
         text-decoration: none;
-        font-size: 14px;
+        font-size: calc(14px * var(--escala-texto, 1));
         font-weight: 700;
     }
 
@@ -312,7 +298,7 @@
         border-radius: var(--radio-pildora);
         background: var(--fondo-inverso);
         color: var(--texto-inverso);
-        font-size: 9px;
+        font-size: calc(9px * var(--escala-texto, 1));
         letter-spacing: .03em;
     }
 
@@ -332,7 +318,7 @@
         border-radius: var(--radio-m);
         background: transparent;
         color: var(--texto-principal);
-        font: 700 14px/1 var(--fuente-rubik);
+        font: 700 calc(14px * var(--escala-texto, 1))/1 var(--fuente-rubik);
         text-align: left;
         cursor: pointer;
     }
@@ -370,7 +356,7 @@
         border-radius: var(--radio-m);
         color: var(--texto-principal);
         text-decoration: none;
-        font-size: 13px;
+        font-size: calc(13px * var(--escala-texto, 1));
         font-weight: 600;
     }
 
@@ -389,7 +375,7 @@
         border: 1.5px solid var(--borde-fuerte);
         border-radius: 50%;
         background: var(--fondo-superficie);
-        font-size: 16px;
+        font-size: calc(16px * var(--escala-texto, 1));
     }
 
     .navbar-overlay-mundo-icono.mundo-neon {
@@ -416,8 +402,6 @@
         color: #B829D5;
     }
 
-    /* IDIOMA Y ACCESIBILIDAD ABAJO */
-
     .navbar-overlay-ajustes {
         display: grid;
         flex: 0 0 auto;
@@ -432,7 +416,7 @@
         justify-content: space-between;
         min-height: 40px;
         color: var(--texto-principal);
-        font-size: 14px;
+        font-size: calc(14px * var(--escala-texto, 1));
         font-weight: 700;
     }
 
@@ -443,15 +427,13 @@
 
     .navbar-overlay-idiomas button {
         height: 28px;
-        font-size: 12px;
+        font-size: calc(12px * var(--escala-texto, 1));
     }
 
     .navbar-overlay-accesibilidad {
         width: 40px;
         height: 40px;
     }
-
-    /* BOTONES INFERIORES: SIEMPRE VISIBLES */
 
     .navbar-overlay-botones {
         display: grid;
@@ -470,12 +452,10 @@
         min-width: 0;
         min-height: 46px;
         padding: 0 8px;
-        font-size: 13px;
+        font-size: calc(13px * var(--escala-texto, 1));
         line-height: 1.1;
     }
 }
-
-/* MÓVILES ESTRECHOS */
 
 @media (max-width: 380px) {
     .navbar-barra {
@@ -485,7 +465,7 @@
 
     .navbar-barra > .navbar-marca {
         gap: 7px;
-        font-size: 15px;
+        font-size: calc(15px * var(--escala-texto, 1));
     }
 
     .navbar-marca-simbolo {
@@ -498,7 +478,7 @@
         min-width: 88px;
         height: 44px;
         padding-inline: 12px;
-        font-size: 13px;
+        font-size: calc(13px * var(--escala-texto, 1));
     }
 
     .navbar-menu-trigger {

@@ -14,6 +14,7 @@ function PanelAccesibilidad({
     const accesibilidad = textos?.accesibilidad;
     const es = idioma === "es";
     const ariaCerrar = textos?.general?.acciones?.cerrar || textos?.general?.aria?.cerrarDialogo || (es ? "Cerrar" : "Close");
+    const panelRef = useRef(null);
     const botonCerrarRef = useRef(null);
     const cerrarPanelRef = useRef(cerrarPanel);
 
@@ -25,6 +26,23 @@ function PanelAccesibilidad({
         function manejarTeclado(evento) {
             if (evento.key === "Escape") {
                 cerrarPanelRef.current();
+                return;
+            }
+
+            if (evento.key === "Tab") {
+                const controles = panelRef.current?.querySelectorAll(
+                    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                );
+                if (!controles?.length) return;
+                const primero = controles[0];
+                const ultimo = controles[controles.length - 1];
+                if (evento.shiftKey && document.activeElement === primero) {
+                    evento.preventDefault();
+                    ultimo.focus();
+                } else if (!evento.shiftKey && document.activeElement === ultimo) {
+                    evento.preventDefault();
+                    primero.focus();
+                }
             }
         }
 
@@ -84,15 +102,18 @@ function PanelAccesibilidad({
     ];
 
     return (
-        <div className="accesibilidad-fondo">
+        <div className="accesibilidad-fondo" onMouseDown={(evento) => {
+            if (evento.target === evento.currentTarget) cerrarPanel();
+        }}>
             <section
+                ref={panelRef}
                 className="accesibilidad-panel"
                 style={{
                     top: `${posicion.top}px`,
                     left: `${posicion.left}px`,
                 }}
                 role="dialog"
-                aria-modal="false"
+                aria-modal="true"
                 aria-labelledby="accesibilidad-titulo"
             >
                 <header className="accesibilidad-encabezado">
@@ -140,6 +161,7 @@ function PanelAccesibilidad({
                                     aria-pressed={
                                         preferencias.tamanoTexto === valor
                                     }
+                                    aria-label={`${etiqueta}${preferencias.tamanoTexto === valor ? `, ${es ? "seleccionado" : "selected"}` : ""}`}
                                 >
                                     {etiqueta}
                                 </button>

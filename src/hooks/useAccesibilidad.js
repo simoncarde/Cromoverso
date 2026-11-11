@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const CLAVE = "cromoverso-accesibilidad";
 const PREFERENCIAS_INICIALES = {
@@ -27,9 +27,17 @@ function obtenerPreferencias() {
 
 function useAccesibilidad() {
     const [preferencias, setPreferencias] = useState(obtenerPreferencias);
-    useEffect(() => {
+    useLayoutEffect(() => {
         const raiz = document.documentElement;
         raiz.dataset.tamanoTexto = preferencias.tamanoTexto;
+        raiz.style.setProperty(
+            "--escala-texto",
+            preferencias.tamanoTexto === "muyGrande"
+                ? "1.3"
+                : preferencias.tamanoTexto === "grande"
+                    ? "1.15"
+                    : "1"
+        );
         raiz.dataset.altoContraste = String(preferencias.altoContraste);
         raiz.dataset.reducirMovimiento = String(
             preferencias.reducirMovimiento
@@ -40,10 +48,15 @@ function useAccesibilidad() {
         raiz.dataset.fuenteLecturaFacil = String(
             preferencias.fuenteLecturaFacil
         );
-        localStorage.setItem(CLAVE, JSON.stringify(preferencias));
+        try {
+            localStorage.setItem(CLAVE, JSON.stringify(preferencias));
+        } catch {}
     }, [preferencias]);
 
     function cambiarPreferencia(nombre, valor) {
+        if (nombre === "reducirMovimiento") {
+            document.documentElement.dataset.reducirMovimiento = String(valor);
+        }
         setPreferencias((actuales) => ({
             ...actuales,
             [nombre]: valor,
@@ -51,6 +64,7 @@ function useAccesibilidad() {
     }
 
     function restablecerPreferencias() {
+        document.documentElement.dataset.reducirMovimiento = "false";
         setPreferencias(PREFERENCIAS_INICIALES);
     }
 

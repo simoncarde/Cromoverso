@@ -15,8 +15,6 @@ function Mundos({
     const es = idioma === "es";
 
     if (!contenido) return null;
-
-    // Colores suaves definidos en tokens.css.
     const coloresMundos = [
         "var(--mundo-neon-suave)",
         "var(--mundo-coral-suave)",
@@ -56,13 +54,13 @@ function Mundos({
 
                 <div className="mundos-lista">
                     {cargandoMundos && (
-                        <p className="estado-mundos">
+                        <p className="estado-mundos" role="status" aria-live="polite">
                             {textos?.estados?.cargando || (es ? "Cargando…" : "Loading…")}
                         </p>
                     )}
 
                     {errorMundos && (
-                        <p className="estado-mundos">
+                        <p className="estado-mundos" role="alert">
                             {textos?.estados?.error?.titulo || (es ? "No se pudieron obtener los mundos." : "Could not load worlds.")}
                         </p>
                     )}

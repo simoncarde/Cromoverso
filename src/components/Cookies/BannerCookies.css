@@ -36,17 +36,17 @@
     margin: 0;
     color: var(--texto-principal);
     font-family: var(--fuente-rubik);
-    font-size: 14px;
+    font-size: calc(14px * var(--escala-texto, 1));
     font-weight: 700;
-    line-height: 20px;
+    line-height: calc(20px * var(--escala-texto, 1));
 }
 
 .banner-cookies__texto {
     margin: 0;
     color: var(--texto-secundario);
     font-family: var(--fuente-rubik);
-    font-size: 12px;
-    line-height: 18px;
+    font-size: calc(12px * var(--escala-texto, 1));
+    line-height: calc(18px * var(--escala-texto, 1));
 }
 
 .banner-cookies__acciones {
@@ -62,7 +62,7 @@
     border: var(--borde-grosor) solid var(--borde-fuerte);
     border-radius: var(--radio-pildora);
     font-family: var(--fuente-rubik);
-    font-size: 12px;
+    font-size: calc(12px * var(--escala-texto, 1));
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.2s ease;

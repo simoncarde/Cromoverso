@@ -16,15 +16,15 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 40px;
+    font-size: calc(40px * var(--escala-texto, 1));
 }
 
 h2 {
-    font-size: 28px;
+    font-size: calc(28px * var(--escala-texto, 1));
 }
 
 h3 {
-    font-size: 20px;
+    font-size: calc(20px * var(--escala-texto, 1));
 }
 
 a {
@@ -35,27 +35,57 @@ a:hover {
     color: var(--marca-primario-hover);
 }
 
+:focus-visible {
+    outline: 3px solid var(--marca-primario);
+    outline-offset: 3px;
+}
+
+.salto-contenido {
+    position: fixed;
+    z-index: 2000;
+    top: 8px;
+    left: 8px;
+    padding: 12px 16px;
+    transform: translateY(-160%);
+    border: 2px solid var(--borde-fuerte);
+    border-radius: 8px;
+    background: var(--fondo-superficie);
+    color: var(--texto-principal);
+    font-weight: 700;
+}
+
+.salto-contenido:focus {
+    transform: translateY(0);
+}
+
 .contenedor {
     width: calc(100% - 2rem);
     margin-inline: auto;
 }
 
-
-/* Tamaño global del texto */
-html[data-tamano-texto="grande"] {
-    font-size: 18px;
-}
-
-html[data-tamano-texto="muyGrande"] {
-    font-size: 20px;
-}
-
-/* Alto contraste */
 html[data-alto-contraste="true"] {
     filter: contrast(1.35);
 }
 
-/* Reducir movimiento */
+html[data-subrayar-enlaces="true"] a {
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+}
+
+html[data-fuente-lectura-facil="true"] body {
+    font-family: Arial, Verdana, sans-serif !important;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+}
+
+html[data-fuente-lectura-facil="true"] button,
+html[data-fuente-lectura-facil="true"] input,
+html[data-fuente-lectura-facil="true"] select {
+    font-family: Arial, Verdana, sans-serif !important;
+    letter-spacing: 0.035em;
+}
+
+html[data-reducir-movimiento="true"],
 html[data-reducir-movimiento="true"] *,
 html[data-reducir-movimiento="true"] *::before,
 html[data-reducir-movimiento="true"] *::after {
@@ -64,15 +94,18 @@ html[data-reducir-movimiento="true"] *::after {
     scroll-behavior: auto !important;
 }
 
-/* Subrayar enlaces */
-html[data-subrayar-enlaces="true"] a {
-    text-decoration: underline !important;
-    text-underline-offset: 3px;
-}
-
-/* Fuente de lectura fácil */
-html[data-fuente-lectura-facil="true"] body {
-    font-family: Arial, Verdana, sans-serif !important;
-    letter-spacing: 0.04em;
-    line-height: 1.6;
+@media (max-width: 900px) {
+    html[data-reducir-movimiento="true"],
+    html[data-reducir-movimiento="true"] *,
+    html[data-reducir-movimiento="true"] *::before,
+    html[data-reducir-movimiento="true"] *::after {
+        animation-name: none !important;
+        animation-duration: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-property: none !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+        scroll-behavior: auto !important;
+        scroll-snap-type: none !important;
+    }
 }

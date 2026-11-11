@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-const API_CROMOS = "https://yanethm-cromoverso-api.fly.dev/api/v1/cromos";
+import { urlPaginaCromos } from "../services/api.js";
 
 let cacheColeccion = null;
 let promesaColeccion = null;
@@ -23,7 +22,7 @@ export default function useColeccionCromos() {
             try {
                 if (!promesaColeccion) {
                     promesaColeccion = (async () => {
-                        const primeraRespuesta = await fetch(`${API_CROMOS}?pagina=1&porPagina=20`);
+                        const primeraRespuesta = await fetch(urlPaginaCromos(1));
                         if (!primeraRespuesta.ok) throw new Error(`API cromos: ${primeraRespuesta.status}`);
                         const primera = await primeraRespuesta.json();
                         if (!Array.isArray(primera?.datos)) throw new Error("La API no devolvió una lista de cromos.");
@@ -31,7 +30,7 @@ export default function useColeccionCromos() {
                         const paginas = Number(primera?.paginacion?.paginas ?? 1);
                         const restantes = await Promise.all(
                             Array.from({ length: Math.max(0, paginas - 1) }, (_, indice) => indice + 2).map(async (pagina) => {
-                                const respuesta = await fetch(`${API_CROMOS}?pagina=${pagina}&porPagina=20`);
+                                const respuesta = await fetch(urlPaginaCromos(pagina));
                                 if (!respuesta.ok) throw new Error(`API cromos página ${pagina}: ${respuesta.status}`);
                                 const resultado = await respuesta.json();
                                 if (!Array.isArray(resultado?.datos)) throw new Error(`Respuesta inválida en página ${pagina}.`);

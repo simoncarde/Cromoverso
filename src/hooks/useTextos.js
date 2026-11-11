@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-const API = "https://yanethm-cromoverso-api.fly.dev/api/v1/textos";
+import { urlTextos } from "../services/api.js";
 
 const MENU_MOVIL = ["inicio", "mundos"];
 const HERO = ["titulo", "subtitulo", "subtituloMovil"];
@@ -55,7 +54,7 @@ function useTextos(idioma = "es") {
                 setError(false);
 
                 if (!promesasTextos[idioma]) {
-                    promesasTextos[idioma] = fetch(`${API}?idioma=${idioma}`)
+                    promesasTextos[idioma] = fetch(urlTextos(idioma))
                         .then((respuesta) => {
                             if (!respuesta.ok) {
                                 throw new Error("No se pudieron cargar los textos.");

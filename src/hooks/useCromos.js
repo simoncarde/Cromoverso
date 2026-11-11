@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-const API_CROMOS = "https://yanethm-cromoverso-api.fly.dev/api/v1/cromos";
+import { urlCromo } from "../services/api.js";
 const IDS_DESTACADOS = ["CV-041", "CV-001", "CV-002"];
 
 let cacheCromos = null;
@@ -25,7 +24,7 @@ export default function useCromos() {
                 if (!promesaCromos) {
                     promesaCromos = Promise.all(
                         IDS_DESTACADOS.map(async (id) => {
-                            const respuesta = await fetch(`${API_CROMOS}/${id}`);
+                            const respuesta = await fetch(urlCromo(id));
                             if (!respuesta.ok) throw new Error(`No se pudo cargar ${id}: ${respuesta.status}`);
                             const datos = await respuesta.json();
                             return datos?.datos ?? datos;
