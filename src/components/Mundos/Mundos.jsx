@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Icono from "../Iconos.jsx";
+import { formatearTexto } from "../../utils/textos.js";
 import "./Mundos.css";
 
 function Mundos({
@@ -7,10 +8,11 @@ function Mundos({
     cargandoMundos,
     errorMundos,
     textos,
-    idioma
+    idioma = "es"
 }) {
     const contenido = textos?.paginas?.inicio?.mundos;
     const nombres = contenido?.nombres ?? {};
+    const es = idioma === "es";
 
     if (!contenido) return null;
 
@@ -24,9 +26,10 @@ function Mundos({
         "var(--mundo-niebla-suave)"
     ];
 
-    // Texto alternativo según el idioma seleccionado.
-    const textoVerCiudad =
-        idioma === "en" ? "View Neon City" : "Ver Ciudad Neón";
+    const primerMundoNombre = mundos[0]?.nombre || (es ? "Ciudad Neón" : "Neon City");
+    const enlaceVerTexto = contenido?.enlaces?.ver
+        ? formatearTexto(contenido.enlaces.ver, { mundo: primerMundoNombre })
+        : (es ? `Ver ${primerMundoNombre}` : `See ${primerMundoNombre}`);
 
     return (
         <section className="mundos-seccion" id="mundos">
@@ -35,7 +38,7 @@ function Mundos({
                 <header className="mundos-cabecera">
                     <div className="mundos-titulos">
                         <h2>{contenido.titulo}</h2>
-                        <p>{contenido.descripcion}</p>
+                        <p>{contenido.subtitulo || contenido.descripcion}</p>
                     </div>
 
                     {!cargandoMundos &&
@@ -46,9 +49,7 @@ function Mundos({
                                 className="mundos-enlace"
                             >
                                 <Icono nombre="flechaDer" />
-                                <span>
-                                    {contenido.verCiudad || textoVerCiudad}
-                                </span>
+                                <span>{enlaceVerTexto}</span>
                             </Link>
                         )}
                 </header>
@@ -56,13 +57,13 @@ function Mundos({
                 <div className="mundos-lista">
                     {cargandoMundos && (
                         <p className="estado-mundos">
-                            {contenido.cargando}
+                            {textos?.estados?.cargando || (es ? "Cargando…" : "Loading…")}
                         </p>
                     )}
 
                     {errorMundos && (
                         <p className="estado-mundos">
-                            {contenido.error}
+                            {textos?.estados?.error?.titulo || (es ? "No se pudieron obtener los mundos." : "Could not load worlds.")}
                         </p>
                     )}
 
@@ -71,6 +72,14 @@ function Mundos({
                         mundos.map((mundo, indice) => {
                             const nombre =
                                 nombres[mundo.id] ?? mundo.nombre;
+
+                            const etiquetaMundo = contenido?.etiquetas?.mundo
+                                ? formatearTexto(contenido.etiquetas.mundo, { numero: indice + 1 })
+                                : (es ? `Mundo ${indice + 1}` : `World ${indice + 1}`);
+
+                            const etiquetaCromos = contenido?.etiquetas?.cromos
+                                ? formatearTexto(contenido.etiquetas.cromos, { cantidad: mundo.totalCromos })
+                                : `${mundo.totalCromos} ${es ? "cromos" : "cards"}`;
 
                             return (
                                 <Link
@@ -95,17 +104,14 @@ function Mundos({
 
                                         {indice === 0 && (
                                             <span className="mundo-etiqueta">
-                                                {contenido.etiquetaMundo} 1
+                                                {etiquetaMundo}
                                             </span>
                                         )}
                                     </div>
 
                                     <h3>{nombre}</h3>
 
-                                    <p>
-                                        {mundo.totalCromos}{" "}
-                                        {contenido.cromos}
-                                    </p>
+                                    <p>{etiquetaCromos}</p>
                                 </Link>
                             );
                         })}
@@ -114,7 +120,7 @@ function Mundos({
                         !errorMundos &&
                         mundos.length === 0 && (
                             <p className="estado-mundos">
-                                {contenido.vacio}
+                                {textos?.estados?.vacio?.titulo || (es ? "No hay mundos disponibles." : "No worlds available.")}
                             </p>
                         )}
                 </div>

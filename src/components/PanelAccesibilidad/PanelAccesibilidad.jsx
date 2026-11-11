@@ -4,6 +4,7 @@ import "./PanelAccesibilidad.css";
 
 function PanelAccesibilidad({
     textos,
+    idioma = "es",
     preferencias,
     cambiarPreferencia,
     restablecerPreferencias,
@@ -11,6 +12,8 @@ function PanelAccesibilidad({
     posicion,
 }) {
     const accesibilidad = textos?.accesibilidad;
+    const es = idioma === "es";
+    const ariaCerrar = textos?.general?.acciones?.cerrar || textos?.general?.aria?.cerrarDialogo || (es ? "Cerrar" : "Close");
     const botonCerrarRef = useRef(null);
     const cerrarPanelRef = useRef(cerrarPanel);
 
@@ -102,7 +105,7 @@ function PanelAccesibilidad({
                         type="button"
                         className="accesibilidad-cerrar"
                         onClick={cerrarPanel}
-                        aria-label={accesibilidad.titulo}
+                        aria-label={ariaCerrar}
                     >
                         ×
                     </button>

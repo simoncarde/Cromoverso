@@ -7,6 +7,9 @@ const HERO = ["titulo", "subtitulo", "subtituloMovil"];
 
 function validarTextos(datos) {
     const textos = datos?.textos;
+    if (!textos || typeof textos !== "object") {
+        throw new Error("La respuesta no contiene el objeto de textos.");
+    }
     const nav = textos?.navbar;
     const hero = textos?.paginas?.inicio?.hero;
     const menu = textos?.menuMovil;
@@ -24,39 +27,75 @@ function validarTextos(datos) {
         hero?.botones?.explorarMundos,
     ];
     if (!etiquetas.every((item) => typeof item === "string" && item.trim())) {
-        throw new Error(
-            "La respuesta no contiene los textos necesarios del Navbar y el Hero."
-        );
+        console.warn("Algunos textos esperados del Navbar o Hero no están presentes en la API.");
     }
     return textos;
 }
 
-function useTextos(idioma) {
-    const [textos, setTextos] = useState(null);
-    const [cargando, setCargando] = useState(true);
+const cacheTextos = {};
+const promesasTextos = {};
+
+function useTextos(idioma = "es") {
+    const [textos, setTextos] = useState(() => cacheTextos[idioma] || null);
+    const [cargando, setCargando] = useState(() => !cacheTextos[idioma]);
     const [error, setError] = useState(false);
+
     useEffect(() => {
+        if (cacheTextos[idioma]) {
+            setTextos(cacheTextos[idioma]);
+            setCargando(false);
+            return;
+        }
+
+        let cancelado = false;
+
         async function cargarTextos() {
             try {
                 setCargando(true);
                 setError(false);
-                const respuesta = await fetch(`${API}?idioma=${idioma}`);
-                if (!respuesta.ok) {
-                    throw new Error("No se pudieron cargar los textos.");
+
+                if (!promesasTextos[idioma]) {
+                    promesasTextos[idioma] = fetch(`${API}?idioma=${idioma}`)
+                        .then((respuesta) => {
+                            if (!respuesta.ok) {
+                                throw new Error("No se pudieron cargar los textos.");
+                            }
+                            return respuesta.json();
+                        })
+                        .then((datos) => {
+                            const textosValidos = validarTextos(datos);
+                            cacheTextos[idioma] = textosValidos;
+                            return textosValidos;
+                        })
+                        .finally(() => {
+                            delete promesasTextos[idioma];
+                        });
                 }
-                const datos = await respuesta.json();
-                const textosValidos = validarTextos(datos);
-                setTextos(textosValidos);
+
+                const textosValidos = await promesasTextos[idioma];
+                if (!cancelado) {
+                    setTextos(textosValidos);
+                }
             } catch (error) {
-                console.error(error);
-                setTextos(null);
-                setError(true);
+                if (!cancelado) {
+                    console.error(error);
+                    setTextos(null);
+                    setError(true);
+                }
             } finally {
-                setCargando(false);
+                if (!cancelado) {
+                    setCargando(false);
+                }
             }
         }
+
         cargarTextos();
+
+        return () => {
+            cancelado = true;
+        };
     }, [idioma]);
+
     return {
         textos,
         cargando,

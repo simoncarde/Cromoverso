@@ -67,12 +67,12 @@ function Icon({ name, size = 22 }) {
     }
 }
 
-function Marca({ onClick }) {
+function Marca({ onClick, ariaLabel, texto }) {
     return (
         <Link
             to="/"
             className="navbar-marca"
-            aria-label="Cromoverso, ir al inicio"
+            aria-label={ariaLabel || "Cromoverso, ir al inicio"}
             onClick={onClick}
         >
             <svg
@@ -95,7 +95,7 @@ function Marca({ onClick }) {
                 />
             </svg>
 
-            <span>cromoverso</span>
+            <span>{texto || "cromoverso"}</span>
         </Link>
     );
 }
@@ -106,45 +106,42 @@ function Navbar({
     cambiarIdioma,
     activo = "inicio",
     abrirPanelAccesibilidad,
+    mundos = [],
 }) {
     const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
     const [mundosAbiertos, setMundosAbiertos] = useState(false);
 
-    const listaMundos = [
-        {
-            id: "neon",
-            nombre: "Ciudad Neón",
-        },
-        {
-            id: "coral",
-            nombre: "Abismo Coral",
-        },
-        {
-            id: "bosque",
-            nombre: "Bosque Eterno",
-        },
-        {
-            id: "forja",
-            nombre: "Forja Volcánica",
-        },
-        {
-            id: "orbita",
-            nombre: "Estación Órbita",
-        },
-        {
-            id: "niebla",
-            nombre: "Reino de Niebla",
-        },
+    const listaMundos = Array.isArray(mundos) && mundos.length > 0 ? mundos : [
+        { id: "neon", nombre: "Ciudad Neón" },
+        { id: "coral", nombre: "Abismo Coral" },
+        { id: "bosque", nombre: "Bosque Eterno" },
+        { id: "forja", nombre: "Forja Volcánica" },
+        { id: "orbita", nombre: "Estación Órbita" },
+        { id: "niebla", nombre: "Reino de Niebla" },
     ];
 
     const nav = textos?.navbar;
+    const menuMovil = textos?.menuMovil;
+    const accesibilidad = textos?.accesibilidad;
+    const textosIdioma = textos?.idioma;
     const es = idioma === "es";
 
+    const marcaAria = nav?.logo?.aria || (es ? "Cromoverso, ir al inicio" : "Cromoverso, go to home");
+    const marcaTexto = nav?.logo?.texto || "cromoverso";
     const inicio = nav?.enlaces?.inicio || (es ? "Inicio" : "Home");
-    const mundos = nav?.enlaces?.mundos || (es ? "Mundos" : "Worlds");
+    const mundosTexto = nav?.enlaces?.mundos || (es ? "Mundos" : "Worlds");
     const ingresar = nav?.botones?.ingresar || (es ? "Ingresar" : "Log in");
-    const crearCuenta =
-        nav?.botones?.crearCuenta || (es ? "Crear cuenta" : "Create account");
+    const crearCuenta = nav?.botones?.crearCuenta || (es ? "Crear cuenta" : "Create account");
+    const navPrincipalAria = es ? "Navegación principal" : "Main navigation";
+    const navMovilAria = es ? "Navegación móvil" : "Mobile navigation";
+    const accesibilidadAria = nav?.aria?.accesibilidad || accesibilidad?.titulo || (es ? "Accesibilidad" : "Accessibility");
+    const abrirMenuAria = menuMovil?.abrir || (es ? "Abrir menú" : "Open menu");
+    const cerrarMenuAria = menuMovil?.cerrar || (es ? "Cerrar menú" : "Close menu");
+    const menuDialogAria = nav?.usuario?.menu || (es ? "Menú principal" : "Main menu");
+    const estasAquiTexto = (menuMovil?.aria?.estasAqui || (es ? "Estás aquí" : "You are here")).toUpperCase();
+    const seccionIdioma = menuMovil?.secciones?.idioma || textosIdioma?.etiqueta || (es ? "Idioma" : "Language");
+    const seccionAccesibilidad = menuMovil?.secciones?.accesibilidad || accesibilidad?.titulo || (es ? "Accesibilidad" : "Accessibility");
+    const abrirAccesibilidadAria = accesibilidad?.botones?.abrir || nav?.aria?.accesibilidad || (es ? "Abrir accesibilidad" : "Open accessibility");
 
     function cerrarMenu() {
         setMenuMovilAbierto(false);
@@ -177,11 +174,11 @@ function Navbar({
     return (
         <header className="navbar">
             <div className="navbar-barra">
-                <Marca />
+                <Marca ariaLabel={marcaAria} texto={marcaTexto} />
 
                 <nav
                     className="navbar-enlaces"
-                    aria-label="Navegación principal"
+                    aria-label={navPrincipalAria}
                 >
                     <Link
                         to="/"
@@ -194,7 +191,7 @@ function Navbar({
                         to="/mundos/neon"
                         className={activo === "mundos" ? "activo" : ""}
                     >
-                        {mundos}
+                        {mundosTexto}
                     </Link>
                 </nav>
 
@@ -203,7 +200,7 @@ function Navbar({
                         type="button"
                         className="navbar-accesibilidad"
                         onClick={abrirPanelAccesibilidad}
-                        aria-label={es ? "Accesibilidad" : "Accessibility"}
+                        aria-label={accesibilidadAria}
                     >
                         <Icon name="access" size={20} />
                     </button>
@@ -215,7 +212,7 @@ function Navbar({
                             onClick={() => cambiarIdioma?.("es")}
                             aria-pressed={es}
                         >
-                            ES
+                            {textosIdioma?.codigos?.es || "ES"}
                         </button>
 
                         <button
@@ -224,7 +221,7 @@ function Navbar({
                             onClick={() => cambiarIdioma?.("en")}
                             aria-pressed={!es}
                         >
-                            EN
+                            {textosIdioma?.codigos?.en || "EN"}
                         </button>
                     </div>
 
@@ -255,7 +252,7 @@ function Navbar({
                         type="button"
                         className="navbar-menu-trigger"
                         onClick={() => setMenuMovilAbierto(true)}
-                        aria-label={es ? "Abrir menú" : "Open menu"}
+                        aria-label={abrirMenuAria}
                         aria-expanded={menuMovilAbierto}
                     >
                         <Icon name="menu" size={25} />
@@ -268,16 +265,16 @@ function Navbar({
                     className="navbar-overlay-movil"
                     role="dialog"
                     aria-modal="true"
-                    aria-label={es ? "Menú principal" : "Main menu"}
+                    aria-label={menuDialogAria}
                 >
                     <div className="navbar-overlay-cabecera">
-                        <Marca onClick={cerrarMenu} />
+                        <Marca onClick={cerrarMenu} ariaLabel={marcaAria} texto={marcaTexto} />
 
                         <button
                             type="button"
                             className="navbar-cerrar-menu"
                             onClick={cerrarMenu}
-                            aria-label={es ? "Cerrar menú" : "Close menu"}
+                            aria-label={cerrarMenuAria}
                         >
                             <Icon name="close" size={23} />
                         </button>
@@ -286,9 +283,7 @@ function Navbar({
                     <div className="navbar-overlay-contenido">
                         <nav
                             className="navbar-overlay-enlaces"
-                            aria-label={
-                                es ? "Navegación móvil" : "Mobile navigation"
-                            }
+                            aria-label={navMovilAria}
                         >
                             <Link
                                 to="/"
@@ -303,7 +298,7 @@ function Navbar({
 
                                 {activo === "inicio" && (
                                     <strong>
-                                        {es ? "ESTÁS AQUÍ" : "YOU ARE HERE"}
+                                        {estasAquiTexto}
                                     </strong>
                                 )}
                             </Link>
@@ -322,7 +317,7 @@ function Navbar({
                                 >
                                     <Icon name="world" size={20} />
 
-                                    <span>{mundos}</span>
+                                    <span>{mundosTexto}</span>
 
                                     <Icon name="chevron" size={19} />
                                 </button>
@@ -356,7 +351,7 @@ function Navbar({
 
                         <div className="navbar-overlay-ajustes">
                             <div className="navbar-overlay-fila">
-                                <span>{es ? "Idioma" : "Language"}</span>
+                                <span>{seccionIdioma}</span>
 
                                 <div className="navbar-overlay-idiomas">
                                     <button
@@ -365,7 +360,7 @@ function Navbar({
                                         onClick={() => cambiarIdioma?.("es")}
                                         aria-pressed={es}
                                     >
-                                        ES
+                                        {textosIdioma?.codigos?.es || "ES"}
                                     </button>
 
                                     <button
@@ -374,25 +369,19 @@ function Navbar({
                                         onClick={() => cambiarIdioma?.("en")}
                                         aria-pressed={!es}
                                     >
-                                        EN
+                                        {textosIdioma?.codigos?.en || "EN"}
                                     </button>
                                 </div>
                             </div>
 
                             <div className="navbar-overlay-fila">
-                                <span>
-                                    {es ? "Accesibilidad" : "Accessibility"}
-                                </span>
+                                <span>{seccionAccesibilidad}</span>
 
                                 <button
                                     type="button"
                                     className="navbar-overlay-accesibilidad"
                                     onClick={abrirAccesibilidad}
-                                    aria-label={
-                                        es
-                                            ? "Abrir accesibilidad"
-                                            : "Open accessibility"
-                                    }
+                                    aria-label={abrirAccesibilidadAria}
                                 >
                                     <Icon name="access" size={21} />
                                 </button>

@@ -11,9 +11,10 @@ const DESTINOS_FOOTER = {
     accesibilidad: "/accesibilidad",
 };
 
-function Footer({ textos }) {
+function Footer({ textos, idioma = "es" }) {
     const footer = textos?.footer;
     const nombreSitio = textos?.sitio?.nombre ?? "cromoverso";
+    const es = idioma === "es";
 
     if (!footer) {
         return null;
@@ -57,7 +58,7 @@ function Footer({ textos }) {
 
                     <nav
                         className="footer-navegacion"
-                        aria-label="Navegación del pie de página"
+                        aria-label={textos?.footer?.aria?.navegacion || (es ? "Navegación del pie de página" : "Footer navigation")}
                     >
                         {columnas.map(({ id, datos }) => {
                             if (!datos) return null;

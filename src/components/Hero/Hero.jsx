@@ -1,21 +1,24 @@
 import Icono from "../Iconos.jsx";
+import useCromos from "../../hooks/useCromos.js";
 import "./Hero.css";
 
 function Hero({
     textos,
+    idioma = "es",
     cargando,
-    error,
-    cromos = [],
-    cargandoCromos,
-    errorCromos
+    error
 }) {
+    const { cromos, cargandoCromos, errorCromos } = useCromos();
     const hero = textos?.paginas?.inicio?.hero;
+    const es = idioma === "es";
 
     // Estado de carga del contenido del Hero.
     if (cargando) {
         return (
             <section className="hero-cromoverso">
-                <p className="estado-cromos">Cargando...</p>
+                <p className="estado-cromos">
+                    {textos?.estados?.cargando || (es ? "Cargando…" : "Loading…")}
+                </p>
             </section>
         );
     }
@@ -25,7 +28,7 @@ function Hero({
         return (
             <section className="hero-cromoverso">
                 <p className="estado-cromos">
-                    No se pudo cargar el contenido.
+                    {textos?.estados?.error?.titulo || (es ? "No se pudo cargar el contenido." : "Could not load content.")}
                 </p>
             </section>
         );
@@ -113,14 +116,14 @@ function Hero({
                         {/* CARGA DE CROMOS */}
                         {cargandoCromos && (
                             <p className="estado-cromos">
-                                Cargando cromos...
+                                {textos?.estados?.cargando || (es ? "Cargando cromos…" : "Loading cards…")}
                             </p>
                         )}
 
                         {/* ERROR DE CARGA */}
                         {errorCromos && (
                             <p className="estado-cromos">
-                                No se pudieron cargar los cromos.
+                                {textos?.estados?.error?.texto || (es ? "No se pudieron cargar los cromos." : "Could not load cards.")}
                             </p>
                         )}
 
@@ -131,7 +134,7 @@ function Hero({
                                 <img
                                     className="hero-tres-cromos"
                                     src="/assets/iconos/tresCromos.svg"
-                                    alt="Tres cromos destacados de Cromoverso"
+                                    alt={textos?.general?.aria?.cromosDestacados || (es ? "Tres cromos destacados de Cromoverso" : "Three featured cards from Cromoverso")}
                                 />
                             )}
 
@@ -140,7 +143,7 @@ function Hero({
                             !errorCromos &&
                             listaCromos.length === 0 && (
                                 <p className="estado-cromos">
-                                    No hay cromos disponibles.
+                                    {textos?.estados?.vacio?.titulo || (es ? "No hay cromos disponibles." : "No cards available.")}
                                 </p>
                             )}
                     </div>

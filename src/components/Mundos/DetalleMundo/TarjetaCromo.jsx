@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconoUI } from "../../Iconos.jsx";
+import { formatearTexto } from "../../../utils/textos.js";
 
-const NOMBRES_TIPO = { heroe: "Héroe", aliado: "Aliado", villano: "Villano" };
-const NOMBRES_RAREZA = {
-    comun: "Común",
-    rara: "Rara",
-    epica: "Épica",
-    legendaria: "Legendaria"
-};
 const ICONOS_RAREZA = {
     comun: "circulo",
     rara: "rombo",
@@ -26,12 +20,42 @@ const PLANTILLAS_POR_MUNDO = {
     niebla: "CV-101.svg"
 };
 
-function TarjetaCromo({ cromo, mundo }) {
+function TarjetaCromo({ cromo, mundo, textos, idioma = "es" }) {
     const numero = String(cromo.numero).padStart(3, "0");
     const archivo = `CV-${numero}.svg`;
     const original = `/assets/cromos/${archivo}?v=2`;
     const respaldo = `/assets/cromos/${PLANTILLAS_POR_MUNDO[mundo.id] || "CV-001.svg"}?v=2`;
     const [src, setSrc] = useState(original);
+
+    const es = idioma === "es";
+    const cromoTextos = textos?.componentes?.cromo;
+    const albumMundo = textos?.paginas?.albumMundo;
+
+    const nombresTipo = cromoTextos?.tipos || albumMundo?.filtros?.tipo?.opciones || {
+        heroe: es ? "Héroe" : "Hero",
+        aliado: es ? "Aliado" : "Ally",
+        villano: es ? "Villano" : "Villain"
+    };
+
+    const nombresRareza = cromoTextos?.rarezas || {
+        comun: es ? "Común" : "Common",
+        rara: es ? "Rara" : "Rare",
+        epica: es ? "Épica" : "Epic",
+        legendaria: es ? "Legendaria" : "Legendary"
+    };
+
+    const tipoEtiqueta = nombresTipo[cromo.tipo] || cromo.tipo;
+    const rarezaEtiqueta = nombresRareza[cromo.rareza] || cromo.rareza || (es ? "Común" : "Common");
+
+    const plantillaTarjeta = albumMundo?.tarjeta?.tipo || "{mundo} · {tipo}";
+    const subtitulo = formatearTexto(plantillaTarjeta, {
+        mundo: mundo.nombre,
+        tipo: tipoEtiqueta
+    });
+
+    const ariaRareza = albumMundo?.filtros?.rareza?.valor
+        ? formatearTexto(albumMundo.filtros.rareza.valor, { rareza: rarezaEtiqueta })
+        : `${es ? "Rareza" : "Rarity"}: ${rarezaEtiqueta}`;
 
     useEffect(() => {
         setSrc(original);
@@ -50,14 +74,14 @@ function TarjetaCromo({ cromo, mundo }) {
     return (
         <article
             className={`tarjeta-cromo rareza-borde-${cromo.rareza || "comun"}`}
-            title={`${cromo.nombre} · ${NOMBRES_TIPO[cromo.tipo] || cromo.tipo}`}
+            title={`${cromo.nombre} · ${tipoEtiqueta}`}
         >
             <div className={`tarjeta-cromo-ilustracion${cromo.holografico ? " holografico" : ""}`}>
                 {src ? (
                     <img
                         className="tarjeta-cromo-svg"
                         src={src}
-                        alt={`Cromo ${numero}: ${cromo.nombre}`}
+                        alt={`${cromo.nombre} (${numero}) - ${subtitulo}`}
                         loading="lazy"
                         onError={usarRespaldo}
                     />
@@ -67,15 +91,15 @@ function TarjetaCromo({ cromo, mundo }) {
                 <span className="tarjeta-cromo-numero">{numero}</span>
                 <span
                     className={`tarjeta-cromo-sello rareza-${cromo.rareza || "comun"}`}
-                    title={NOMBRES_RAREZA[cromo.rareza] || "Común"}
-                    aria-label={`Rareza ${NOMBRES_RAREZA[cromo.rareza] || "Común"}`}
+                    title={rarezaEtiqueta}
+                    aria-label={ariaRareza}
                 >
                     <IconoUI nombre={iconoRareza} size={13} />
                 </span>
             </div>
             <div className="tarjeta-cromo-info">
                 <h3>{cromo.nombre}</h3>
-                <p>{mundo.nombre} · {NOMBRES_TIPO[cromo.tipo] || cromo.tipo}</p>
+                <p>{subtitulo}</p>
             </div>
         </article>
     );

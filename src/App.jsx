@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 
@@ -11,7 +11,6 @@ import PanelAccesibilidad from "./components/PanelAccesibilidad/PanelAccesibilid
 import Cookies from "./components/Cookies/Cookies.jsx";
 
 import useTextos from "./hooks/useTextos.js";
-import useCromos from "./hooks/useCromos.js";
 import useMundos from "./hooks/useMundos.js";
 import useAccesibilidad from "./hooks/useAccesibilidad.js";
 
@@ -22,9 +21,15 @@ function Aplicacion() {
     const location = useLocation();
 
     const { textos, cargando, error } = useTextos(idioma);
-    const { cromos, cargandoCromos, errorCromos } = useCromos();
     const { mundos, cargandoMundos, errorMundos } = useMundos();
     const { preferencias, cambiarPreferencia, restablecerPreferencias } = useAccesibilidad();
+
+    useEffect(() => {
+        document.documentElement.lang = idioma;
+        if (textos?.sitio?.nombre) {
+            document.title = textos?.paginas?.inicio?.seo?.titulo || `${textos.sitio.nombre} · ${textos.sitio.lema || ""}`;
+        }
+    }, [idioma, textos]);
 
     function cambiarIdioma(nuevoIdioma) {
         setIdioma(nuevoIdioma);
@@ -72,6 +77,7 @@ function Aplicacion() {
                 cambiarIdioma={cambiarIdioma}
                 activo={activo}
                 abrirPanelAccesibilidad={abrirPanelAccesibilidad}
+                mundos={mundos}
             />
 
             <Routes>
@@ -81,11 +87,9 @@ function Aplicacion() {
                         <main>
                             <Hero
                                 textos={textos}
+                                idioma={idioma}
                                 cargando={cargando}
                                 error={error}
-                                cromos={cromos}
-                                cargandoCromos={cargandoCromos}
-                                errorCromos={errorCromos}
                             />
                             <div className="mundos-con-banner">
                                 <Mundos
@@ -101,15 +105,27 @@ function Aplicacion() {
                     }
                 />
                 <Route path="/mundos" element={<Navigate to="/mundos/neon" replace />} />
-                <Route path="/mundos/:id" element={<DetalleMundo mundos={mundos} cargandoMundos={cargandoMundos} errorMundos={errorMundos} />} />
+                <Route
+                    path="/mundos/:id"
+                    element={
+                        <DetalleMundo
+                            mundos={mundos}
+                            cargandoMundos={cargandoMundos}
+                            errorMundos={errorMundos}
+                            textos={textos}
+                            idioma={idioma}
+                        />
+                    }
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
 
-            <Footer textos={textos} />
+            <Footer textos={textos} idioma={idioma} />
 
             {panelAbierto && (
                 <PanelAccesibilidad
                     textos={textos}
+                    idioma={idioma}
                     preferencias={preferencias}
                     cambiarPreferencia={cambiarPreferencia}
                     restablecerPreferencias={restablecerPreferencias}
