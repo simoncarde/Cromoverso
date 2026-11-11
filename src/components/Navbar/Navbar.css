@@ -158,21 +158,30 @@
 
 @media (max-width: 900px) {
     .navbar {
-        min-height: 74px;
+        min-height: 66px;
         background: var(--fondo-inverso);
         border-bottom: 1px solid var(--borde-inverso);
         color: var(--texto-inverso);
     }
 
     .navbar-barra {
-        min-height: 73px;
-        padding: 0 24px;
-        gap: 14px;
+        min-height: 65px;
+        padding: 0 18px;
+        gap: 9px;
     }
 
     .navbar-barra > .navbar-marca {
+        min-width: 0;
+        flex: 0 1 auto;
         color: var(--texto-inverso);
-        font-size: clamp(calc(16px * var(--escala-texto, 1)), calc(4.3vw * var(--escala-texto, 1)), calc(20px * var(--escala-texto, 1)));
+        gap: 7px;
+        font-size: clamp(calc(16px * var(--escala-texto, 1)), calc(4.1vw * var(--escala-texto, 1)), calc(18px * var(--escala-texto, 1)));
+    }
+
+    .navbar-barra > .navbar-marca .navbar-marca-simbolo {
+        flex-basis: 36px;
+        width: 36px;
+        height: 36px;
     }
 
     .navbar-barra > .navbar-marca .navbar-marca-simbolo circle:first-child {
@@ -186,30 +195,33 @@
 
     .navbar-acciones-movil {
         display: flex;
+        flex: 0 0 auto;
         align-items: center;
-        gap: 14px;
+        gap: 8px;
         margin-left: auto;
     }
 
     .navbar-ingresar-movil {
         display: inline-flex;
+        flex: 0 0 84px;
         align-items: center;
         justify-content: center;
-        min-width: 112px;
-        height: 48px;
-        padding: 0 20px;
+        min-width: 84px;
+        height: 40px;
+        padding: 0 12px;
         border-radius: var(--radio-pildora);
         background: var(--fondo-superficie);
         color: var(--fondo-inverso);
         text-decoration: none;
-        font-size: calc(15px * var(--escala-texto, 1));
+        font-size: calc(13px * var(--escala-texto, 1));
         font-weight: 700;
         white-space: nowrap;
     }
 
     .navbar-menu-trigger {
-        width: 52px;
-        height: 52px;
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
         border-color: var(--borde-inverso);
         background: var(--fondo-inverso-2);
         color: var(--texto-inverso);
@@ -475,15 +487,17 @@
     }
 
     .navbar-ingresar-movil {
-        min-width: 88px;
-        height: 44px;
-        padding-inline: 12px;
+        flex-basis: 78px;
+        min-width: 78px;
+        height: 38px;
+        padding-inline: 10px;
         font-size: calc(13px * var(--escala-texto, 1));
     }
 
     .navbar-menu-trigger {
-        width: 46px;
-        height: 46px;
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
     }
 
     .navbar-overlay-cabecera {

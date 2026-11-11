@@ -348,15 +348,15 @@
 
 @media (max-width: 650px) {
     .detalle-mundo-hero {
-        min-height: 176px;
-        padding: 18px 18px 20px;
+        min-height: 144px;
+        padding: 14px 18px 16px;
     }
 
     .detalle-mundo-hero-interior {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 138px;
+        min-height: 116px;
     }
 
     .detalle-mundo-migas,
@@ -374,10 +374,10 @@
 
     .detalle-mundo-hero-boton {
         display: inline-grid;
-        flex: 0 0 54px;
+        flex: 0 0 48px;
         place-items: center;
-        width: 54px;
-        height: 54px;
+        width: 48px;
+        height: 48px;
         padding: 0;
         border: 2px solid var(--borde-fuerte);
         border-radius: 50%;
