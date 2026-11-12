@@ -1,0 +1,1 @@
+[![Architecture diagram](https://gitdiagram.com/diagram-badge.svg)](https://gitdiagram.com/simoncarde/cromoverso?utm_source=readme&utm_medium=badge)
