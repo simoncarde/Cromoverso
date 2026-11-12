@@ -1,6 +1,6 @@
 .mundos-seccion {
     width: 100%;
-    padding: 30px 34px 24px;
+    padding: 30px 48px 24px;
     background: var(--fondo-pagina);
 }
 
@@ -29,7 +29,7 @@
     margin: 0;
     color: var(--texto-secundario);
     font-family: var(--fuente-rubik);
-    font-size: calc(12px * var(--escala-texto, 1));
+    font-size: calc(16px * var(--escala-texto, 1));
 }
 
 .mundos-enlace {
@@ -38,7 +38,7 @@
     gap: 7px;
     color: var(--marca-primario);
     font-family: var(--fuente-rubik);
-    font-size: calc(11px * var(--escala-texto, 1));
+    font-size: calc(16px * var(--escala-texto, 1));
     font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
@@ -101,7 +101,7 @@
     background: var(--marca-acento-suave);
     border-radius: var(--radio-pildora);
     font-family: var(--fuente-rubik);
-    font-size: calc(8px * var(--escala-texto, 1));
+    font-size: calc(16px * var(--escala-texto, 1));
     font-weight: 700;
     white-space: nowrap;
 }
@@ -110,7 +110,7 @@
     margin: 8px 0 0;
     color: var(--texto-principal);
     font-family: var(--fuente-rubik);
-    font-size: calc(11px * var(--escala-texto, 1));
+    font-size: calc(17px * var(--escala-texto, 1));
     font-weight: 700;
     line-height: 1.25;
 }
@@ -119,13 +119,13 @@
     margin: 7px 0 0;
     color: var(--texto-secundario);
     font-family: var(--fuente-rubik);
-    font-size: calc(10px * var(--escala-texto, 1));
+    font-size: calc(16px * var(--escala-texto, 1));
 }
 
 .estado-mundos {
     grid-column: 1 / -1;
     font-family: var(--fuente-rubik);
-    font-size: calc(12px * var(--escala-texto, 1));
+    font-size: calc(16px * var(--escala-texto, 1));
 }
 
 @media (max-width: 1000px) {
@@ -137,7 +137,7 @@
 
 @media (max-width: 600px) {
     .mundos-seccion {
-        padding: 20px 26px 18px;
+        padding: 20px 16px 18px;
     }
 
     .mundos-cabecera {
@@ -152,13 +152,13 @@
 
     .mundos-titulos p {
         max-width: 240px;
-        font-size: calc(10px * var(--escala-texto, 1));
+        font-size: calc(16px * var(--escala-texto, 1));
         line-height: 1.4;
     }
 
     .mundos-enlace {
         margin-top: 5px;
-        font-size: calc(9px * var(--escala-texto, 1));
+        font-size: calc(16px * var(--escala-texto, 1));
     }
 
     .mundos-lista {
@@ -177,7 +177,7 @@
     }
 
     .mundo-tarjeta {
-        min-height: 84px;
+        min-height: 112px;
         scroll-snap-align: start;
     }
 }

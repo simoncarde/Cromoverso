@@ -1,4 +1,10 @@
-const API_BASE_URL = "https://yanethm-cromoverso-api.fly.dev/api/v1";
+const API_BASE_URL = String(import.meta.env.VITE_API_URL || "")
+    .trim()
+    .replace(/\/+$/, "");
+
+if (!API_BASE_URL) {
+    throw new Error("Configura VITE_API_URL con la URL base de la API de Cromoverso.");
+}
 
 export const API_ENDPOINTS = Object.freeze({
     textos: `${API_BASE_URL}/textos`,

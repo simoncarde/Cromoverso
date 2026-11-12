@@ -27,11 +27,11 @@ Instala las dependencias con `npm install` y ejecuta `npm run dev`. Vite inicia 
 
 ## Datos remotos
 
-La aplicación consulta `https://yanethm-cromoverso-api.fly.dev/api/v1` para obtener textos traducidos, mundos y cromos destacados. Los hooks mantienen los resultados en memoria durante la sesión y comparten solicitudes concurrentes cuando varios componentes necesitan los mismos datos. El idioma inicial es español; el selector también permite inglés.
+La URL base de la API se configura con `VITE_API_URL`. Copia `.env.example` como `.env` para el desarrollo local; Vite también acepta la variable del entorno de compilación. El valor predeterminado del proyecto se conserva en `vite.config.js`. En PowerShell se puede reemplazar antes de iniciar o compilar con `$env:VITE_API_URL="https://tu-api/api/v1"`.
 
-La portada depende de los textos y los recursos remotos para mostrar el contenido definitivo. La conexión previa declarada en `index.html` reduce el coste de establecer la primera conexión con la API. El navegador, la latencia de red y la disponibilidad de la API determinan el tiempo real de carga; por ello no se garantiza un intervalo fijo de 2–10 ms.
+La aplicación obtiene de la API los textos traducidos, los mundos y los cromos destacados. Los hooks mantienen los resultados en memoria durante la sesión y comparten solicitudes concurrentes cuando varios componentes necesitan los mismos datos. El idioma inicial es español; el selector también permite inglés. El navegador, la latencia de red y la disponibilidad de la API determinan el tiempo real de carga.
 
-Las fuentes usan pilas locales del sistema para evitar solicitudes de terceros antes de mostrar el contenido. Esto reduce dependencias de red y conserva una alternativa legible, aunque cambia la apariencia tipográfica respecto de las fuentes de marca originales.
+Las fuentes de marca Rubik y Unbounded se cargan desde Google Fonts en `src/styles/tokens.css`; si el servicio no responde, el navegador usa la alternativa sans-serif del sistema.
 
 ## Accesibilidad
 
