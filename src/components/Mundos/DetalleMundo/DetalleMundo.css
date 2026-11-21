@@ -181,6 +181,63 @@
     font: 500 calc(16px * var(--escala-texto, 1))/calc(24px * var(--escala-texto, 1)) var(--fuente-rubik);
 }
 .detalle-mundo-select-wrap .icono-ui { position: absolute; right: 10px; pointer-events: none; }
+.detalle-mundo-select-wrap { z-index: 5; }
+.detalle-mundo-select-trigger {
+    display: inline-flex;
+    min-width: 132px;
+    min-height: 42px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 12px 8px 16px;
+    border: 1.5px solid var(--borde-fuerte);
+    border-radius: var(--radio-pildora);
+    color: var(--texto-principal);
+    background: var(--fondo-superficie);
+    cursor: pointer;
+    font: 600 calc(15px * var(--escala-texto, 1))/1 var(--fuente-rubik);
+    transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    text-transform: capitalize;
+}
+.detalle-mundo-select-trigger:hover { border-color: var(--marca-primario); background: var(--marca-primario-suave); }
+.detalle-mundo-select-trigger:focus-visible { outline: 3px solid color-mix(in srgb, var(--marca-primario) 28%, transparent); outline-offset: 2px; border-color: var(--marca-primario); }
+.detalle-mundo-select-trigger[aria-expanded="true"] .icono-ui { transform: rotate(180deg); }
+.detalle-mundo-select-trigger .icono-ui { transition: transform .18s ease; }
+.detalle-mundo-opciones-orden {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: grid;
+    width: max(100%, 178px);
+    gap: 3px;
+    padding: 6px;
+    border: 1.5px solid var(--borde-fuerte);
+    border-radius: 14px;
+    background: var(--fondo-superficie);
+    box-shadow: 4px 4px 0 var(--borde-fuerte);
+    animation: orden-aparecer .14s ease-out;
+}
+.detalle-mundo-opciones-orden button {
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 11px;
+    border: 0;
+    border-radius: 9px;
+    color: var(--texto-principal);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font: 500 calc(15px * var(--escala-texto, 1))/1.2 var(--fuente-rubik);
+    text-transform: capitalize;
+}
+.detalle-mundo-opciones-orden button:hover,
+.detalle-mundo-opciones-orden button:focus-visible { outline: none; background: var(--fondo-sutil); }
+.detalle-mundo-opciones-orden button.seleccionado { color: var(--texto-marca); background: var(--marca-primario-suave); font-weight: 700; }
+.detalle-mundo-opciones-orden button .icono-ui { color: var(--marca-primario); }
+@keyframes orden-aparecer { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
 .detalle-mundo-grid {
     display: grid;
@@ -202,6 +259,8 @@
     background: var(--fondo-superficie);
     box-shadow: var(--sombra-pop-pequeña);
 }
+.tarjeta-cromo-boton { display: block; width: 100%; padding: 0; border: 0; color: inherit; background: transparent; cursor: pointer; text-align: left; font: inherit; }
+.tarjeta-cromo-boton:focus-visible { outline: 3px solid var(--marca-primario); outline-offset: 3px; border-radius: var(--radio-m); }
 .tarjeta-cromo-ilustracion {
     position: relative;
     overflow: hidden;
@@ -223,6 +282,22 @@
     mix-blend-mode: screen;
 }
 .tarjeta-cromo-sin-imagen { position: absolute; inset: 0; background: var(--color-mundo); }
+
+.modal-cromo-overlay { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; overflow-y: auto; padding: 24px; background: rgb(25 16 47 / 76%); }
+.modal-cromo { position: relative; display: grid; grid-template-columns: minmax(230px, .72fr) minmax(0, 1.28fr); gap: 32px; width: min(100%, 1000px); max-height: min(88vh, 820px); overflow-y: auto; padding: 38px; border: 2px solid var(--borde-fuerte); border-radius: 26px; color: var(--texto-principal); background: var(--fondo-superficie); box-shadow: 0 12px 0 rgb(25 16 47 / 45%); }
+.modal-cromo-cerrar { position: absolute; z-index: 2; top: 18px; right: 18px; display: grid; width: 44px; height: 44px; place-items: center; border: 2px solid var(--marca-primario); border-radius: 50%; color: var(--texto-principal); background: var(--fondo-superficie); cursor: pointer; font-size: 27px; line-height: 1; }
+.modal-cromo-arte { display: grid; min-height: 390px; place-items: center; padding: 24px; border: 2px solid var(--borde-fuerte); border-radius: 20px; background: var(--color-mundo); }
+.modal-cromo-tarjeta { width: min(100%, 250px); overflow: hidden; padding: 6px; border: 2px solid var(--borde-fuerte); border-radius: 18px; background: var(--fondo-superficie); box-shadow: 5px 5px 0 var(--borde-fuerte); }
+.modal-cromo-imagen { position: relative; overflow: hidden; aspect-ratio: 224 / 270; border: 1px solid var(--borde-fuerte); border-radius: 10px; background: var(--color-mundo); }
+.modal-cromo-imagen img { width: 100%; height: 100%; object-fit: cover; }
+.modal-cromo-numero, .modal-cromo-sello { position: absolute; top: 8px; display: grid; min-width: 30px; height: 26px; place-items: center; padding: 2px 6px; border: 2px solid var(--borde-fuerte); border-radius: 999px; background: var(--fondo-superficie); font-weight: 700; }
+.modal-cromo-numero { left: 8px; }.modal-cromo-sello { right: 8px; }
+.modal-cromo-tarjeta-info { padding: 8px 4px 3px; }.modal-cromo-tarjeta-info h3 { margin: 0; font: 700 18px var(--fuente-unbounded); }.modal-cromo-tarjeta-info p { margin: 4px 0 0; color: var(--texto-secundario); }
+.modal-cromo-informacion { align-self: center; min-width: 0; padding-right: 8px; }
+.modal-cromo-etiquetas { display: flex; flex-wrap: wrap; gap: 8px; padding-right: 42px; }.modal-cromo-etiquetas > span { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 999px; background: var(--fondo-sutil); font-weight: 700; }
+.modal-cromo-identificacion { margin: 20px 0 4px; color: var(--texto-secundario); font-size: 13px; font-weight: 600; }.modal-cromo-informacion > h2 { margin: 0 50px 16px 0; font: 700 clamp(27px, 4vw, 42px)/1.12 var(--fuente-unbounded); }
+.modal-cromo-poder { display: flex; align-items: center; gap: 12px; padding: 13px; border: 2px solid var(--borde-fuerte); border-radius: 14px; background: color-mix(in srgb, var(--marca-primario) 13%, var(--fondo-superficie)); }.modal-cromo-poder-icono { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; color: white; background: var(--marca-primario); font-size: 22px; }.modal-cromo-poder div { display: grid; gap: 3px; }.modal-cromo-poder div span { color: var(--marca-primario); font-size: 12px; font-weight: 800; letter-spacing: .08em; }
+.modal-cromo-descripcion { margin: 16px 0; color: var(--texto-secundario); line-height: 1.55; }.modal-cromo-atributos { padding: 15px 17px; border-radius: 15px; background: var(--fondo-sutil); }.modal-cromo-atributos-cabecera { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }.modal-cromo-atributos-cabecera h3 { margin: 0; font-size: 16px; }.modal-cromo-atributos-cabecera strong { white-space: nowrap; }.modal-cromo-atributo { display: grid; grid-template-columns: minmax(70px, 100px) minmax(40px, 1fr) 28px; align-items: center; gap: 10px; margin-top: 9px; font-size: 14px; font-weight: 650; }.modal-cromo-atributo > strong { text-align: right; }.modal-cromo-barra { height: 10px; overflow: hidden; border: 1.5px solid var(--borde-fuerte); border-radius: 99px; background: var(--fondo-superficie); }.modal-cromo-barra-progreso { height: 100%; border-radius: inherit; background: var(--marca-primario); }
 .tarjeta-cromo-numero {
     position: absolute;
     z-index: 3;
@@ -611,4 +686,51 @@
         font-size: calc(16px * var(--escala-texto, 1));
         line-height: calc(20px * var(--escala-texto, 1));
     }
+}
+
+@media (max-width: 720px) {
+    .modal-cromo-overlay { align-items: start; padding: 12px; }
+    .modal-cromo { grid-template-columns: 1fr; gap: 20px; width: min(100%, 520px); max-height: calc(100dvh - 24px); padding: 20px; border-radius: 20px; }
+    .modal-cromo-arte { min-height: 0; padding: 14px; }
+    .modal-cromo-tarjeta { width: min(100%, 190px); }
+    .modal-cromo-informacion { padding: 0; }
+    .modal-cromo-identificacion { margin-top: 14px; }
+}
+
+/* Ajustes de proporción y tipografía según la referencia del modal. */
+.modal-cromo {
+    grid-template-columns: minmax(320px, .78fr) minmax(0, 1.22fr);
+    gap: 40px;
+    width: min(100%, 1000px);
+    height: min(650px, calc(100dvh - 32px));
+    max-height: 650px;
+    padding: 40px;
+    border-radius: 28px;
+    box-shadow: none;
+    font-family: var(--fuente-rubik);
+}
+.modal-cromo-arte { min-height: 0; height: 100%; padding: 40px; border-radius: 20px; }
+.modal-cromo-tarjeta { width: min(100%, 330px); }
+.modal-cromo-identificacion { margin-top: 20px; font-size: 13px; }
+.modal-cromo-informacion > h2 { font-size: clamp(32px, 4vw, 42px); letter-spacing: -1.5px; }
+.modal-cromo-poder { min-height: 76px; padding: 12px 16px; border-radius: 16px; background: var(--marca-primario-suave); }
+.modal-cromo-poder-icono { width: 36px; height: 36px; color: #fff; }
+.modal-cromo-poder-icono svg { width: 20px; height: 20px; }
+.modal-cromo-poder div span { font-size: 11px; }
+.modal-cromo-poder strong { font-size: 16px; }
+.modal-cromo-descripcion { font-size: 16px; line-height: 1.55; }
+.modal-cromo-atributos { padding: 20px; border-radius: 16px; background: var(--fondo-sutil); }
+.modal-cromo-atributos-cabecera h3 { font-size: 16px; }
+.modal-cromo-atributo { grid-template-columns: 100px minmax(40px, 1fr) 30px; gap: 12px; margin-top: 12px; font-size: 14px; }
+.modal-cromo-barra { height: 12px; }
+.modal-cromo-poder { background: color-mix(in srgb, var(--color-mundo) 12%, white); }
+.modal-cromo-poder div span { color: var(--color-mundo); }
+.modal-cromo-poder-icono { width: 44px; height: 44px; flex: 0 0 44px; overflow: visible; border-radius: 50%; background: transparent; }
+.modal-cromo-poder-icono img { display: block; width: 44px; height: 44px; object-fit: contain; }
+.modal-cromo-barra-progreso { background: var(--color-mundo); }
+.modal-cromo-atributo > span:first-child { text-transform: capitalize; }
+
+@media (max-width: 720px) {
+    .modal-cromo { height: auto; max-height: calc(100dvh - 24px); gap: 20px; padding: 20px; }
+    .modal-cromo-arte { height: auto; padding: 14px; }
 }
