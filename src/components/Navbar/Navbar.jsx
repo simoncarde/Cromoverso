@@ -62,6 +62,16 @@ function Icon({ name, size = 22 }) {
                 </svg>
             );
 
+        case "salir":
+        case "logout":
+            return (
+                <svg {...common}>
+                    <path d="M15 4H19C19.2652 4 19.5196 4.10536 19.7071 4.29289C19.8946 4.48043 20 4.73478 20 5V19C20 19.2652 19.8946 19.5196 19.7071 19.7071C19.5196 19.8946 19.2652 20 19 20H15" />
+                    <path d="M10 17L15 12L10 7" />
+                    <path d="M15 12H3" />
+                </svg>
+            );
+
         default:
             return null;
     }
@@ -107,11 +117,15 @@ function Navbar({
     activo = "inicio",
     abrirPanelAccesibilidad,
     mundos = [],
+    usuario = null,
+    cerrarSesion,
 }) {
     const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
     const [mundosAbiertos, setMundosAbiertos] = useState(false);
+    const [cuentaAbierta, setCuentaAbierta] = useState(false);
     const dialogoMovilRef = useRef(null);
     const disparadorMenuRef = useRef(null);
+    const cuentaRef = useRef(null);
 
     const listaMundos = Array.isArray(mundos) && mundos.length > 0 ? mundos : [
         { id: "neon", nombre: "Ciudad Neón" },
@@ -127,6 +141,27 @@ function Navbar({
     const accesibilidad = textos?.accesibilidad;
     const textosIdioma = textos?.idioma;
     const es = idioma === "es";
+    const nombreUsuario = usuario?.nombre || usuario?.alias || "";
+    const partesNombreUsuario = nombreUsuario.trim().split(/\s+/).filter(Boolean);
+    const primerApellido = usuario?.primerApellido || usuario?.apellido || partesNombreUsuario[1] || "";
+    const inicialesUsuario = `${partesNombreUsuario[0]?.[0] || ""}${primerApellido[0] || ""}`.toLocaleUpperCase(idioma);
+    const cerrarSesionTexto = nav?.usuario?.cerrarSesion || menuMovil?.botones?.cerrarSesion;
+
+    useEffect(() => {
+        if (!cuentaAbierta) return undefined;
+        function cerrarAlClickFuera(evento) {
+            if (!cuentaRef.current?.contains(evento.target)) setCuentaAbierta(false);
+        }
+        function cerrarConEscape(evento) {
+            if (evento.key === "Escape") setCuentaAbierta(false);
+        }
+        document.addEventListener("mousedown", cerrarAlClickFuera);
+        document.addEventListener("keydown", cerrarConEscape);
+        return () => {
+            document.removeEventListener("mousedown", cerrarAlClickFuera);
+            document.removeEventListener("keydown", cerrarConEscape);
+        };
+    }, [cuentaAbierta]);
 
     const marcaAria = nav?.logo?.aria || (es ? "Cromoverso, ir al inicio" : "Cromoverso, go to home");
     const marcaTexto = nav?.logo?.texto || "cromoverso";
@@ -249,28 +284,60 @@ function Navbar({
                         </button>
                     </div>
 
-                    <a
-                        className="navbar-boton navbar-boton-claro"
-                        href="#ingresar"
-                    >
-                        {ingresar}
-                    </a>
-
-                    <a
-                        className="navbar-boton navbar-boton-morado"
-                        href="#crear-cuenta"
-                    >
-                        {crearCuenta}
-                    </a>
+                    {usuario ? (
+                        <div className="navbar-cuenta-activa" ref={cuentaRef}>
+                            <button
+                                type="button"
+                                className="navbar-avatar-boton"
+                                aria-label={nav?.usuario?.menu || (es ? "Menú de usuario" : "User menu")}
+                                aria-expanded={cuentaAbierta}
+                                onClick={() => setCuentaAbierta((abierto) => !abierto)}
+                            >
+                                {inicialesUsuario}
+                            </button>
+                            {cuentaAbierta && (
+                                <div className="navbar-cuenta-menu" role="menu">
+                                    <div className="navbar-cuenta-identidad">
+                                        <span className="navbar-cuenta-avatar" aria-hidden="true">
+                                            {inicialesUsuario}
+                                        </span>
+                                        <div className="navbar-cuenta-datos">
+                                            <strong>{nombreUsuario}</strong>
+                                            <small>{usuario?.correo}</small>
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        role="menuitem"
+                                        className="navbar-cuenta-salir"
+                                        onClick={() => {
+                                            cerrarSesion?.();
+                                            setCuentaAbierta(false);
+                                        }}
+                                    >
+                                        <Icon name="salir" size={17} />
+                                        <span>{cerrarSesionTexto || (es ? "Cerrar sesión" : "Log out")}</span>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <>
+                            <Link className="navbar-boton navbar-boton-claro" to="/ingresar">{ingresar}</Link>
+                            <a className="navbar-boton navbar-boton-morado" href="#crear-cuenta">{crearCuenta}</a>
+                        </>
+                    )}
                 </div>
 
                 <div className="navbar-acciones-movil">
-                    <a
+                    {usuario ? (
+                        <button type="button" className="navbar-avatar-iniciales navbar-avatar-movil" aria-label={nav?.usuario?.menu} onClick={() => setMenuMovilAbierto(true)}>{inicialesUsuario}</button>
+                    ) : <Link
                         className="navbar-ingresar-movil"
-                        href="#ingresar"
+                        to="/ingresar"
                     >
                         {ingresar}
-                    </a>
+                    </Link>}
 
                     <button
                         type="button"
@@ -413,23 +480,48 @@ function Navbar({
                             </div>
                         </div>
 
-                        <div className="navbar-overlay-botones">
-                            <a
-                                className="navbar-boton navbar-boton-claro"
-                                href="#ingresar"
-                                onClick={cerrarMenu}
-                            >
-                                {ingresar}
-                            </a>
+                        {usuario ? (
+                            <div className="navbar-overlay-usuario">
+                                <div className="navbar-overlay-usuario-info">
+                                    <span className="navbar-avatar-iniciales" aria-hidden="true">
+                                        {inicialesUsuario}
+                                    </span>
+                                    <div className="navbar-overlay-usuario-datos">
+                                        <strong>{nombreUsuario}</strong>
+                                        <small>{usuario?.alias ? `@${usuario.alias}` : (usuario?.correo ? `@${usuario.correo.split("@")[0]}` : "")}</small>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="navbar-overlay-cerrar-sesion"
+                                    onClick={() => {
+                                        cerrarSesion?.();
+                                        cerrarMenu();
+                                    }}
+                                >
+                                    <Icon name="salir" size={17} />
+                                    <span>{cerrarSesionTexto || (es ? "Cerrar sesión" : "Log out")}</span>
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="navbar-overlay-botones">
+                                <Link
+                                    className="navbar-boton navbar-boton-claro"
+                                    to="/ingresar"
+                                    onClick={cerrarMenu}
+                                >
+                                    {ingresar}
+                                </Link>
 
-                            <a
-                                className="navbar-boton navbar-boton-morado"
-                                href="#crear-cuenta"
-                                onClick={cerrarMenu}
-                            >
-                                {crearCuenta}
-                            </a>
-                        </div>
+                                <a
+                                    className="navbar-boton navbar-boton-morado"
+                                    href="#crear-cuenta"
+                                    onClick={cerrarMenu}
+                                >
+                                    {crearCuenta}
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

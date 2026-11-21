@@ -77,6 +77,7 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                 aria-modal="true"
                 aria-labelledby="modal-cromo-titulo"
             >
+                <div className="modal-cromo-manija" aria-hidden="true" />
                 <button
                     ref={cerrarRef}
                     type="button"
@@ -194,6 +195,7 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                             </div>
                         ))}
                     </section>
+                    <p className="modal-cromo-escala">{detalleTextos.notaEscala || (es ? "Escala de 10 a 99." : "Scale from 10 to 99.")}</p>
                 </div>
             </section>
         </div>

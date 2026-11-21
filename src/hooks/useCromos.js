@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { urlCromo } from "../services/api.js";
-const IDS_DESTACADOS = ["CV-041", "CV-001", "CV-002"];
+const IDS_DESTACADOS = ["CV-041", "CV-001", "CV-101"];
 
 let cacheCromos = null;
 let promesaCromos = null;
