@@ -17,7 +17,7 @@ const PLANTILLAS_POR_MUNDO = {
     niebla: "CV-101.svg"
 };
 
-function TarjetaCromo({ cromo, mundo, textos, idioma = "es" }) {
+function TarjetaCromo({ cromo, mundo, textos, idioma = "es", onSeleccionar }) {
     const numero = String(cromo.numero).padStart(3, "0");
     const archivo = `CV-${numero}.svg`;
     const original = `/assets/cromos/${archivo}?v=2`;
@@ -69,10 +69,13 @@ function TarjetaCromo({ cromo, mundo, textos, idioma = "es" }) {
     const iconoRareza = ICONOS_RAREZA[cromo.rareza] || "circulo";
 
     return (
-        <article
-            className={`tarjeta-cromo rareza-borde-${cromo.rareza || "comun"}`}
-            title={`${cromo.nombre} · ${tipoEtiqueta}`}
-        >
+        <article className={`tarjeta-cromo rareza-borde-${cromo.rareza || "comun"}`}>
+            <button
+                type="button"
+                className="tarjeta-cromo-boton"
+                onClick={() => onSeleccionar?.(cromo)}
+                aria-label={`${cromo.nombre} · ${tipoEtiqueta}`}
+            >
             <div className={`tarjeta-cromo-ilustracion${cromo.holografico ? " holografico" : ""}`}>
                 {src ? (
                     <img
@@ -98,6 +101,7 @@ function TarjetaCromo({ cromo, mundo, textos, idioma = "es" }) {
                 <h3>{cromo.nombre}</h3>
                 <p>{subtitulo}</p>
             </div>
+            </button>
         </article>
     );
 }
