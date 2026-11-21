@@ -1,0 +1,665 @@
+.sitio-sesion {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.sesion-pagina {
+    display: grid;
+    flex: 1 0 auto;
+    width: 100%;
+    min-height: 100dvh;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    color: var(--texto-principal);
+    background: var(--fondo-pagina);
+}
+
+/* ==========================================================================
+   PANEL LATERAL (IZQUIERDA) - DESKTOP
+   ========================================================================== */
+.sesion-lateral {
+    position: relative;
+    display: flex;
+    min-height: 100dvh;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 38px 44px;
+    color: var(--texto-inverso);
+    background-color: #20124d;
+    isolation: isolate;
+}
+
+.sesion-fondo {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: #20124d url("/assets/fondos/rayos-movil-fondo.png") center / cover no-repeat;
+}
+
+.sesion-marca {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 10px;
+    color: inherit;
+    text-decoration: none;
+    font: 700 18px/1 var(--fuente-unbounded);
+    letter-spacing: -0.5px;
+}
+
+.sesion-marca:hover {
+    color: inherit;
+}
+
+.sesion-marca-icono-circulo {
+    display: grid;
+    width: 26px;
+    height: 26px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--marca-primario);
+    border: 2px solid var(--borde-fuerte);
+    flex-shrink: 0;
+}
+
+.sesion-marca-lateral {
+    color: #ffffff;
+}
+
+.sesion-marca-lateral .sesion-marca-icono-circulo {
+    border-color: #ffffff;
+}
+
+/* CARDS FAN - DESKTOP */
+.sesion-cromos {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
+    margin: auto 0;
+}
+
+.sesion-cromo {
+    position: absolute;
+    width: 168px;
+    user-select: none;
+    transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.sesion-cromo .tarjeta-cromo {
+    width: 100%;
+    box-shadow: 3px 3px 0 var(--borde-fuerte) !important;
+    filter: none !important;
+}
+
+.sesion-cromo .tarjeta-cromo-boton {
+    width: 100%;
+    cursor: default;
+    pointer-events: none;
+}
+
+.sesion-cromo .tarjeta-cromo-numero {
+    font-size: 11px;
+    min-width: 26px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    border-width: 1.5px;
+    line-height: 16px;
+}
+
+.sesion-cromo .tarjeta-cromo-sello {
+    width: 20px;
+    height: 20px;
+}
+
+.sesion-cromo .tarjeta-cromo-info {
+    padding: 4px 6px 6px;
+    min-height: 38px;
+    gap: 2px;
+}
+
+.sesion-cromo .tarjeta-cromo-info h3 {
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.sesion-cromo .tarjeta-cromo-info p {
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.sesion-cromo-1 {
+    z-index: 1;
+    transform: translateX(-56%) rotate(-12deg) translateY(12px);
+}
+
+.sesion-cromo-2 {
+    z-index: 3;
+    transform: translateX(0) translateY(-6px);
+}
+
+.sesion-cromo-3 {
+    z-index: 2;
+    transform: translateX(56%) rotate(12deg) translateY(12px);
+}
+
+/* PROMO FOOTER - DESKTOP */
+.sesion-promocion {
+    margin-top: 16px;
+}
+
+.sesion-etiqueta {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    color: var(--marca-primario);
+    background: #ede6ff;
+    font: 700 11px/1.2 var(--fuente-rubik);
+}
+
+.sesion-promocion h2 {
+    max-width: 440px;
+    margin: 12px 0 8px;
+    color: #ffffff;
+    font: 800 clamp(24px, 2.7vw, 32px)/1.12 var(--fuente-unbounded);
+    letter-spacing: -1px;
+}
+
+.sesion-promocion h2 span {
+    display: block;
+}
+
+.sesion-promocion p {
+    max-width: 380px;
+    margin: 0;
+    color: var(--texto-inverso-suave);
+    font: 400 14px/1.45 var(--fuente-rubik);
+}
+
+/* ==========================================================================
+   PANEL FORMULARIO (DERECHA) - DESKTOP
+   ========================================================================== */
+.sesion-contenido {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 38px 24px;
+    background: var(--fondo-pagina);
+}
+
+.sesion-formulario-contenedor {
+    width: 100%;
+    max-width: 314px;
+}
+
+.sesion-marca-formulario {
+    color: var(--texto-principal);
+    margin-bottom: 20px;
+}
+
+.sesion-formulario-contenedor h1 {
+    margin: 0;
+    color: var(--texto-principal);
+    font: 800 28px/1.12 var(--fuente-unbounded);
+    letter-spacing: -0.8px;
+    max-width: 250px;
+}
+
+.sesion-descripcion {
+    margin: 8px 0 16px;
+    color: var(--texto-secundario);
+    font: 400 13px/1.45 var(--fuente-rubik);
+}
+
+/* ALERTA DE ERROR / ESTADO */
+.sesion-aviso-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 0 14px;
+    padding: 10px 14px;
+    border: 2px solid var(--borde-fuerte);
+    border-radius: 12px;
+    color: var(--texto-principal);
+    background: var(--estado-error-suave);
+    line-height: 1.35;
+}
+
+.sesion-aviso-error.exito {
+    background: var(--estado-exito-suave);
+}
+
+.sesion-aviso-icono {
+    display: flex;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.sesion-aviso-cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sesion-aviso-cuerpo strong {
+    font: 700 13px/1.25 var(--fuente-rubik);
+    color: var(--texto-principal);
+}
+
+.sesion-aviso-cuerpo span {
+    font: 400 12px/1.35 var(--fuente-rubik);
+    color: var(--texto-secundario);
+}
+
+/* FORMULARIO */
+.sesion-formulario {
+    display: flex;
+    flex-direction: column;
+}
+
+.sesion-campo-grupo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.sesion-campo-grupo > label {
+    margin-bottom: 6px;
+    color: var(--texto-principal);
+    font: 700 13px/1.2 var(--fuente-rubik);
+}
+
+.sesion-campo-grupo input:not([type="checkbox"]) {
+    width: 100%;
+    height: 42px;
+    min-height: 42px;
+    padding: 0 14px;
+    border: 2px solid var(--borde-fuerte);
+    border-radius: 10px;
+    color: var(--texto-principal);
+    background: #ffffff;
+    font: 500 14px/1 var(--fuente-rubik);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sesion-campo-grupo input:not([type="checkbox"])::placeholder {
+    color: #7d7690;
+    opacity: 0.8;
+}
+
+.sesion-campo-grupo input:not([type="checkbox"]):focus-visible {
+    border-color: var(--marca-primario);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--marca-primario) 25%, transparent);
+}
+
+.sesion-campo-grupo input.campo-invalido {
+    border-color: var(--estado-error);
+}
+
+.sesion-campo-error {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+    color: var(--estado-error);
+    font: 500 12px/1.2 var(--fuente-rubik);
+}
+
+.sesion-clave-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.sesion-clave-wrap input {
+    padding-right: 44px !important;
+}
+
+.sesion-clave-toggle {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 6px;
+    color: var(--texto-principal);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.sesion-clave-toggle:hover {
+    color: var(--marca-primario);
+}
+
+/* OPCIONES: CHECKBOX Y OLVIDO - DESKTOP */
+.sesion-opciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 4px 0 16px;
+    font-size: 13px;
+}
+
+.sesion-recordar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    font: 400 13px/1.2 var(--fuente-rubik);
+    color: var(--texto-principal);
+}
+
+.sesion-checkbox-nativo {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.sesion-checkbox-visual {
+    display: grid;
+    width: 18px;
+    height: 18px;
+    place-items: center;
+    border: 2px solid var(--borde-fuerte);
+    border-radius: 4px;
+    background: #ffffff;
+    color: transparent;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sesion-checkbox-nativo:checked + .sesion-checkbox-visual {
+    background: var(--marca-primario);
+    border-color: var(--borde-fuerte);
+    color: #ffffff;
+}
+
+.sesion-checkbox-nativo:focus-visible + .sesion-checkbox-visual {
+    outline: 2px solid var(--marca-primario);
+    outline-offset: 2px;
+}
+
+.sesion-olvido-enlace {
+    font: 700 13px/1.2 var(--fuente-rubik);
+    color: var(--texto-marca);
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.sesion-olvido-enlace:hover {
+    color: var(--marca-primario-hover);
+}
+
+/* BOTON ENVIAR */
+.sesion-enviar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 46px;
+    height: 46px;
+    padding: 0 20px;
+    border: 2px solid var(--borde-fuerte);
+    border-radius: 999px;
+    color: #ffffff;
+    background: var(--marca-primario);
+    box-shadow: none;
+    cursor: pointer;
+    font: 700 15px/1 var(--fuente-rubik);
+    transition: background-color 0.15s ease;
+}
+
+.sesion-enviar:hover:not(:disabled) {
+    background: var(--marca-primario-hover);
+}
+
+.sesion-enviar:disabled {
+    cursor: wait;
+    opacity: 0.9;
+}
+
+.sesion-spinner-anim {
+    animation: sesion-rotar 0.9s linear infinite;
+}
+
+@keyframes sesion-rotar {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* REGISTRO FOOTER */
+.sesion-registro {
+    margin: 18px 0 0;
+    color: var(--texto-secundario);
+    text-align: center;
+    font: 400 13px/1.4 var(--fuente-rubik);
+}
+
+.sesion-registro-enlace {
+    font-weight: 700;
+    color: var(--texto-marca);
+    text-decoration: underline;
+}
+
+.sesion-registro-enlace:hover {
+    color: var(--marca-primario-hover);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET - MEDIDAS DEL PROYECTO: <= 900px)
+   ========================================================================== */
+@media (max-width: 900px) {
+    .sesion-pagina {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .sesion-lateral {
+        min-height: auto;
+        padding: 24px 20px 20px;
+    }
+
+    .sesion-marca-lateral {
+        margin-bottom: 4px;
+    }
+
+    /* En mobile se muestran solo 2 cromos (Card 1 y Card 2, Card 3 oculta) */
+    .sesion-cromos {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 185px;
+        margin: 14px 0 10px;
+    }
+
+    .sesion-cromo {
+        width: 122px;
+    }
+
+    .sesion-cromo-1 {
+        z-index: 1;
+        transform: translateX(-35%) rotate(-10deg) translateY(6px);
+    }
+
+    .sesion-cromo-2 {
+        z-index: 2;
+        transform: translateX(18%) rotate(2deg) translateY(-2px);
+    }
+
+    .sesion-cromo-3 {
+        display: none !important;
+    }
+
+    .sesion-cromo .tarjeta-cromo-numero {
+        font-size: 10px;
+        min-width: 24px;
+        padding: 1px 5px;
+        border-radius: 999px;
+        line-height: 15px;
+    }
+
+    .sesion-cromo .tarjeta-cromo-sello {
+        width: 18px;
+        height: 18px;
+    }
+
+    .sesion-cromo .tarjeta-cromo-info {
+        padding: 4px 5px 5px;
+        min-height: 32px;
+    }
+
+    .sesion-cromo .tarjeta-cromo-info h3 {
+        font-size: 11px;
+        line-height: 1.2;
+    }
+
+    .sesion-cromo .tarjeta-cromo-info p {
+        font-size: 9px;
+        line-height: 1.2;
+    }
+
+    .sesion-promocion {
+        margin-top: 8px;
+    }
+
+    .sesion-etiqueta {
+        padding: 3px 10px;
+        font-size: 11px;
+    }
+
+    .sesion-promocion h2 {
+        margin: 8px 0 0;
+        font-size: 22px;
+        line-height: 1.15;
+        letter-spacing: -0.6px;
+    }
+
+    /* En mobile el párrafo de promoción no aparece */
+    .sesion-promocion p {
+        display: none;
+    }
+
+    .sesion-contenido {
+        min-height: auto;
+        padding: 24px 20px 32px;
+    }
+
+    .sesion-formulario-contenedor {
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+    }
+
+    .sesion-marca-formulario {
+        display: none;
+    }
+
+    .sesion-formulario-contenedor h1 {
+        font-size: 24px;
+        line-height: 1.15;
+        letter-spacing: -0.6px;
+        max-width: none;
+        margin: 0 0 6px;
+    }
+
+    .sesion-descripcion {
+        font-size: 13px;
+        margin: 0 0 16px;
+    }
+
+    .sesion-campo-grupo {
+        margin-bottom: 12px;
+    }
+
+    .sesion-campo-grupo > label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .sesion-campo-grupo input:not([type="checkbox"]) {
+        height: 44px;
+        min-height: 44px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+    /* En mobile las opciones van en columna: Checkbox arriba, Olvidaste contraseña abajo */
+    .sesion-opciones {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 6px 0 18px;
+        font-size: 13px;
+    }
+
+    .sesion-recordar {
+        font-size: 13px;
+    }
+
+    .sesion-olvido-enlace {
+        font-size: 13px;
+    }
+
+    .sesion-enviar {
+        height: 46px;
+        min-height: 46px;
+        font-size: 15px;
+    }
+
+    .sesion-registro {
+        margin-top: 16px;
+        font-size: 13px;
+    }
+}
+
+/* Ajustes finos para pantallas muy pequeñas (<= 380px, medida estándar del proyecto) */
+@media (max-width: 380px) {
+    .sesion-lateral {
+        padding: 20px 16px 16px;
+    }
+
+    .sesion-cromos {
+        height: 165px;
+    }
+
+    .sesion-cromo {
+        width: 108px;
+    }
+
+    .sesion-promocion h2 {
+        font-size: 20px;
+    }
+
+    .sesion-contenido {
+        padding: 20px 16px 28px;
+    }
+
+    .sesion-formulario-contenedor h1 {
+        font-size: 22px;
+    }
+
+    .sesion-campo-grupo input:not([type="checkbox"]) {
+        height: 42px;
+        min-height: 42px;
+    }
+}

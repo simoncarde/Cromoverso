@@ -14,9 +14,18 @@ import useAccesibilidad from "./hooks/useAccesibilidad.js";
 
 const DetalleMundo = lazy(() => import("./components/Mundos/DetalleMundo/DetalleMundo.jsx"));
 const PanelAccesibilidad = lazy(() => import("./components/PanelAccesibilidad/PanelAccesibilidad.jsx"));
+const IniciarSesion = lazy(() => import("./components/Sesion/IniciarSesion.jsx"));
 
 function Aplicacion() {
     const [idioma, setIdioma] = useState("es");
+    const [sesion, setSesion] = useState(() => {
+        try {
+            const serializada = window.localStorage.getItem("cromoverso-sesion") || window.sessionStorage.getItem("cromoverso-sesion");
+            return serializada ? JSON.parse(serializada) : null;
+        } catch {
+            return null;
+        }
+    });
     const [panelAbierto, setPanelAbierto] = useState(false);
     const [posicionPanel, setPosicionPanel] = useState({ top: 100, left: 12 });
     const elementoDisparador = useRef(null);
@@ -35,6 +44,12 @@ function Aplicacion() {
 
     function cambiarIdioma(nuevoIdioma) {
         setIdioma(nuevoIdioma);
+    }
+
+    function cerrarSesion() {
+        window.localStorage.removeItem("cromoverso-sesion");
+        window.sessionStorage.removeItem("cromoverso-sesion");
+        setSesion(null);
     }
 
     function abrirPanelAccesibilidad(evento) {
@@ -66,17 +81,20 @@ function Aplicacion() {
     }
 
     const activo = location.pathname === "/" ? "inicio" : "mundos";
+    const rutaSesion = location.pathname === "/ingresar";
 
-    const claseSitio = location.pathname.startsWith("/mundos/")
-        ? "sitio sitio-vista-mundo"
-        : "sitio";
+    const claseSitio = rutaSesion
+        ? "sitio sitio-sesion"
+        : location.pathname.startsWith("/mundos/")
+            ? "sitio sitio-vista-mundo"
+            : "sitio";
 
     return (
         <div className={claseSitio}>
             <a className="salto-contenido" href="#contenido-principal">
                 {idioma === "es" ? "Saltar al contenido principal" : "Skip to main content"}
             </a>
-            <Navbar
+            {!rutaSesion && <Navbar
                 textos={textos}
                 cargando={cargando}
                 error={error}
@@ -85,7 +103,9 @@ function Aplicacion() {
                 activo={activo}
                 abrirPanelAccesibilidad={abrirPanelAccesibilidad}
                 mundos={mundos}
-            />
+                usuario={sesion?.usuario}
+                cerrarSesion={cerrarSesion}
+            />}
 
             <Routes>
                 <Route
@@ -113,6 +133,14 @@ function Aplicacion() {
                 />
                 <Route path="/mundos" element={<Navigate to="/mundos/neon" replace />} />
                 <Route
+                    path="/ingresar"
+                    element={
+                        <Suspense fallback={<main className="estado-pagina" id="contenido-principal" role="status" aria-live="polite">{textos?.estados?.cargando}</main>}>
+                            <IniciarSesion textos={textos} mundos={mundos} onAutenticado={setSesion} />
+                        </Suspense>
+                    }
+                />
+                <Route
                     path="/mundos/:id"
                     element={
                         <Suspense fallback={<main className="estado-pagina" id="contenido-principal" role="status" aria-live="polite">{textos?.estados?.cargando || (idioma === "es" ? "Cargando…" : "Loading…")}</main>}>
@@ -129,7 +157,7 @@ function Aplicacion() {
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
 
-            <Footer textos={textos} idioma={idioma} />
+            {!rutaSesion && <Footer textos={textos} idioma={idioma} />}
 
             {panelAbierto && (
                 <Suspense fallback={null}>
