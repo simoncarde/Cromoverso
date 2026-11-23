@@ -132,6 +132,15 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                     </article>
                 </div>
                 <div className="modal-cromo-informacion">
+                    <p className="modal-cromo-identificacion">
+                        {cromo.id || `CV-${numero}`}
+                    </p>
+                    <h2 id="modal-cromo-titulo">
+                        {cromo.nombre}
+                    </h2>
+                    <p className="modal-cromo-subtitulo">
+                        {nombreMundo} &middot; {nombresTipo[cromo.tipo] || cromo.tipo}
+                    </p>
                     <div className="modal-cromo-etiquetas">
                         <span className={`modal-cromo-rareza rareza-${cromo.rareza}`}>
                             <IconoUI nombre={iconoRareza} size={13} />
@@ -144,13 +153,6 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                             {nombresTipo[cromo.tipo] || cromo.tipo}
                         </span>
                     </div>
-                    <p className="modal-cromo-identificacion">
-                        {cromo.id} · {nombreMundo},{" "}
-                        {detalleTextos.posicion || (es ? "posición" : "position")} {cromo.posicion ?? cromo.numero}
-                    </p>
-                    <h2 id="modal-cromo-titulo">
-                        {cromo.nombre}
-                    </h2>
                     <div className="modal-cromo-poder">
                         <span className="modal-cromo-poder-icono">
                             <img src={logoMundo} alt="" aria-hidden="true" />
@@ -159,18 +161,17 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                             <span>
                                 {detalleTextos.poder || (es ? "PODER" : "POWER")}
                             </span>
-                            <strong>{cromo.poder}</strong>
+                            <p className="modal-cromo-descripcion">
+                                {cromo.descripcion || cromo.poder}
+                            </p>
                         </div>
                     </div>
-                    <p className="modal-cromo-descripcion">
-                        {cromo.descripcion}
-                    </p>
                     <section className="modal-cromo-atributos">
                         <div className="modal-cromo-atributos-cabecera">
                             <h3>
                                 {detalleTextos.atributos || (es ? "Atributos" : "Attributes")}
                             </h3>
-                            <strong>
+                            <strong className="modal-cromo-total">
                                 {(detalleTextos.total || "Total")} {total}
                             </strong>
                         </div>
