@@ -297,7 +297,9 @@
 .modal-cromo-etiquetas { display: flex; flex-wrap: wrap; gap: 8px; padding-right: 42px; }.modal-cromo-etiquetas > span { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 999px; background: var(--fondo-sutil); font-weight: 700; }
 .modal-cromo-identificacion { margin: 20px 0 4px; color: var(--texto-secundario); font-size: 13px; font-weight: 600; }.modal-cromo-informacion > h2 { margin: 0 50px 16px 0; font: 700 clamp(27px, 4vw, 42px)/1.12 var(--fuente-unbounded); }
 .modal-cromo-poder { display: flex; align-items: center; gap: 12px; padding: 13px; border: 2px solid var(--borde-fuerte); border-radius: 14px; background: color-mix(in srgb, var(--marca-primario) 13%, var(--fondo-superficie)); }.modal-cromo-poder-icono { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; color: white; background: var(--marca-primario); font-size: 22px; }.modal-cromo-poder div { display: grid; gap: 3px; }.modal-cromo-poder div span { color: var(--marca-primario); font-size: 12px; font-weight: 800; letter-spacing: .08em; }
-.modal-cromo-descripcion { margin: 16px 0; color: var(--texto-secundario); line-height: 1.55; }.modal-cromo-atributos { padding: 15px 17px; border-radius: 15px; background: var(--fondo-sutil); }.modal-cromo-atributos-cabecera { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }.modal-cromo-atributos-cabecera h3 { margin: 0; font-size: 16px; }.modal-cromo-atributos-cabecera strong { white-space: nowrap; }.modal-cromo-atributo { display: grid; grid-template-columns: minmax(70px, 100px) minmax(40px, 1fr) 28px; align-items: center; gap: 10px; margin-top: 9px; font-size: 14px; font-weight: 650; }.modal-cromo-atributo > strong { text-align: right; }.modal-cromo-barra { height: 10px; overflow: hidden; border: 1.5px solid var(--borde-fuerte); border-radius: 99px; background: var(--fondo-superficie); }.modal-cromo-barra-progreso { height: 100%; border-radius: inherit; background: var(--marca-primario); }
+.modal-cromo-descripcion { margin: 16px 0; color: var(--texto-secundario); line-height: 1.55; }
+.modal-cromo-poder .modal-cromo-descripcion { margin: 0; color: var(--texto-principal); }
+.modal-cromo-subtitulo { display: none; }.modal-cromo-atributos { padding: 15px 17px; border-radius: 15px; background: var(--fondo-sutil); }.modal-cromo-atributos-cabecera { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }.modal-cromo-atributos-cabecera h3 { margin: 0; font-size: 16px; }.modal-cromo-atributos-cabecera strong { white-space: nowrap; }.modal-cromo-atributo { display: grid; grid-template-columns: minmax(70px, 100px) minmax(40px, 1fr) 28px; align-items: center; gap: 10px; margin-top: 9px; font-size: 14px; font-weight: 650; }.modal-cromo-atributo > strong { text-align: right; }.modal-cromo-barra { height: 10px; overflow: hidden; border: 1.5px solid var(--borde-fuerte); border-radius: 99px; background: var(--fondo-superficie); }.modal-cromo-barra-progreso { height: 100%; border-radius: inherit; background: var(--marca-primario); }
 .tarjeta-cromo-numero {
     position: absolute;
     z-index: 3;
@@ -423,16 +425,16 @@
 
 @media (max-width: 650px) {
     .detalle-mundo-hero {
-        min-height: 60px;
-        align-items: center;
-        padding: 0 16px;
+        min-height: 162px;
+        align-items: flex-end;
+        padding: max(52px, env(safe-area-inset-top)) 16px 16px;
     }
 
     .detalle-mundo-hero-interior {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        min-height: 58px;
+        justify-content: flex-end;
+        min-height: 0;
     }
 
     .detalle-mundo-migas,
@@ -445,15 +447,15 @@
         align-items: center;
         width: 100%;
         min-width: 0;
-        gap: 12px;
+        gap: 14px;
     }
 
     .detalle-mundo-hero-boton {
         display: inline-grid;
-        flex: 0 0 36px;
+        flex: 0 0 48px;
         place-items: center;
-        width: 36px;
-        height: 36px;
+        width: 48px;
+        height: 48px;
         padding: 0;
         border: 2px solid var(--borde-fuerte);
         border-radius: 50%;
@@ -468,7 +470,6 @@
     }
 
     .detalle-mundo-mobile-titulos {
-        order: -1;
         flex: 1 1 auto;
         min-width: 0;
     }
@@ -481,7 +482,15 @@
         overflow-wrap: normal;
     }
 
-    .detalle-mundo-mobile-titulos p { display: none; }
+    .detalle-mundo-mobile-titulos p {
+        display: block;
+        overflow: hidden;
+        margin: 4px 0 0;
+        color: rgb(255 255 255 / 78%);
+        font: 400 calc(14px * var(--escala-texto, 1))/calc(20px * var(--escala-texto, 1)) var(--fuente-rubik);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
     .detalle-mundo-busqueda-movil {
         display: flex;
@@ -624,8 +633,8 @@
         left: 5px;
         min-width: 27px;
         padding: 1px 4px;
-        font-size: calc(16px * var(--escala-texto, 1));
-        line-height: calc(20px * var(--escala-texto, 1));
+        font-size: calc(9px * var(--escala-texto, 1));
+        line-height: calc(11px * var(--escala-texto, 1));
     }
 
     .tarjeta-cromo-sello {
@@ -641,7 +650,7 @@
     }
 
     .tarjeta-cromo-info h3 {
-        font: 600 calc(16px * var(--escala-texto, 1))/calc(20px * var(--escala-texto, 1)) var(--fuente-unbounded);
+        font: 600 calc(10px * var(--escala-texto, 1))/calc(13px * var(--escala-texto, 1)) var(--fuente-unbounded);
     }
 
     .tarjeta-cromo-info p {
@@ -664,14 +673,14 @@
     }
 
     .detalle-mundo-hero-boton {
-        flex-basis: 36px;
-        width: 36px;
-        height: 36px;
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
     }
 
     .detalle-mundo-mobile-titulos p {
-        font-size: calc(16px * var(--escala-texto, 1));
-        line-height: calc(24px * var(--escala-texto, 1));
+        font-size: calc(14px * var(--escala-texto, 1));
+        line-height: calc(20px * var(--escala-texto, 1));
     }
 
     .detalle-mundo-contenido {
@@ -682,10 +691,6 @@
         gap: 9px;
     }
 
-    .tarjeta-cromo-info h3 {
-        font-size: calc(16px * var(--escala-texto, 1));
-        line-height: calc(20px * var(--escala-texto, 1));
-    }
 }
 
 .modal-cromo-manija {
@@ -729,46 +734,54 @@
 .modal-cromo-barra-progreso { background: var(--color-mundo); }
 .modal-cromo-atributo > span:first-child { text-transform: capitalize; }
 
-/* MODAL MOBILE - BOTTOM SHEET (<= 900px, MEDIDAS DEL PROYECTO) */
+/* MODAL MOBILE - BOTTOM SHEET (breakpoint existente del proyecto: 900px) */
 @media (max-width: 900px) {
     .modal-cromo-overlay {
         align-items: flex-end;
-        padding: 0;
+        padding: 0 0 9dvh;
     }
+
     .modal-cromo {
         display: block;
         width: 100%;
         height: auto;
-        max-height: 92dvh;
-        padding: 12px 20px 24px;
-        border-radius: 24px 24px 0 0;
+        max-height: 84dvh;
+        padding: 10px 22px 24px;
+        border: 0;
+        border-radius: 26px 26px 0 0;
         overflow-y: auto;
         box-shadow: 0 -8px 24px rgba(26, 16, 51, 0.2);
     }
+
     .modal-cromo-manija {
         display: block;
-        width: 38px;
-        height: 4px;
+        width: 44px;
+        height: 5px;
         border-radius: 999px;
         background: #e8ddc9;
-        margin: 0 auto 12px;
+        margin: 0 auto 78px;
     }
+
     .modal-cromo-cerrar {
-        top: 14px;
-        right: 14px;
-        width: 38px;
-        height: 38px;
+        top: 28px;
+        border-color: var(--color-mundo);
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        font-size: 25px;
     }
+
     .modal-cromo-arte {
         float: left;
-        width: 140px;
+        width: min(49%, 172px);
         height: auto;
         min-height: 0;
         padding: 0;
         background: transparent !important;
         border: 0;
-        margin: 0 16px 12px 0;
+        margin: 0 12px 12px 0;
     }
+
     .modal-cromo-tarjeta {
         width: 100%;
         padding: 4px;
@@ -776,66 +789,95 @@
         border-radius: 14px;
         box-shadow: 3px 3px 0 var(--borde-fuerte);
     }
+
+    .modal-cromo-imagen { border-radius: 8px; }
+    .modal-cromo-numero, .modal-cromo-sello { top: 5px; height: 23px; }
+    .modal-cromo-numero { left: 5px; }
+    .modal-cromo-sello { right: 5px; }
+    .modal-cromo-tarjeta-info { padding: 5px 2px 2px; }
+    .modal-cromo-tarjeta-info h3 { font-size: 13px; line-height: 1.25; }
+    .modal-cromo-tarjeta-info p { margin-top: 2px; font-size: 11px; line-height: 1.25; }
+
     .modal-cromo-informacion {
+        min-height: 238px;
         padding: 0;
     }
+
     .modal-cromo-identificacion {
-        margin: 6px 0 2px;
+        margin: 0 38px 8px 0;
+        color: var(--texto-secundario);
         font-size: 13px;
         font-weight: 700;
-        color: var(--texto-principal);
+        line-height: 1.2;
     }
+
     .modal-cromo-informacion > h2 {
-        margin: 0 0 4px;
-        font-size: 20px;
-        line-height: 1.15;
-        letter-spacing: -0.5px;
+        margin: 0 0 8px;
+        font-size: clamp(17px, 5vw, 21px);
+        line-height: 1.2;
+        letter-spacing: -0.4px;
+        overflow-wrap: anywhere;
     }
+
+    .modal-cromo-subtitulo {
+        display: block;
+        margin: 0 0 10px;
+        color: var(--texto-secundario);
+        font-size: 13px;
+        line-height: 1.35;
+    }
+
     .modal-cromo-etiquetas {
-        margin-bottom: 8px;
+        margin: 0;
+        padding: 0;
         gap: 6px;
     }
-    .modal-cromo-descripcion {
-        clear: both;
-        margin: 12px 0;
-        font-size: 14px;
-        line-height: 1.45;
-    }
+
+    .modal-cromo-etiquetas > span { padding: 4px 9px; font-size: 12px; }
+    .modal-cromo-etiquetas .modal-cromo-mundo,
+    .modal-cromo-etiquetas .modal-cromo-tipo { display: none; }
+
     .modal-cromo-poder {
         clear: both;
         min-height: 0;
-        padding: 10px 14px;
-        margin-bottom: 14px;
-        border-radius: 14px;
+        align-items: flex-start;
+        padding: 12px 14px;
+        margin: 0 0 16px;
+        border-radius: 15px;
+        border-color: var(--borde-fuerte);
+        background: color-mix(in srgb, var(--color-mundo) 12%, white);
     }
+
     .modal-cromo-poder-icono {
-        width: 32px;
-        height: 32px;
-        flex: 0 0 32px;
+        width: 28px;
+        height: 28px;
+        flex: 0 0 28px;
+        margin-top: 1px;
     }
-    .modal-cromo-poder-icono img {
-        width: 32px;
-        height: 32px;
-    }
-    .modal-cromo-poder div span {
-        font-size: 11px;
-    }
-    .modal-cromo-poder strong {
-        font-size: 14px;
-    }
+
+    .modal-cromo-poder-icono img { width: 28px; height: 28px; }
+    .modal-cromo-poder div { min-width: 0; gap: 6px; }
+    .modal-cromo-poder div span { color: var(--color-mundo); font-size: 11px; }
+    .modal-cromo-descripcion { margin: 0; color: var(--texto-principal); font-size: 14px; font-weight: 650; line-height: 1.4; }
+
     .modal-cromo-atributos {
-        padding: 14px 16px;
-        border-radius: 14px;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
     }
-    .modal-cromo-atributos-cabecera h3 {
-        font-size: 15px;
-    }
+
+    .modal-cromo-atributos-cabecera { margin-bottom: 11px; }
+    .modal-cromo-atributos-cabecera h3 { font-size: 15px; }
+    .modal-cromo-total { display: none; }
+
     .modal-cromo-atributo {
-        grid-template-columns: 85px minmax(40px, 1fr) 26px;
+        grid-template-columns: 82px minmax(35px, 1fr) 28px;
         gap: 8px;
-        margin-top: 8px;
+        margin-top: 9px;
         font-size: 13px;
     }
+
+    .modal-cromo-barra { height: 12px; }
     .modal-cromo-escala {
         display: block;
         margin: 10px 0 0;
