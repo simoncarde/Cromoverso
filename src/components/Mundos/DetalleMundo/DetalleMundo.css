@@ -752,6 +752,24 @@
     background: var(--color-mundo);
 }
 
+.modal-cromo-arte .tarjeta-cromo {
+    width: 236px;
+    padding: 5px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: 18px;
+    background: var(--fondo-superficie);
+    box-shadow: 6px 6px 0px var(--borde-fuerte);
+}
+
+.modal-cromo-arte .tarjeta-cromo-boton {
+    cursor: default;
+}
+
+.modal-cromo-arte .tarjeta-cromo:hover {
+    transform: none;
+    box-shadow: 6px 6px 0px var(--borde-fuerte);
+}
+
 .modal-cromo-tarjeta {
     width: 236px;
     padding: 5px;
@@ -1123,9 +1141,47 @@
         border: 0;
         border-radius: 0;
         height: auto;
+        width: 100%;
     }
 
-    .modal-cromo-tarjeta {
+    .modal-cromo-arte .tarjeta-cromo,
+    .modal-cromo-arte .tarjeta-cromo:hover {
+        width: 100%;
+        padding: 4px;
+        border: var(--borde-grosor) solid var(--borde-fuerte);
+        border-radius: 14px;
+        box-shadow: 3px 3px 0 var(--borde-fuerte);
+    }
+
+    .modal-cromo-arte .tarjeta-cromo-info h3 {
+        font-size: calc(12px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-arte .tarjeta-cromo-info p {
+        display: block;
+        margin-top: 1px;
+        font-size: calc(10px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-arte .tarjeta-cromo {
+    width: 236px;
+    padding: 5px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: 18px;
+    background: var(--fondo-superficie);
+    box-shadow: 6px 6px 0px var(--borde-fuerte);
+}
+
+.modal-cromo-arte .tarjeta-cromo-boton {
+    cursor: default;
+}
+
+.modal-cromo-arte .tarjeta-cromo:hover {
+    transform: none;
+    box-shadow: 6px 6px 0px var(--borde-fuerte);
+}
+
+.modal-cromo-tarjeta {
         width: 100%;
         padding: 4px;
         border: var(--borde-grosor) solid var(--borde-fuerte);

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Hero from "./components/Hero/Hero.jsx";
@@ -17,6 +17,11 @@ const DetalleMundo = lazy(() => import("./components/Mundos/DetalleMundo/Detalle
 const PanelAccesibilidad = lazy(() => import("./components/PanelAccesibilidad/PanelAccesibilidad.jsx"));
 const IniciarSesion = lazy(() => import("./components/Sesion/IniciarSesion.jsx"));
 const DetalleCromo = lazy(() => import("./components/Cromos/DetalleCromo.jsx"));
+
+function RedirigirCromo() {
+    const { id } = useParams();
+    return <Navigate to={`/cromos/${encodeURIComponent(id)}`} replace />;
+}
 
 function Aplicacion() {
     const [idioma, setIdioma] = useState("es");
@@ -184,6 +189,7 @@ function Aplicacion() {
                         </Suspense>
                     }
                 />
+                <Route path="/cromo/:id" element={<RedirigirCromo />} />
                 <Route
                     path="/cromos/:id"
                     element={
