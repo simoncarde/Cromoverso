@@ -1,12 +1,6 @@
 import { IconoUI } from "../../Iconos.jsx";
 import { formatearTexto } from "../../../utils/textos.js";
-
-const ICONOS = {
-    legendaria: "corona",
-    epica: "estrella",
-    rara: "rombo",
-    comun: "circulo"
-};
+import EtiquetaRareza from "./EtiquetaRareza.jsx";
 
 function FiltroRareza({ valores, nombres, conteos, seleccionado, onChange, textos, idioma = "es" }) {
     const albumMundo = textos?.paginas?.albumMundo;
@@ -31,7 +25,11 @@ function FiltroRareza({ valores, nombres, conteos, seleccionado, onChange, texto
                             aria-pressed={seleccionado === valor}
                             onClick={() => onChange(seleccionado === valor ? "" : valor)}
                         >
-                            <span className="filtro-chip-nombre"><IconoUI nombre={ICONOS[valor]} size={13} /> {nombres[valor]}</span>
+                            <EtiquetaRareza
+                                rareza={valor}
+                                nombre={nombres[valor]}
+                                className="filtro-chip-nombre"
+                            />
                             <small>{cantidadTexto}</small>
                         </button>
                     );
