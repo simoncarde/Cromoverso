@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { API_ENDPOINTS } from "../services/api.js";
 
 let cacheMundos = null;
@@ -10,6 +10,15 @@ function useMundos() {
     const [totalAlbum, setTotalAlbum] = useState(cacheTotalAlbum);
     const [cargandoMundos, setCargandoMundos] = useState(!cacheMundos);
     const [errorMundos, setErrorMundos] = useState(false);
+    const [intento, setIntento] = useState(0);
+
+    const recargarMundos = useCallback(() => {
+        cacheMundos = null;
+        promesaMundos = null;
+        setErrorMundos(false);
+        setCargandoMundos(true);
+        setIntento((prev) => prev + 1);
+    }, []);
 
     useEffect(() => {
         if (cacheMundos) {
@@ -67,13 +76,14 @@ function useMundos() {
         return () => {
             cancelado = true;
         };
-    }, []);
+    }, [intento]);
 
     return {
         mundos,
         totalAlbum,
         cargandoMundos,
-        errorMundos
+        errorMundos,
+        recargarMundos
     };
 }
 

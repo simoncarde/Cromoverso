@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IconoUI } from "../Iconos.jsx";
 import TarjetaCromo from "../Mundos/DetalleMundo/TarjetaCromo.jsx";
@@ -60,7 +60,18 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
     const [exito, setExito] = useState(false);
     const [validacion, setValidacion] = useState(false);
     const [errorConexion, setErrorConexion] = useState(false);
+    const [segundosBloqueo, setSegundosBloqueo] = useState(0);
+    const correoRef = useRef(null);
+    const claveRef = useRef(null);
     const { cromos } = useCromos();
+
+    useEffect(() => {
+        if (segundosBloqueo <= 0) return;
+        const temporizador = window.setInterval(() => {
+            setSegundosBloqueo((prev) => (prev <= 1 ? 0 : prev - 1));
+        }, 1000);
+        return () => window.clearInterval(temporizador);
+    }, [segundosBloqueo]);
 
     const pagina = textos?.paginas?.ingresar || textos?.paginas?.iniciarSesion || textos?.paginas?.login;
     const listaMundos = Array.isArray(mundos) && mundos.length > 0 ? mundos : MUNDOS_DEFECTO;
@@ -79,12 +90,18 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
 
     async function enviar(evento) {
         evento.preventDefault();
+        if (segundosBloqueo > 0) return;
         const faltanCampos = !correo.trim() || !clave;
         setValidacion(faltanCampos);
         if (faltanCampos) {
             setExito(false);
             setMensaje("");
             setMensajeTitulo("");
+            if (!correo.trim()) {
+                correoRef.current?.focus();
+            } else if (!clave) {
+                claveRef.current?.focus();
+            }
             return;
         }
         setCargando(true);
@@ -95,22 +112,21 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
         try {
             const respuesta = await crearSesion(correo, clave);
             const sesion = respuesta?.datos ?? respuesta;
-            if (sesion.token) {
-                window.localStorage.removeItem("cromoverso-sesion");
-                window.sessionStorage.removeItem("cromoverso-sesion");
-                const almacenamiento = recordar ? window.localStorage : window.sessionStorage;
-                almacenamiento.setItem("cromoverso-sesion", JSON.stringify({ token: sesion.token, usuario: sesion.usuario }));
-                onAutenticado?.(sesion);
-            }
+            onAutenticado?.(sesion);
             setExito(true);
             setMensaje(primerTexto(pagina?.formulario?.mensajes?.exito, "Inicio de sesión exitoso"));
-            if (sesion.token) navigate("/");
+            navigate("/");
         } catch (error) {
             const esErrorConexion = error.status == null;
             setErrorConexion(esErrorConexion);
             const camposError = error.datos?.campos;
             const detalleCampo = camposError && Object.values(camposError).flat().find((valor) => typeof valor === "string");
-            
+
+            if (error.status === 429) {
+                const retrySeconds = Math.max(1, Number.parseInt(error.retryAfter, 10) || 10);
+                setSegundosBloqueo(retrySeconds);
+            }
+
             setMensajeTitulo(
                 error.status === 401
                     ? (erroresTexto.credenciales?.titulo || "Correo o contraseña incorrectos")
@@ -121,8 +137,11 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
                             : ""
             );
 
+            const retryDisplay = error.status === 429
+                ? (Number.parseInt(error.retryAfter, 10) || 10)
+                : "";
             const respuesta429 = error.status === 429
-                ? formatearTexto(erroresTexto.demasiadosIntentos?.texto || "Espera {segundos} segundos antes de volver a intentar.", { segundos: error.retryAfter || "" })
+                ? formatearTexto(erroresTexto.demasiadosIntentos?.texto || "Espera {segundos} segundos antes de volver a intentar.", { segundos: retryDisplay })
                 : "";
 
             setMensaje(primerTexto(
@@ -226,6 +245,7 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
                         <div className="sesion-campo-grupo">
                             <label htmlFor="sesion-correo">{correoLabel}</label>
                             <input
+                                ref={correoRef}
                                 className={validacion && !correo.trim() ? "campo-invalido" : ""}
                                 id="sesion-correo"
                                 name="correo"
@@ -252,6 +272,7 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
                             <label htmlFor="sesion-clave">{claveLabel}</label>
                             <div className="sesion-clave-wrap">
                                 <input
+                                    ref={claveRef}
                                     className={validacion && !clave ? "campo-invalido" : ""}
                                     id="sesion-clave"
                                     name="clave"
@@ -270,6 +291,7 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
                                     type="button"
                                     className="sesion-clave-toggle"
                                     onClick={() => setMostrarClave((valor) => !valor)}
+                                    aria-pressed={mostrarClave}
                                     aria-label={mostrarClave ? (formulario.botones?.ocultarClave || "Ocultar contraseña") : (formulario.botones?.mostrarClave || "Mostrar contraseña")}
                                 >
                                     <IconoUI nombre={mostrarClave ? "ojoTachado" : "ojo"} size={20} />
@@ -301,12 +323,14 @@ function IniciarSesion({ textos, mundos = [], onAutenticado }) {
                             </Link>
                         </div>
 
-                        <button className="sesion-enviar" type="submit" disabled={cargando}>
+                        <button className="sesion-enviar" type="submit" disabled={cargando || segundosBloqueo > 0}>
                             {cargando ? (
                                 <>
                                     <IconoUI nombre="spinner" size={18} className="sesion-spinner-anim" />
                                     <span>{formulario.mensajes?.ingresando || "Ingresando..."}</span>
                                 </>
+                            ) : segundosBloqueo > 0 ? (
+                                formatearTexto(erroresTexto.demasiadosIntentos?.espera || (textos?.idioma === "en" ? "Wait {segundos}s" : "Espera {segundos}s"), { segundos: segundosBloqueo })
                             ) : errorConexion ? (
                                 erroresTexto.conexion?.botones?.reintentar || "Reintentar"
                             ) : (
