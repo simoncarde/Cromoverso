@@ -694,7 +694,7 @@
 .modal-cromo {
     position: relative;
     display: grid;
-    grid-template-columns: 316px minmax(0, 1fr);
+    grid-template-columns: minmax(316px, auto) minmax(0, 1fr);
     grid-template-areas: "arte info";
     gap: 32px;
     width: min(100%, 1000px);
@@ -744,21 +744,40 @@
     grid-area: arte;
     display: grid;
     place-items: center;
-    width: 316px;
-    height: 420px;
+    min-width: 316px;
+    min-height: 420px;
     padding: 20px;
     border: var(--borde-grosor) solid var(--borde-fuerte);
     border-radius: 20px;
     background: var(--color-mundo);
 }
 
-.modal-cromo-arte .tarjeta-cromo {
+:where(.modal-cromo-arte) .tarjeta-cromo {
     width: 236px;
     padding: 5px;
     border: var(--borde-grosor) solid var(--borde-fuerte);
     border-radius: 18px;
     background: var(--fondo-superficie);
     box-shadow: 6px 6px 0px var(--borde-fuerte);
+}
+
+.tarjeta-cromo.tamano-grande {
+    width: 272px;
+    padding: 7px;
+    border-radius: 20px;
+}
+
+.tarjeta-cromo.tamano-grande .tarjeta-cromo-info {
+    padding: 8px 4px 4px;
+}
+
+.tarjeta-cromo.tamano-grande .tarjeta-cromo-info h3 {
+    font-size: calc(19px * var(--escala-texto, 1));
+    line-height: 1.2;
+}
+
+.tarjeta-cromo.tamano-grande .tarjeta-cromo-info p {
+    font-size: calc(14px * var(--escala-texto, 1));
 }
 
 .modal-cromo-arte .tarjeta-cromo-boton {
@@ -1163,13 +1182,32 @@
         font-size: calc(10px * var(--escala-texto, 1));
     }
 
-    .modal-cromo-arte .tarjeta-cromo {
+    :where(.modal-cromo-arte) .tarjeta-cromo {
     width: 236px;
     padding: 5px;
     border: var(--borde-grosor) solid var(--borde-fuerte);
     border-radius: 18px;
     background: var(--fondo-superficie);
     box-shadow: 6px 6px 0px var(--borde-fuerte);
+}
+
+.tarjeta-cromo.tamano-grande {
+    width: 272px;
+    padding: 7px;
+    border-radius: 20px;
+}
+
+.tarjeta-cromo.tamano-grande .tarjeta-cromo-info {
+    padding: 8px 4px 4px;
+}
+
+.tarjeta-cromo.tamano-grande .tarjeta-cromo-info h3 {
+    font-size: calc(19px * var(--escala-texto, 1));
+    line-height: 1.2;
+}
+
+.tarjeta-cromo.tamano-grande .tarjeta-cromo-info p {
+    font-size: calc(14px * var(--escala-texto, 1));
 }
 
 .modal-cromo-arte .tarjeta-cromo-boton {
