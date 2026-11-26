@@ -17,7 +17,7 @@ const PLANTILLAS_POR_MUNDO = {
     niebla: "CV-101.svg"
 };
 
-function TarjetaCromo({ cromo, mundo, textos, idioma = "es", tamano = "normal", onSeleccionar }) {
+function TarjetaCromo({ cromo, mundo, textos, idioma = "es", onSeleccionar }) {
     const numero = String(cromo.numero).padStart(3, "0");
     const archivo = `CV-${numero}.svg`;
     const original = `/assets/cromos/${archivo}?v=2`;
@@ -69,7 +69,7 @@ function TarjetaCromo({ cromo, mundo, textos, idioma = "es", tamano = "normal", 
     const iconoRareza = ICONOS_RAREZA[cromo.rareza] || "circulo";
 
     return (
-        <article className={`tarjeta-cromo rareza-borde-${cromo.rareza || "comun"}${tamano === "grande" ? " tamano-grande" : ""}`}>
+        <article className={`tarjeta-cromo rareza-borde-${cromo.rareza || "comun"}`}>
             <button
                 type="button"
                 className="tarjeta-cromo-boton"

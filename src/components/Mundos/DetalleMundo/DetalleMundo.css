@@ -761,25 +761,6 @@
     box-shadow: 6px 6px 0px var(--borde-fuerte);
 }
 
-.tarjeta-cromo.tamano-grande {
-    width: 272px;
-    padding: 7px;
-    border-radius: 20px;
-}
-
-.tarjeta-cromo.tamano-grande .tarjeta-cromo-info {
-    padding: 8px 4px 4px;
-}
-
-.tarjeta-cromo.tamano-grande .tarjeta-cromo-info h3 {
-    font-size: calc(19px * var(--escala-texto, 1));
-    line-height: 1.2;
-}
-
-.tarjeta-cromo.tamano-grande .tarjeta-cromo-info p {
-    font-size: calc(14px * var(--escala-texto, 1));
-}
-
 .modal-cromo-arte .tarjeta-cromo-boton {
     cursor: default;
 }
@@ -1189,25 +1170,6 @@
     border-radius: 18px;
     background: var(--fondo-superficie);
     box-shadow: 6px 6px 0px var(--borde-fuerte);
-}
-
-.tarjeta-cromo.tamano-grande {
-    width: 272px;
-    padding: 7px;
-    border-radius: 20px;
-}
-
-.tarjeta-cromo.tamano-grande .tarjeta-cromo-info {
-    padding: 8px 4px 4px;
-}
-
-.tarjeta-cromo.tamano-grande .tarjeta-cromo-info h3 {
-    font-size: calc(19px * var(--escala-texto, 1));
-    line-height: 1.2;
-}
-
-.tarjeta-cromo.tamano-grande .tarjeta-cromo-info p {
-    font-size: calc(14px * var(--escala-texto, 1));
 }
 
 .modal-cromo-arte .tarjeta-cromo-boton {
