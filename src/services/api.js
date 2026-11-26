@@ -10,6 +10,7 @@ export const API_ENDPOINTS = Object.freeze({
     textos: `${API_BASE_URL}/textos`,
     mundos: `${API_BASE_URL}/mundos`,
     cromos: `${API_BASE_URL}/cromos`,
+    rarezas: `${API_BASE_URL}/rarezas`,
     sesion: `${API_BASE_URL}/sesion`,
 });
 

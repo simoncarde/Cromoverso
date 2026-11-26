@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { IconoUI } from "../../Iconos.jsx";
 import TarjetaCromo from "./TarjetaCromo.jsx";
+import BarraAtributo from "./BarraAtributo.jsx";
+import EtiquetaRareza from "./EtiquetaRareza.jsx";
 
 const ICONOS_RAREZA = {
     comun: "circulo",
@@ -121,10 +123,11 @@ function ModalDetalleCromo({
                 <div className="modal-cromo-informacion">
                     <div className="modal-cromo-encabezado">
                         <div className="modal-cromo-etiquetas">
-                            <span className={`modal-cromo-etiqueta modal-cromo-rareza rareza-${cromo.rareza}`}>
-                                <IconoUI nombre={iconoRareza} size={13} />
-                                {nombresRareza[cromo.rareza] || cromo.rareza}
-                            </span>
+                            <EtiquetaRareza
+                                rareza={cromo.rareza}
+                                nombre={nombresRareza[cromo.rareza] || cromo.rareza}
+                                className={`modal-cromo-etiqueta modal-cromo-rareza rareza-${cromo.rareza}`}
+                            />
                             <span className="modal-cromo-etiqueta modal-cromo-mundo">
                                 {nombreMundo}
                             </span>
@@ -185,27 +188,12 @@ function ModalDetalleCromo({
                             </strong>
                         </div>
                         {atributos.map((atributo) => (
-                            <div
-                                className="modal-cromo-atributo"
+                            <BarraAtributo
                                 key={atributo.clave}
-                            >
-                                <span>
-                                    {atributo.nombre.charAt(0).toLocaleUpperCase(idioma)}
-                                    {atributo.nombre.slice(1)}
-                                </span>
-                                <div className="modal-cromo-barra">
-                                    <div
-                                        className="modal-cromo-barra-progreso"
-                                        style={{
-                                            width: `${Math.min(
-                                                Math.max(atributo.valor, 0),
-                                                100
-                                            )}%`
-                                        }}
-                                    />
-                                </div>
-                                <strong>{atributo.valor}</strong>
-                            </div>
+                                nombre={atributo.nombre}
+                                valor={atributo.valor}
+                                idioma={idioma}
+                            />
                         ))}
                     </section>
 
