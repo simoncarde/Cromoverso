@@ -199,6 +199,22 @@
 .detalle-cromo-estado h1, .detalle-cromo-estado p { max-width: 560px; margin: 0; }
 .detalle-cromo-estado p { color: var(--texto-secundario); line-height: 1.6; }
 .detalle-cromo-estado .detalle-cromo-volver { margin-top: 8px; }
+.detalle-cromo-reintentar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    margin-top: 8px;
+    padding: 0 24px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: var(--radio-pildora);
+    background: var(--marca-primario);
+    color: var(--texto-inverso);
+    font: 700 calc(14px * var(--escala-texto, 1))/1 var(--fuente-rubik);
+    cursor: pointer;
+    box-shadow: var(--sombra-pop-pequeña);
+}
+.detalle-cromo-reintentar:hover { background: var(--marca-primario-hover); }
 .detalle-cromo-kicker { color: var(--marca-primario); font-family: var(--fuente-unbounded); font-size: 18px; font-weight: 700; }
 
 @media (max-width: 760px) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { urlPaginaCromos } from "../services/api.js";
 
 let cacheColeccion = null;
@@ -8,6 +8,15 @@ export default function useColeccionCromos() {
     const [cromos, setCromos] = useState(cacheColeccion || []);
     const [cargando, setCargando] = useState(!cacheColeccion);
     const [error, setError] = useState(false);
+    const [intento, setIntento] = useState(0);
+
+    const recargar = useCallback(() => {
+        cacheColeccion = null;
+        promesaColeccion = null;
+        setError(false);
+        setCargando(true);
+        setIntento((prev) => prev + 1);
+    }, []);
 
     useEffect(() => {
         if (cacheColeccion) {
@@ -69,7 +78,7 @@ export default function useColeccionCromos() {
         return () => {
             cancelado = true;
         };
-    }, []);
+    }, [intento]);
 
-    return { cromos, cargando, error };
+    return { cromos, cargando, error, recargar };
 }

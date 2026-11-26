@@ -1,6 +1,6 @@
-﻿import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Hero from "./components/Hero/Hero.jsx";
@@ -11,6 +11,7 @@ import Cookies from "./components/Cookies/Cookies.jsx";
 import useTextos from "./hooks/useTextos.js";
 import useMundos from "./hooks/useMundos.js";
 import useAccesibilidad from "./hooks/useAccesibilidad.js";
+import { eliminarSesion, obtenerSesion } from "./services/sesion.js";
 
 const DetalleMundo = lazy(() => import("./components/Mundos/DetalleMundo/DetalleMundo.jsx"));
 const PanelAccesibilidad = lazy(() => import("./components/PanelAccesibilidad/PanelAccesibilidad.jsx"));
@@ -19,22 +20,45 @@ const DetalleCromo = lazy(() => import("./components/Cromos/DetalleCromo.jsx"));
 
 function Aplicacion() {
     const [idioma, setIdioma] = useState("es");
-    const [sesion, setSesion] = useState(() => {
-        try {
-            const serializada = window.localStorage.getItem("cromoverso-sesion") || window.sessionStorage.getItem("cromoverso-sesion");
-            return serializada ? JSON.parse(serializada) : null;
-        } catch {
-            return null;
-        }
-    });
+    const [sesion, setSesion] = useState(null);
+    const sesionRef = useRef(null);
     const [panelAbierto, setPanelAbierto] = useState(false);
     const [posicionPanel, setPosicionPanel] = useState({ top: 100, left: 12 });
     const elementoDisparador = useRef(null);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const { textos, cargando, error } = useTextos(idioma);
-    const { mundos, cargandoMundos, errorMundos } = useMundos();
+    const { mundos, cargandoMundos, errorMundos, recargarMundos } = useMundos();
     const { preferencias, cambiarPreferencia, restablecerPreferencias } = useAccesibilidad();
+
+    useEffect(() => {
+        sesionRef.current = sesion;
+    }, [sesion]);
+
+    useEffect(() => {
+        window.localStorage.removeItem("cromoverso-sesion");
+        window.sessionStorage.removeItem("cromoverso-sesion");
+
+        let cancelado = false;
+        obtenerSesion()
+            .then((datos) => {
+                if (!cancelado && datos?.usuario) {
+                    setSesion(datos);
+                }
+            })
+            .catch((err) => {
+                if (cancelado) return;
+                const sesionVencida = Boolean(sesionRef.current) && (err?.status === 401 || err?.codigo === "no_autenticado");
+                setSesion(null);
+                if (sesionVencida) {
+                    navigate("/ingresar");
+                }
+            });
+        return () => {
+            cancelado = true;
+        };
+    }, [location.pathname, navigate]);
 
     useEffect(() => {
         document.documentElement.lang = idioma;
@@ -47,10 +71,14 @@ function Aplicacion() {
         setIdioma(nuevoIdioma);
     }
 
-    function cerrarSesion() {
-        window.localStorage.removeItem("cromoverso-sesion");
-        window.sessionStorage.removeItem("cromoverso-sesion");
+    async function cerrarSesion() {
+        try {
+            await eliminarSesion();
+        } catch {
+            // Limpiar sesión en cliente y volver al inicio
+        }
         setSesion(null);
+        navigate("/");
     }
 
     function abrirPanelAccesibilidad(evento) {
@@ -149,6 +177,7 @@ function Aplicacion() {
                                 mundos={mundos}
                                 cargandoMundos={cargandoMundos}
                                 errorMundos={errorMundos}
+                                recargarMundos={recargarMundos}
                                 textos={textos}
                                 idioma={idioma}
                             />

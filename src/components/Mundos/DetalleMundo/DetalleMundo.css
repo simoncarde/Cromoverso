@@ -1338,3 +1338,23 @@
         font-size: calc(12px * var(--escala-texto, 1));
     }
 }
+
+.detalle-mundo-reintentar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    margin-top: var(--espacio-4);
+    padding: 0 var(--espacio-5);
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: var(--radio-pildora);
+    background: var(--marca-primario);
+    color: var(--texto-inverso);
+    font: 700 calc(15px * var(--escala-texto, 1))/1 var(--fuente-rubik);
+    cursor: pointer;
+    box-shadow: var(--sombra-pop-pequeña);
+}
+
+.detalle-mundo-reintentar:hover {
+    background: var(--marca-primario-hover);
+}

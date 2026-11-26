@@ -68,6 +68,7 @@ function DetalleCromo({ textos, idioma = "es" }) {
     const { id } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const [intento, setIntento] = useState(0);
     const [resultado, setResultado] = useState({ id, cromo: null, cargando: true, error: null });
     const cromo = resultado.id === id ? resultado.cromo : null;
     const cargando = resultado.id !== id || resultado.cargando;
@@ -124,7 +125,7 @@ function DetalleCromo({ textos, idioma = "es" }) {
                 }
             });
         return () => { cancelado = true; };
-    }, [id]);
+    }, [id, intento]);
 
     useEffect(() => {
         if (cromo?.mundo && !rutaFondo) {
@@ -184,7 +185,24 @@ function DetalleCromo({ textos, idioma = "es" }) {
     }
 
     if (error) {
-        return modal(<div className="detalle-cromo-estado" role="alert"><h1>{estadoTextos.error?.titulo || (es ? "No se pudo cargar el cromo" : "Could not load this card")}</h1><p>{estadoTextos.error?.texto || (es ? "Intenta nuevamente dentro de un momento." : "Please try again in a moment.")}</p></div>, estadoTextos.error?.titulo || (es ? "No se pudo cargar el cromo" : "Could not load this card"));
+        return modal(
+            <div className="detalle-cromo-estado" role="alert">
+                <h1>{estadoTextos.error?.titulo || (es ? "No se pudo cargar el cromo" : "Could not load this card")}</h1>
+                <p>{estadoTextos.error?.texto || (es ? "Intenta nuevamente dentro de un momento." : "Please try again in a moment.")}</p>
+                <button
+                    type="button"
+                    className="detalle-cromo-reintentar"
+                    onClick={() => {
+                        cromosEnCache.delete(id);
+                        solicitudesCromo.delete(id);
+                        setIntento((prev) => prev + 1);
+                    }}
+                >
+                    {estadoTextos.error?.botones?.reintentar || (es ? "Reintentar" : "Retry")}
+                </button>
+            </div>,
+            estadoTextos.error?.titulo || (es ? "No se pudo cargar el cromo" : "Could not load this card")
+        );
     }
 
     const rarezas = cromoTextos.rarezas || {};
@@ -208,15 +226,19 @@ function DetalleCromo({ textos, idioma = "es" }) {
                 <span aria-hidden="true">/</span><span aria-current="page">{cromo.nombre}</span>
             </nav>
             <div className="detalle-cromo-contenido">
-                <section className="detalle-cromo-arte" aria-label={cromo.nombre}>
-                    <div className="detalle-cromo-destello" aria-hidden="true" />
-                    <div className="detalle-cromo-pieza">
-                        <span className="detalle-cromo-numero">{numero}</span>
-                        <span className={`detalle-cromo-sello rareza-${cromo.rareza}`} aria-label={rareza} title={rareza}><IconoUI nombre={ICONOS_RAREZA[cromo.rareza]} size={19} /></span>
-                        <SiluetaCromo figura={cromo.ilustracion?.figura} nombre={cromo.nombre} />
-                        <div className="detalle-cromo-arte-nombre"><span>{nombreMundo}</span><strong>{cromo.nombre}</strong></div>
-                    </div>
-                    {cromo.ilustracion?.figura && <p className="detalle-cromo-figura">{typeof cromo.ilustracion.figura === "string" ? cromo.ilustracion.figura : cromo.ilustracion.figura.nombre || cromo.ilustracion.figura.tipo}</p>}
+                <section
+                    className="detalle-cromo-arte"
+                    aria-label={cromo.nombre}
+                    style={{
+                        "--color-mundo": cromo.ilustracion?.colorBase || colorBase
+                    }}
+                >
+                    <TarjetaCromo
+                        cromo={cromo}
+                        mundo={mundoNombre}
+                        textos={textos}
+                        idioma={idioma}
+                    />
                 </section>
                 <article className="detalle-cromo-ficha">
                     <p className="detalle-cromo-identificador">{cromo.id}</p>

@@ -18,12 +18,13 @@ function DetalleMundo({
     mundos = [],
     cargandoMundos = false,
     errorMundos = false,
+    recargarMundos,
     textos,
     idioma = "es"
 }) {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { cromos, cargando, error } = useColeccionCromos();
+    const { cromos, cargando, error, recargar } = useColeccionCromos();
     const [rareza, setRareza] = useState("");
     const [tipo, setTipo] = useState("");
     const [orden, setOrden] = useState("numero");
@@ -133,9 +134,21 @@ function DetalleMundo({
                 tabIndex="-1"
                 role="alert"
             >
-                {estados?.error?.texto || (es
-                    ? "No fue posible cargar los mundos o sus cromos. Intenta nuevamente."
-                    : "Could not load worlds or cards. Please try again.")}
+                <p>
+                    {estados?.error?.texto || (es
+                        ? "No fue posible cargar los mundos o sus cromos. Intenta nuevamente."
+                        : "Could not load worlds or cards. Please try again.")}
+                </p>
+                <button
+                    type="button"
+                    className="detalle-mundo-reintentar"
+                    onClick={() => {
+                        if (errorMundos) recargarMundos?.();
+                        if (error) recargar?.();
+                    }}
+                >
+                    {estados?.error?.botones?.reintentar || (es ? "Reintentar" : "Retry")}
+                </button>
             </main>
         );
     }
