@@ -1414,3 +1414,14 @@
 .detalle-mundo-reintentar:hover {
     background: var(--marca-primario-hover);
 }
+
+.modal-cromo-atributo.destacada {
+    color: var(--color-mundo);
+    font-weight: 700;
+}
+
+.modal-cromo-max {
+    margin-left: 4px;
+    font-size: calc(11px * var(--escala-texto, 1));
+    font-weight: 700;
+}
