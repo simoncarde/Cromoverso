@@ -17,7 +17,7 @@ const PLANTILLAS_POR_MUNDO = {
     niebla: "CV-101.svg"
 };
 
-function TarjetaCromo({ cromo, mundo, textos, idioma = "es", onSeleccionar }) {
+function TarjetaCromo({ cromo, mundo, textos, idioma = "es", tamano = "normal", onSeleccionar }) {
     const numero = String(cromo.numero).padStart(3, "0");
     const archivo = `CV-${numero}.svg`;
     const original = `/assets/cromos/${archivo}?v=2`;
@@ -69,38 +69,38 @@ function TarjetaCromo({ cromo, mundo, textos, idioma = "es", onSeleccionar }) {
     const iconoRareza = ICONOS_RAREZA[cromo.rareza] || "circulo";
 
     return (
-        <article className={`tarjeta-cromo rareza-borde-${cromo.rareza || "comun"}`}>
+        <article className={`tarjeta-cromo rareza-borde-${cromo.rareza || "comun"}${tamano === "grande" ? " tamano-grande" : ""}`}>
             <button
                 type="button"
                 className="tarjeta-cromo-boton"
                 onClick={() => onSeleccionar?.(cromo)}
                 aria-label={`${cromo.nombre} · ${tipoEtiqueta}`}
             >
-            <div className={`tarjeta-cromo-ilustracion${cromo.holografico ? " holografico" : ""}`}>
-                {src ? (
-                    <img
-                        className="tarjeta-cromo-svg"
-                        src={src}
-                        alt={`${cromo.nombre} (${numero}) - ${subtitulo}`}
-                        loading="lazy"
-                        onError={usarRespaldo}
-                    />
-                ) : (
-                    <div className="tarjeta-cromo-sin-imagen" aria-hidden="true" />
-                )}
-                <span className="tarjeta-cromo-numero">{numero}</span>
-                <span
-                    className={`tarjeta-cromo-sello rareza-${cromo.rareza || "comun"}`}
-                    title={rarezaEtiqueta}
-                    aria-label={ariaRareza}
-                >
-                    <IconoUI nombre={iconoRareza} size={13} />
-                </span>
-            </div>
-            <div className="tarjeta-cromo-info">
-                <h3>{cromo.nombre}</h3>
-                <p>{subtitulo}</p>
-            </div>
+                <div className={`tarjeta-cromo-ilustracion${cromo.holografico ? " holografico" : ""}`}>
+                    {src ? (
+                        <img
+                            className="tarjeta-cromo-svg"
+                            src={src}
+                            alt={`${cromo.nombre} (${numero}) - ${subtitulo}`}
+                            loading="lazy"
+                            onError={usarRespaldo}
+                        />
+                    ) : (
+                        <div className="tarjeta-cromo-sin-imagen" aria-hidden="true" />
+                    )}
+                    <span className="tarjeta-cromo-numero">{numero}</span>
+                    <span
+                        className={`tarjeta-cromo-sello rareza-${cromo.rareza || "comun"}`}
+                        title={rarezaEtiqueta}
+                        aria-label={ariaRareza}
+                    >
+                        <IconoUI nombre={iconoRareza} size={13} />
+                    </span>
+                </div>
+                <div className="tarjeta-cromo-info">
+                    <h3>{cromo.nombre}</h3>
+                    <p>{subtitulo}</p>
+                </div>
             </button>
         </article>
     );

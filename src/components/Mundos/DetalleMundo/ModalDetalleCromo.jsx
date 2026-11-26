@@ -115,6 +115,7 @@ function ModalDetalleCromo({
                         mundo={{ id: cromo.mundo, nombre: nombreMundo }}
                         textos={textos}
                         idioma={idioma}
+                        tamano="grande"
                     />
                 </div>
 
