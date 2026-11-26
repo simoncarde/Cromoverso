@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import SelectorMundos from "./SelectorMundos.jsx";
 import FiltroRareza from "./FiltroRareza.jsx";
 import FiltroTipo from "./FiltroTipo.jsx";
@@ -24,9 +24,22 @@ function DetalleMundo({
 }) {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { cromos, cargando, error, recargar } = useColeccionCromos();
-    const [rareza, setRareza] = useState("");
-    const [tipo, setTipo] = useState("");
+    const rareza = searchParams.get("rareza") || "";
+    const tipo = searchParams.get("tipo") || "";
+    const setRareza = (valor) => {
+        const siguientes = new URLSearchParams(searchParams);
+        if (valor) siguientes.set("rareza", valor);
+        else siguientes.delete("rareza");
+        setSearchParams(siguientes, { replace: true });
+    };
+    const setTipo = (valor) => {
+        const siguientes = new URLSearchParams(searchParams);
+        if (valor) siguientes.set("tipo", valor);
+        else siguientes.delete("tipo");
+        setSearchParams(siguientes, { replace: true });
+    };
     const [orden, setOrden] = useState("numero");
     const [ordenAbierto, setOrdenAbierto] = useState(false);
     const [busqueda, setBusqueda] = useState("");
@@ -496,12 +509,12 @@ function DetalleMundo({
                             ) : (
                                 <>
                                     <h3>
-                                        {albumMundo?.vacio?.titulo || (es
+                                        {albumMundo?.vacio?.titulo || estados?.vacio?.titulo || (es
                                             ? "Ningún cromo coincide con estos filtros"
                                             : "No cards match these filters")}
                                     </h3>
                                     <p>
-                                        {albumMundo?.vacio?.texto || (es
+                                        {albumMundo?.vacio?.texto || estados?.vacio?.texto || (es
                                             ? "Prueba con otra rareza u otro tipo."
                                             : "Try another rarity or type.")}
                                     </p>
@@ -511,8 +524,10 @@ function DetalleMundo({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setRareza("");
-                                        setTipo("");
+                                        const siguientes = new URLSearchParams(searchParams);
+                                        siguientes.delete("rareza");
+                                        siguientes.delete("tipo");
+                                        setSearchParams(siguientes, { replace: true });
                                         setBusqueda("");
                                     }}
                                 >

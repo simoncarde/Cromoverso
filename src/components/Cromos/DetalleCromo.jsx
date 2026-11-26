@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { urlCromo } from "../../services/api.js";
-import { IconoUI } from "../Iconos.jsx";
+import useColeccionCromos from "../../hooks/useColeccionCromos.js";
+import ModalDetalleCromo from "../Mundos/DetalleMundo/ModalDetalleCromo.jsx";
+import "../Mundos/DetalleMundo/DetalleMundo.css";
 import "./DetalleCromo.css";
 
 const ICONOS_RAREZA = {
@@ -68,9 +70,25 @@ function DetalleCromo({ textos, idioma = "es" }) {
     const { id } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const { cromos } = useColeccionCromos();
     const [intento, setIntento] = useState(0);
     const [resultado, setResultado] = useState({ id, cromo: null, cargando: true, error: null });
     const cromo = resultado.id === id ? resultado.cromo : null;
+
+    const infoNavegacion = useMemo(() => {
+        if (!cromo || !Array.isArray(cromos) || cromos.length === 0) return null;
+        const delMundo = cromos
+            .filter((item) => item.mundo === cromo.mundo)
+            .sort((a, b) => Number(a.numero) - Number(b.numero));
+        const indice = delMundo.findIndex(
+            (item) => item.id === cromo.id || Number(item.numero) === Number(cromo.numero)
+        );
+        return {
+            posicion: cromo.posicion ?? (indice >= 0 ? indice + 1 : cromo.numero),
+            anterior: indice > 0 ? delMundo[indice - 1] : null,
+            siguiente: indice >= 0 && indice < delMundo.length - 1 ? delMundo[indice + 1] : null
+        };
+    }, [cromo, cromos]);
     const cargando = resultado.id !== id || resultado.cargando;
     const error = resultado.id === id ? resultado.error : null;
     const es = idioma === "es";
@@ -205,59 +223,26 @@ function DetalleCromo({ textos, idioma = "es" }) {
         );
     }
 
-    const rarezas = cromoTextos.rarezas || {};
-    const tipos = cromoTextos.tipos || {};
-    const rareza = rarezas[cromo.rareza] || cromo.rareza;
-    const tipo = tipos[cromo.tipo] || cromo.tipo;
-    const atributos = Object.entries(cromo.atributos || {}).map(([clave, valor]) => ({
-        clave,
-        nombre: cromoTextos.atributos?.[clave] || clave,
-        valor: Number(valor),
-    })).filter((atributo) => Number.isFinite(atributo.valor));
     const nombreMundo = cromo.mundoNombre || cromo.mundo;
-    const numero = cromo.numero === undefined ? cromo.id : String(cromo.numero).padStart(3, "0");
     const colorBase = cromo.ilustracion?.colorBase || "#5935a8";
 
-    return modal(
-        <>
-            <nav className="detalle-cromo-migas" aria-label={textos?.general?.etiquetas?.navegacion || (es ? "Ruta de navegación" : "Breadcrumb navigation")}>
-                <Link to="/mundos">{textos?.paginas?.albumMundo?.migas?.mundos || (es ? "Mundos" : "Worlds")}</Link>
-                {cromo.mundo && <><span aria-hidden="true">/</span><Link to={`/mundos/${encodeURIComponent(cromo.mundo)}`}>{nombreMundo}</Link></>}
-                <span aria-hidden="true">/</span><span aria-current="page">{cromo.nombre}</span>
-            </nav>
-            <div className="detalle-cromo-contenido">
-                <section
-                    className="detalle-cromo-arte"
-                    aria-label={cromo.nombre}
-                    style={{
-                        "--color-mundo": cromo.ilustracion?.colorBase || colorBase
-                    }}
-                >
-                    <TarjetaCromo
-                        cromo={cromo}
-                        mundo={mundoNombre}
-                        textos={textos}
-                        idioma={idioma}
-                    />
-                </section>
-                <article className="detalle-cromo-ficha">
-                    <p className="detalle-cromo-identificador">{cromo.id}</p>
-                    <h1>{cromo.nombre}</h1>
-                    <p className="detalle-cromo-resumen">{cromo.descripcion || cromo.poder}</p>
-                    <div className="detalle-cromo-etiquetas">
-                        <span className={`detalle-cromo-etiqueta rareza-${cromo.rareza}`}><IconoUI nombre={ICONOS_RAREZA[cromo.rareza]} size={15} />{rareza}</span>
-                        {tipo && <span className="detalle-cromo-etiqueta">{tipo}</span>}
-                        {nombreMundo && <span className="detalle-cromo-etiqueta">{nombreMundo}</span>}
-                    </div>
-                    {cromo.poder && cromo.descripcion && <section className="detalle-cromo-poder"><h2>{detalleTextos.poder || (es ? "Poder" : "Power")}</h2><p>{cromo.poder}</p></section>}
-                    {atributos.length > 0 && <section className="detalle-cromo-atributos" aria-labelledby="detalle-cromo-atributos-titulo">
-                        <div className="detalle-cromo-atributos-cabecera"><h2 id="detalle-cromo-atributos-titulo">{detalleTextos.atributos || (es ? "Atributos" : "Attributes")}</h2><span>{(detalleTextos.total || "Total")} {atributos.reduce((suma, atributo) => suma + atributo.valor, 0)}</span></div>
-                        {atributos.map(({ clave, nombre, valor }) => <div className="detalle-cromo-atributo" key={clave}><span>{nombre}</span><div className="detalle-cromo-barra" role="meter" aria-label={nombre} aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.min(100, Math.max(0, valor))}><span style={{ width: `${Math.min(100, Math.max(0, valor))}%` }} /></div><strong>{valor}</strong></div>)}
-                    </section>}
-                    {cromo.mundo && <Link className="detalle-cromo-volver" to={`/mundos/${encodeURIComponent(cromo.mundo)}`}>{textos?.general?.acciones?.volver || (es ? "Volver al álbum" : "Back to album")}</Link>}
-                </article>
-            </div>
-        </>, cromo.nombre,
+    return (
+        <ModalDetalleCromo
+            cromo={cromo}
+            mundoNombre={nombreMundo}
+            mundoColor={colorBase}
+            posicion={infoNavegacion?.posicion ?? cromo.posicion ?? cromo.numero}
+            cromoAnterior={infoNavegacion?.anterior}
+            cromoSiguiente={infoNavegacion?.siguiente}
+            onCambiarCromo={(nuevoCromo) =>
+                navigate(`/cromos/${encodeURIComponent(nuevoCromo.id)}`, {
+                    state: location.state
+                })
+            }
+            textos={textos}
+            idioma={idioma}
+            onCerrar={cerrar}
+        />
     );
 }
 

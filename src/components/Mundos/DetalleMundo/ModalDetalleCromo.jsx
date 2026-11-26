@@ -1,20 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { IconoUI } from "../../Iconos.jsx";
+import TarjetaCromo from "./TarjetaCromo.jsx";
 
 const ICONOS_RAREZA = {
     comun: "circulo",
     rara: "rombo",
     epica: "estrella",
     legendaria: "corona"
-};
-
-const PLANTILLAS_POR_MUNDO = {
-    neon: "CV-001.svg",
-    coral: "CV-081.svg",
-    bosque: "CV-041.svg",
-    forja: "CV-061.svg",
-    orbita: "CV-082.svg",
-    niebla: "CV-101.svg"
 };
 
 const ORDEN_ATRIBUTOS = ["fuerza", "velocidad", "mente", "energia"];
@@ -36,15 +28,6 @@ function ModalDetalleCromo({
     const cromoTextos = textos?.componentes?.cromo || {};
     const detalleTextos = cromoTextos.detalle || {};
     const numero = String(cromo.numero).padStart(3, "0");
-    const imagen = `/assets/cromos/CV-${numero}.svg`;
-    const respaldo = `/assets/cromos/${
-        PLANTILLAS_POR_MUNDO[cromo.mundo] || "CV-001.svg"
-    }`;
-
-    const [src, setSrc] = useState(imagen);
-    useEffect(() => {
-        setSrc(imagen);
-    }, [imagen]);
 
     const nombresRareza = {
         comun: es ? "Común" : "Common",
@@ -127,40 +110,12 @@ function ModalDetalleCromo({
                 </button>
 
                 <div className="modal-cromo-arte">
-                    <article
-                        className={`modal-cromo-tarjeta rareza-borde-${cromo.rareza}`}
-                    >
-                        <div
-                            className={`modal-cromo-imagen${
-                                cromo.holografico ? " holografico" : ""
-                            }`}
-                        >
-                            <img
-                                src={src}
-                                alt={`${cromo.nombre} - ${numero}`}
-                                onError={() => {
-                                    if (src !== respaldo) setSrc(respaldo);
-                                }}
-                            />
-                            <span className="modal-cromo-numero">
-                                {numero}
-                            </span>
-                            <span
-                                className={`modal-cromo-sello rareza-${cromo.rareza}`}
-                            >
-                                <IconoUI
-                                    nombre={iconoRareza}
-                                    size={15}
-                                />
-                            </span>
-                        </div>
-                        <div className="modal-cromo-tarjeta-info">
-                            <h3>{cromo.nombre}</h3>
-                            <p>
-                                {nombreMundo} &bull; {nombresTipo[cromo.tipo] || cromo.tipo}
-                            </p>
-                        </div>
-                    </article>
+                    <TarjetaCromo
+                        cromo={cromo}
+                        mundo={{ id: cromo.mundo, nombre: nombreMundo }}
+                        textos={textos}
+                        idioma={idioma}
+                    />
                 </div>
 
                 <div className="modal-cromo-informacion">
