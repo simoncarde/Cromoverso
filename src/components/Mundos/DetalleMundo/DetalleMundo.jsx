@@ -76,9 +76,27 @@ function DetalleMundo({
     }, [cromos, id, rareza, tipo, orden, busqueda, es]);
 
     const cromosSinFiltro = useMemo(
-        () => cromos.filter((cromo) => cromo.mundo === id),
+        () => cromos.filter((cromo) => cromo.mundo === id).sort((a, b) => Number(a.numero) - Number(b.numero)),
         [cromos, id]
     );
+
+    const infoCromoSeleccionado = useMemo(() => {
+        if (!cromoSeleccionado) return null;
+        const indice = cromosSinFiltro.findIndex(
+            (c) => c.id === cromoSeleccionado.id || Number(c.numero) === Number(cromoSeleccionado.numero)
+        );
+        const anterior = indice > 0 ? cromosSinFiltro[indice - 1] : null;
+        const siguiente = indice >= 0 && indice < cromosSinFiltro.length - 1
+            ? cromosSinFiltro[indice + 1]
+            : null;
+        const posicion = cromoSeleccionado.posicion ?? (indice >= 0 ? indice + 1 : cromoSeleccionado.numero);
+
+        return {
+            posicion,
+            anterior,
+            siguiente
+        };
+    }, [cromoSeleccionado, cromosSinFiltro]);
     const conteoRareza = useMemo(() => Object.fromEntries(
         RAREZAS.map((valor) => [
             valor,
@@ -499,6 +517,10 @@ function DetalleMundo({
                     cromo={cromoSeleccionado}
                     mundoNombre={mundo.nombre}
                     mundoColor={mundo.color}
+                    posicion={infoCromoSeleccionado?.posicion}
+                    cromoAnterior={infoCromoSeleccionado?.anterior}
+                    cromoSiguiente={infoCromoSeleccionado?.siguiente}
+                    onCambiarCromo={setCromoSeleccionado}
                     textos={textos}
                     idioma={idioma}
                     onCerrar={() => setCromoSeleccionado(null)}

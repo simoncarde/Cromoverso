@@ -283,23 +283,6 @@
 }
 .tarjeta-cromo-sin-imagen { position: absolute; inset: 0; background: var(--color-mundo); }
 
-.modal-cromo-overlay { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; overflow-y: auto; padding: 24px; background: rgb(25 16 47 / 76%); }
-.modal-cromo { position: relative; display: grid; grid-template-columns: minmax(230px, .72fr) minmax(0, 1.28fr); gap: 32px; width: min(100%, 1000px); max-height: min(88vh, 820px); overflow-y: auto; padding: 38px; border: 2px solid var(--borde-fuerte); border-radius: 26px; color: var(--texto-principal); background: var(--fondo-superficie); box-shadow: 0 12px 0 rgb(25 16 47 / 45%); }
-.modal-cromo-cerrar { position: absolute; z-index: 2; top: 18px; right: 18px; display: grid; width: 44px; height: 44px; place-items: center; border: 2px solid var(--marca-primario); border-radius: 50%; color: var(--texto-principal); background: var(--fondo-superficie); cursor: pointer; font-size: 27px; line-height: 1; }
-.modal-cromo-arte { display: grid; min-height: 390px; place-items: center; padding: 24px; border: 2px solid var(--borde-fuerte); border-radius: 20px; background: var(--color-mundo); }
-.modal-cromo-tarjeta { width: min(100%, 250px); overflow: hidden; padding: 6px; border: 2px solid var(--borde-fuerte); border-radius: 18px; background: var(--fondo-superficie); box-shadow: 5px 5px 0 var(--borde-fuerte); }
-.modal-cromo-imagen { position: relative; overflow: hidden; aspect-ratio: 224 / 270; border: 1px solid var(--borde-fuerte); border-radius: 10px; background: var(--color-mundo); }
-.modal-cromo-imagen img { width: 100%; height: 100%; object-fit: cover; }
-.modal-cromo-numero, .modal-cromo-sello { position: absolute; top: 8px; display: grid; min-width: 30px; height: 26px; place-items: center; padding: 2px 6px; border: 2px solid var(--borde-fuerte); border-radius: 999px; background: var(--fondo-superficie); font-weight: 700; }
-.modal-cromo-numero { left: 8px; }.modal-cromo-sello { right: 8px; }
-.modal-cromo-tarjeta-info { padding: 8px 4px 3px; }.modal-cromo-tarjeta-info h3 { margin: 0; font: 700 18px var(--fuente-unbounded); }.modal-cromo-tarjeta-info p { margin: 4px 0 0; color: var(--texto-secundario); }
-.modal-cromo-informacion { align-self: center; min-width: 0; padding-right: 8px; }
-.modal-cromo-etiquetas { display: flex; flex-wrap: wrap; gap: 8px; padding-right: 42px; }.modal-cromo-etiquetas > span { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 999px; background: var(--fondo-sutil); font-weight: 700; }
-.modal-cromo-identificacion { margin: 20px 0 4px; color: var(--texto-secundario); font-size: 13px; font-weight: 600; }.modal-cromo-informacion > h2 { margin: 0 50px 16px 0; font: 700 clamp(27px, 4vw, 42px)/1.12 var(--fuente-unbounded); }
-.modal-cromo-poder { display: flex; align-items: center; gap: 12px; padding: 13px; border: 2px solid var(--borde-fuerte); border-radius: 14px; background: color-mix(in srgb, var(--marca-primario) 13%, var(--fondo-superficie)); }.modal-cromo-poder-icono { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; color: white; background: var(--marca-primario); font-size: 22px; }.modal-cromo-poder div { display: grid; gap: 3px; }.modal-cromo-poder div span { color: var(--marca-primario); font-size: 12px; font-weight: 800; letter-spacing: .08em; }
-.modal-cromo-descripcion { margin: 16px 0; color: var(--texto-secundario); line-height: 1.55; }
-.modal-cromo-poder .modal-cromo-descripcion { margin: 0; color: var(--texto-principal); }
-.modal-cromo-subtitulo { display: none; }.modal-cromo-atributos { padding: 15px 17px; border-radius: 15px; background: var(--fondo-sutil); }.modal-cromo-atributos-cabecera { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }.modal-cromo-atributos-cabecera h3 { margin: 0; font-size: 16px; }.modal-cromo-atributos-cabecera strong { white-space: nowrap; }.modal-cromo-atributo { display: grid; grid-template-columns: minmax(70px, 100px) minmax(40px, 1fr) 28px; align-items: center; gap: 10px; margin-top: 9px; font-size: 14px; font-weight: 650; }.modal-cromo-atributo > strong { text-align: right; }.modal-cromo-barra { height: 10px; overflow: hidden; border: 1.5px solid var(--borde-fuerte); border-radius: 99px; background: var(--fondo-superficie); }.modal-cromo-barra-progreso { height: 100%; border-radius: inherit; background: var(--marca-primario); }
 .tarjeta-cromo-numero {
     position: absolute;
     z-index: 3;
@@ -693,195 +676,665 @@
 
 }
 
+/* ========================================================
+   MODAL DETALLE CROMO (DESKTOP Y MOBILE)
+   ======================================================== */
+.modal-cromo-overlay {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    overflow-y: auto;
+    padding: var(--espacio-5);
+    background: rgb(25 16 47 / 76%);
+    backdrop-filter: blur(2px);
+}
+
+.modal-cromo {
+    position: relative;
+    display: grid;
+    grid-template-columns: 316px minmax(0, 1fr);
+    grid-template-areas: "arte info";
+    gap: 32px;
+    width: min(100%, 1000px);
+    height: auto;
+    max-height: min(650px, calc(100dvh - 32px));
+    overflow-y: auto;
+    padding: 36px 40px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: 28px;
+    color: var(--texto-principal);
+    background: var(--fondo-superficie);
+    box-shadow: var(--sombra-flotante);
+    font-family: var(--fuente-rubik);
+}
+
 .modal-cromo-manija {
     display: none;
 }
-.modal-cromo-escala {
+
+.modal-cromo-cerrar {
+    position: absolute;
+    z-index: 10;
+    top: 18px;
+    right: 18px;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: var(--radio-pildora);
+    color: var(--texto-principal);
+    background: var(--fondo-superficie);
+    cursor: pointer;
+    font-family: var(--fuente-rubik);
+    font-size: calc(24px * var(--escala-texto, 1));
+    line-height: 1;
+    transition: transform .15s ease, background-color .15s ease;
+}
+
+.modal-cromo-cerrar:hover {
+    transform: scale(1.06);
+    background: var(--fondo-sutil);
+}
+
+/* Columna Izquierda - Tarjeta dentro del contenedor con color del mundo (316px x 420px en Figma) */
+.modal-cromo-arte {
+    grid-area: arte;
+    display: grid;
+    place-items: center;
+    width: 316px;
+    height: 420px;
+    padding: 20px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: 20px;
+    background: var(--color-mundo);
+}
+
+.modal-cromo-tarjeta {
+    width: 236px;
+    padding: 5px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: 18px;
+    background: var(--fondo-superficie);
+    box-shadow: 6px 6px 0px var(--borde-fuerte);
+    overflow: hidden;
+}
+
+.modal-cromo-imagen {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 224 / 270;
+    border: 1.5px solid var(--borde-fuerte);
+    border-radius: var(--radio-m);
+    background: var(--color-mundo);
+}
+
+.modal-cromo-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.modal-cromo-numero,
+.modal-cromo-sello {
+    position: absolute;
+    top: 8px;
+    display: grid;
+    min-width: 30px;
+    height: 26px;
+    place-items: center;
+    padding: 2px 7px;
+    border: 1.5px solid var(--borde-fuerte);
+    border-radius: var(--radio-pildora);
+    background: var(--fondo-superficie);
+    font-family: var(--fuente-unbounded);
+    font-size: calc(11px * var(--escala-texto, 1));
+    font-weight: 700;
+}
+
+.modal-cromo-numero {
+    left: 8px;
+}
+
+.modal-cromo-sello {
+    right: 8px;
+    width: 26px;
+    padding: 0;
+}
+
+.modal-cromo-sello.rareza-legendaria { color: var(--rareza-legendaria); }
+.modal-cromo-sello.rareza-epica { color: var(--rareza-epica); }
+.modal-cromo-sello.rareza-rara { color: var(--rareza-rara); }
+.modal-cromo-sello.rareza-comun { color: var(--rareza-comun); }
+
+.modal-cromo-tarjeta-info {
+    padding: 6px 4px 2px;
+}
+
+.modal-cromo-tarjeta-info h3 {
+    margin: 0;
+    color: var(--texto-principal);
+    font: 700 calc(15px * var(--escala-texto, 1))/1.2 var(--fuente-unbounded);
+}
+
+.modal-cromo-tarjeta-info p {
+    margin: 2px 0 0;
+    color: var(--texto-secundario);
+    font-size: calc(12px * var(--escala-texto, 1));
+}
+
+/* Columna Derecha - Información (alineada a 420px exactos para emparejar con el contenedor izquierdo) */
+.modal-cromo-informacion {
+    grid-area: info;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 420px;
+    min-width: 0;
+}
+
+.modal-cromo-encabezado {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-cromo-etiquetas {
+    order: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espacio-2);
+    margin-bottom: 6px;
+}
+
+.modal-cromo-etiqueta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radio-pildora);
+    background: var(--fondo-sutil);
+    color: var(--texto-principal);
+    font-size: calc(11px * var(--escala-texto, 1));
+    font-weight: 600;
+}
+
+.modal-cromo-etiqueta.modal-cromo-rareza {
+    border: 1.5px solid var(--color-mundo);
+    color: var(--color-mundo);
+    background: var(--fondo-superficie);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.modal-cromo-identificacion-desktop {
+    order: 2;
+    margin: 0 0 2px;
+    color: var(--texto-secundario);
+    font-size: calc(12px * var(--escala-texto, 1));
+    font-weight: 600;
+}
+
+.modal-cromo-identificacion-movil {
     display: none;
 }
 
-/* Ajustes de proporción y tipografía según la referencia del modal en Desktop */
-.modal-cromo {
-    position: relative;
-    grid-template-columns: minmax(320px, .78fr) minmax(0, 1.22fr);
-    gap: 40px;
-    width: min(100%, 1000px);
-    height: min(650px, calc(100dvh - 32px));
-    max-height: 650px;
-    padding: 40px;
-    border-radius: 28px;
-    box-shadow: none;
-    font-family: var(--fuente-rubik);
+.modal-cromo-titulo {
+    order: 3;
+    margin: 0 40px 8px 0;
+    color: var(--texto-principal);
+    font: 700 clamp(calc(24px * var(--escala-texto, 1)), 3.2vw, calc(32px * var(--escala-texto, 1)))/1.12 var(--fuente-unbounded);
+    letter-spacing: -0.5px;
 }
-.modal-cromo-arte { min-height: 0; height: 100%; padding: 40px; border-radius: 20px; }
-.modal-cromo-tarjeta { width: min(100%, 330px); }
-.modal-cromo-identificacion { margin-top: 20px; font-size: 13px; }
-.modal-cromo-informacion > h2 { font-size: clamp(32px, 4vw, 42px); letter-spacing: -1.5px; }
-.modal-cromo-poder { min-height: 76px; padding: 12px 16px; border-radius: 16px; background: var(--marca-primario-suave); }
-.modal-cromo-poder-icono { width: 36px; height: 36px; color: #fff; }
-.modal-cromo-poder-icono svg { width: 20px; height: 20px; }
-.modal-cromo-poder div span { font-size: 11px; }
-.modal-cromo-poder strong { font-size: 16px; }
-.modal-cromo-descripcion { font-size: 16px; line-height: 1.55; }
-.modal-cromo-atributos { padding: 20px; border-radius: 16px; background: var(--fondo-sutil); }
-.modal-cromo-atributos-cabecera h3 { font-size: 16px; }
-.modal-cromo-atributo { grid-template-columns: 100px minmax(40px, 1fr) 30px; gap: 12px; margin-top: 12px; font-size: 14px; }
-.modal-cromo-barra { height: 12px; }
-.modal-cromo-poder { background: color-mix(in srgb, var(--color-mundo) 12%, white); }
-.modal-cromo-poder div span { color: var(--color-mundo); }
-.modal-cromo-poder-icono { width: 44px; height: 44px; flex: 0 0 44px; overflow: visible; border-radius: 50%; background: transparent; }
-.modal-cromo-poder-icono img { display: block; width: 44px; height: 44px; object-fit: contain; }
-.modal-cromo-barra-progreso { background: var(--color-mundo); }
-.modal-cromo-atributo > span:first-child { text-transform: capitalize; }
 
-/* MODAL MOBILE - BOTTOM SHEET (breakpoint existente del proyecto: 900px) */
+.modal-cromo-subtitulo-movil {
+    display: none;
+}
+
+/* Sección PODER */
+.modal-cromo-poder {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    margin: 0 0 8px;
+    border: var(--borde-grosor) solid var(--borde-fuerte);
+    border-radius: var(--radio-m);
+    background: color-mix(in srgb, var(--color-mundo) 12%, white);
+}
+
+.modal-cromo-poder-icono {
+    display: grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: var(--radio-pildora);
+    color: var(--texto-inverso);
+    background: var(--color-mundo);
+}
+
+.modal-cromo-poder-cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.modal-cromo-poder-encabezado {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.modal-cromo-poder-icono-movil {
+    display: none;
+}
+
+.modal-cromo-poder-etiqueta {
+    color: var(--color-mundo);
+    font-size: calc(10px * var(--escala-texto, 1));
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.modal-cromo-poder-texto {
+    margin: 0;
+    color: var(--texto-principal);
+    font-size: calc(14px * var(--escala-texto, 1));
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.modal-cromo-lore {
+    margin: 0 0 8px;
+    color: var(--texto-secundario);
+    font-size: calc(13px * var(--escala-texto, 1));
+    line-height: 1.4;
+}
+
+/* Sección Atributos */
+.modal-cromo-atributos {
+    padding: 12px 18px;
+    border-radius: var(--radio-m);
+    background: var(--fondo-sutil);
+    margin: 0;
+}
+
+.modal-cromo-atributos-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.modal-cromo-atributos-cabecera h3 {
+    margin: 0;
+    color: var(--texto-principal);
+    font: 700 calc(15px * var(--escala-texto, 1)) var(--fuente-rubik);
+}
+
+.modal-cromo-total {
+    color: var(--texto-principal);
+    font: 700 calc(14px * var(--escala-texto, 1)) var(--fuente-rubik);
+    white-space: nowrap;
+}
+
+.modal-cromo-atributo {
+    display: grid;
+    grid-template-columns: 84px minmax(40px, 1fr) 28px;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    color: var(--texto-principal);
+    font-size: calc(13px * var(--escala-texto, 1));
+    font-weight: 600;
+}
+
+.modal-cromo-barra {
+    height: 10px;
+    overflow: hidden;
+    border: 1.5px solid var(--borde-fuerte);
+    border-radius: var(--radio-pildora);
+    background: var(--fondo-superficie);
+}
+
+.modal-cromo-barra-progreso {
+    height: 100%;
+    border-radius: inherit;
+    background: var(--color-mundo);
+    transition: width .25s ease;
+}
+
+.modal-cromo-atributo strong {
+    text-align: right;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.modal-cromo-escala {
+    display: none;
+    margin: 6px 0 0;
+    color: var(--texto-secundario);
+    font-size: calc(12px * var(--escala-texto, 1));
+}
+
+/* Navegación Anterior / Siguiente (alineada a la base) */
+.modal-cromo-navegacion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 4px;
+    padding-top: 0;
+    height: 24px;
+}
+
+.modal-cromo-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-mundo);
+    cursor: pointer;
+    font: 700 calc(13px * var(--escala-texto, 1)) var(--fuente-rubik);
+    text-decoration: none;
+    transition: opacity .15s ease, transform .15s ease;
+}
+
+.modal-cromo-nav-btn:hover {
+    opacity: .8;
+    text-decoration: underline;
+}
+
+.modal-cromo-nav-espacio {
+    display: inline-block;
+}
+
+.modal-cromo-nav-btn:hover {
+    opacity: .8;
+    text-decoration: underline;
+}
+
+.modal-cromo-nav-espacio {
+    display: inline-block;
+}
+
+/* ========================================================
+   RESPONSIVE MOBILE (<= 900px)
+   ======================================================== */
 @media (max-width: 900px) {
     .modal-cromo-overlay {
         align-items: flex-end;
-        padding: 0 0 9dvh;
+        padding: 0;
     }
 
     .modal-cromo {
-        display: block;
+        display: grid;
+        grid-template-columns: minmax(130px, 155px) minmax(0, 1fr);
+        grid-template-areas:
+            "manija manija"
+            "arte encabezado"
+            "poder poder"
+            "atributos atributos"
+            "escala escala"
+            "nav nav";
+        gap: 12px 14px;
         width: 100%;
-        height: auto;
-        max-height: 84dvh;
-        padding: 10px 22px 24px;
-        border: 0;
-        border-radius: 26px 26px 0 0;
+        max-height: 88dvh;
+        padding: 12px 20px 24px;
+        border: var(--borde-grosor) solid var(--borde-fuerte);
+        border-bottom: 0;
+        border-radius: var(--radio-xl) var(--radio-xl) 0 0;
         overflow-y: auto;
-        box-shadow: 0 -8px 24px rgba(26, 16, 51, 0.2);
+        box-shadow: 0 -8px 28px rgba(26, 16, 51, 0.22);
     }
 
     .modal-cromo-manija {
+        grid-area: manija;
         display: block;
         width: 44px;
         height: 5px;
-        border-radius: 999px;
-        background: #e8ddc9;
-        margin: 0 auto 78px;
+        margin: 0 auto 6px;
+        border-radius: var(--radio-pildora);
+        background: var(--borde-sutil);
     }
 
     .modal-cromo-cerrar {
-        top: 28px;
-        border-color: var(--color-mundo);
-        right: 20px;
-        width: 44px;
-        height: 44px;
-        font-size: 25px;
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        font-size: calc(22px * var(--escala-texto, 1));
     }
 
+    /* Arte (Tarjeta a la izquierda en mobile) */
     .modal-cromo-arte {
-        float: left;
-        width: min(49%, 172px);
-        height: auto;
-        min-height: 0;
+        grid-area: arte;
+        align-self: start;
         padding: 0;
-        background: transparent !important;
+        background: transparent;
         border: 0;
-        margin: 0 12px 12px 0;
+        border-radius: 0;
+        height: auto;
     }
 
     .modal-cromo-tarjeta {
         width: 100%;
         padding: 4px;
-        border: 2px solid var(--borde-fuerte);
+        border: var(--borde-grosor) solid var(--borde-fuerte);
         border-radius: 14px;
         box-shadow: 3px 3px 0 var(--borde-fuerte);
     }
 
-    .modal-cromo-imagen { border-radius: 8px; }
-    .modal-cromo-numero, .modal-cromo-sello { top: 5px; height: 23px; }
-    .modal-cromo-numero { left: 5px; }
-    .modal-cromo-sello { right: 5px; }
-    .modal-cromo-tarjeta-info { padding: 5px 2px 2px; }
-    .modal-cromo-tarjeta-info h3 { font-size: 13px; line-height: 1.25; }
-    .modal-cromo-tarjeta-info p { margin-top: 2px; font-size: 11px; line-height: 1.25; }
-
-    .modal-cromo-informacion {
-        min-height: 238px;
-        padding: 0;
+    .modal-cromo-imagen {
+        border-radius: var(--radio-s);
     }
 
-    .modal-cromo-identificacion {
-        margin: 0 38px 8px 0;
+    .modal-cromo-numero,
+    .modal-cromo-sello {
+        top: 5px;
+        height: 22px;
+        min-width: 24px;
+        padding: 1px 5px;
+        font-size: calc(10px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-numero { left: 5px; }
+    .modal-cromo-sello { right: 5px; width: 22px; padding: 0; }
+
+    .modal-cromo-tarjeta-info {
+        padding: 5px 2px 2px;
+    }
+
+    .modal-cromo-tarjeta-info h3 {
+        font-size: calc(12px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-tarjeta-info p {
+        margin-top: 1px;
+        font-size: calc(10px * var(--escala-texto, 1));
+    }
+
+    /* Desempaquetar contenido de .modal-cromo-informacion en el grid del modal */
+    .modal-cromo-informacion {
+        display: contents;
+    }
+
+    /* Encabezado (a la derecha de la tarjeta en mobile) */
+    .modal-cromo-encabezado {
+        grid-area: encabezado;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-right: 36px;
+        min-width: 0;
+    }
+
+    .modal-cromo-identificacion-desktop {
+        display: none;
+    }
+
+    .modal-cromo-identificacion-movil {
+        order: 1;
+        display: block;
+        margin: 0 0 4px;
         color: var(--texto-secundario);
-        font-size: 13px;
+        font-family: var(--fuente-unbounded);
+        font-size: calc(13px * var(--escala-texto, 1));
         font-weight: 700;
         line-height: 1.2;
     }
 
-    .modal-cromo-informacion > h2 {
-        margin: 0 0 8px;
-        font-size: clamp(17px, 5vw, 21px);
-        line-height: 1.2;
+    .modal-cromo-titulo {
+        order: 2;
+        margin: 0 0 4px;
+        font-size: clamp(calc(18px * var(--escala-texto, 1)), 5.2vw, calc(24px * var(--escala-texto, 1)));
+        line-height: 1.15;
         letter-spacing: -0.4px;
-        overflow-wrap: anywhere;
     }
 
-    .modal-cromo-subtitulo {
+    .modal-cromo-subtitulo-movil {
+        order: 3;
         display: block;
         margin: 0 0 10px;
         color: var(--texto-secundario);
-        font-size: 13px;
-        line-height: 1.35;
+        font-size: calc(13px * var(--escala-texto, 1));
+        font-weight: 500;
+        line-height: 1.3;
     }
 
     .modal-cromo-etiquetas {
-        margin: 0;
-        padding: 0;
-        gap: 6px;
+        order: 4;
+        margin-bottom: 0;
     }
 
-    .modal-cromo-etiquetas > span { padding: 4px 9px; font-size: 12px; }
     .modal-cromo-etiquetas .modal-cromo-mundo,
-    .modal-cromo-etiquetas .modal-cromo-tipo { display: none; }
+    .modal-cromo-etiquetas .modal-cromo-tipo {
+        display: none;
+    }
 
+    .modal-cromo-etiqueta.modal-cromo-rareza {
+        padding: 4px 10px;
+        font-size: calc(11px * var(--escala-texto, 1));
+    }
+
+    /* Poder en mobile */
     .modal-cromo-poder {
-        clear: both;
-        min-height: 0;
-        align-items: flex-start;
+        grid-area: poder;
+        display: block;
         padding: 12px 14px;
-        margin: 0 0 16px;
-        border-radius: 15px;
-        border-color: var(--borde-fuerte);
+        margin: 4px 0 0;
+        border-radius: var(--radio-l);
         background: color-mix(in srgb, var(--color-mundo) 12%, white);
     }
 
     .modal-cromo-poder-icono {
-        width: 28px;
-        height: 28px;
-        flex: 0 0 28px;
-        margin-top: 1px;
+        display: none;
     }
 
-    .modal-cromo-poder-icono img { width: 28px; height: 28px; }
-    .modal-cromo-poder div { min-width: 0; gap: 6px; }
-    .modal-cromo-poder div span { color: var(--color-mundo); font-size: 11px; }
-    .modal-cromo-descripcion { margin: 0; color: var(--texto-principal); font-size: 14px; font-weight: 650; line-height: 1.4; }
+    .modal-cromo-poder-encabezado {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
 
+    .modal-cromo-poder-icono-movil {
+        display: inline-flex;
+        color: var(--color-mundo);
+    }
+
+    .modal-cromo-poder-etiqueta {
+        color: var(--texto-secundario);
+        font-size: calc(11px * var(--escala-texto, 1));
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .modal-cromo-poder-texto {
+        font-size: calc(14px * var(--escala-texto, 1));
+        font-weight: 650;
+    }
+
+    .modal-cromo-lore {
+        display: none;
+    }
+
+    /* Atributos en mobile */
     .modal-cromo-atributos {
+        grid-area: atributos;
         padding: 0;
-        border-radius: 0;
         background: transparent;
     }
 
-    .modal-cromo-atributos-cabecera { margin-bottom: 11px; }
-    .modal-cromo-atributos-cabecera h3 { font-size: 15px; }
-    .modal-cromo-total { display: none; }
-
-    .modal-cromo-atributo {
-        grid-template-columns: 82px minmax(35px, 1fr) 28px;
-        gap: 8px;
-        margin-top: 9px;
-        font-size: 13px;
+    .modal-cromo-atributos-cabecera {
+        margin-bottom: 8px;
     }
 
-    .modal-cromo-barra { height: 12px; }
+    .modal-cromo-atributos-cabecera h3 {
+        font-size: calc(15px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-total {
+        display: none;
+    }
+
+    .modal-cromo-atributo {
+        grid-template-columns: 80px minmax(40px, 1fr) 28px;
+        gap: 8px;
+        margin-top: 8px;
+        font-size: calc(13px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-barra {
+        height: 12px;
+    }
+
     .modal-cromo-escala {
+        grid-area: escala;
         display: block;
-        margin: 10px 0 0;
-        font-size: 12px;
-        color: var(--texto-secundario);
+        margin: 4px 0 0;
+        font-size: calc(12px * var(--escala-texto, 1));
+    }
+
+    /* Navegación en mobile */
+    .modal-cromo-navegacion {
+        grid-area: nav;
+        margin-top: 8px;
+        padding-top: 10px;
+        border-top: 1px solid var(--borde-sutil);
+    }
+
+    .modal-cromo-nav-btn {
+        font-size: calc(13px * var(--escala-texto, 1));
+    }
+}
+
+@media (max-width: 380px) {
+    .modal-cromo {
+        grid-template-columns: minmax(115px, 130px) minmax(0, 1fr);
+        padding: 10px 14px 20px;
+        gap: 10px 10px;
+    }
+
+    .modal-cromo-titulo {
+        font-size: calc(17px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-subtitulo-movil {
+        font-size: calc(12px * var(--escala-texto, 1));
+    }
+
+    .modal-cromo-atributo {
+        grid-template-columns: 70px minmax(35px, 1fr) 24px;
+        font-size: calc(12px * var(--escala-texto, 1));
     }
 }
