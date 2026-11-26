@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IconoUI } from "../../Iconos.jsx";
 
 const ICONOS_RAREZA = {
@@ -17,18 +17,35 @@ const PLANTILLAS_POR_MUNDO = {
     niebla: "CV-101.svg"
 };
 
-function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, idioma = "es" }) {
+const ORDEN_ATRIBUTOS = ["fuerza", "velocidad", "mente", "energia"];
 
+function ModalDetalleCromo({
+    cromo,
+    mundoNombre,
+    mundoColor,
+    posicion,
+    cromoAnterior,
+    cromoSiguiente,
+    onCambiarCromo,
+    textos,
+    onCerrar,
+    idioma = "es"
+}) {
     const es = idioma === "es";
     const cerrarRef = useRef(null);
     const cromoTextos = textos?.componentes?.cromo || {};
     const detalleTextos = cromoTextos.detalle || {};
     const numero = String(cromo.numero).padStart(3, "0");
     const imagen = `/assets/cromos/CV-${numero}.svg`;
-    const logoMundo = `/assets/mundos/${cromo.mundo}.svg`;
     const respaldo = `/assets/cromos/${
         PLANTILLAS_POR_MUNDO[cromo.mundo] || "CV-001.svg"
     }`;
+
+    const [src, setSrc] = useState(imagen);
+    useEffect(() => {
+        setSrc(imagen);
+    }, [imagen]);
+
     const nombresRareza = {
         comun: es ? "Común" : "Common",
         rara: es ? "Rara" : "Rare",
@@ -40,31 +57,52 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
         aliado: es ? "Aliado" : "Ally",
         villano: es ? "Villano" : "Villain"
     };
-    const atributos = Object.entries(cromo.atributos || {}).map(([clave, valor]) => ({
+
+    const clavesPresentes = Object.keys(cromo.atributos || {});
+    const clavesOrdenadas = [
+        ...ORDEN_ATRIBUTOS.filter((k) => clavesPresentes.includes(k)),
+        ...clavesPresentes.filter((k) => !ORDEN_ATRIBUTOS.includes(k))
+    ];
+    const atributos = (clavesOrdenadas.length > 0 ? clavesOrdenadas : ORDEN_ATRIBUTOS).map((clave) => ({
         clave,
-        nombre: cromoTextos.atributos?.[clave] || clave,
-        valor: Number(valor) || 0
+        nombre: cromoTextos.atributos?.[clave] || (
+            clave === "energia" ? (es ? "Energía" : "Energy") :
+            clave === "fuerza" ? (es ? "Fuerza" : "Strength") :
+            clave === "velocidad" ? (es ? "Velocidad" : "Speed") :
+            clave === "mente" ? (es ? "Mente" : "Mind") : clave
+        ),
+        valor: Number(cromo.atributos?.[clave]) || 0
     }));
-    const total = atributos.reduce(
+
+    const total = cromo.totalAtributos || atributos.reduce(
         (acumulado, atributo) => acumulado + atributo.valor,
         0
     );
 
     const iconoRareza = ICONOS_RAREZA[cromo.rareza] || "circulo";
     const nombreMundo = mundoNombre || cromo.mundoNombre || cromo.mundo;
+    const posicionActual = posicion ?? cromo.posicion ?? cromo.numero;
+    const colorFinal = cromo.ilustracion?.colorBase || mundoColor || (cromo.mundo ? `var(--mundo-${cromo.mundo})` : "var(--marca-primario)");
 
     useEffect(() => {
         cerrarRef.current?.focus();
         function manejarTecla(evento) {
-            if (evento.key === "Escape") onCerrar();
+            if (evento.key === "Escape") {
+                onCerrar();
+            } else if (evento.key === "ArrowLeft" && cromoAnterior) {
+                onCambiarCromo?.(cromoAnterior);
+            } else if (evento.key === "ArrowRight" && cromoSiguiente) {
+                onCambiarCromo?.(cromoSiguiente);
+            }
         }
         document.addEventListener("keydown", manejarTecla);
         return () => document.removeEventListener("keydown", manejarTecla);
-    }, [onCerrar]);
+    }, [onCerrar, cromoAnterior, cromoSiguiente, onCambiarCromo]);
 
     return (
         <div
             className="modal-cromo-overlay"
+            style={{ "--color-mundo": colorFinal }}
             onMouseDown={(evento) => {
                 if (evento.target === evento.currentTarget) {
                     onCerrar();
@@ -85,15 +123,10 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                     onClick={onCerrar}
                     aria-label={detalleTextos.cerrar || (es ? "Cerrar detalles" : "Close details")}
                 >
-                    ×
+                    &times;
                 </button>
-                <div
-                    className="modal-cromo-arte"
-                    style={{
-                        backgroundColor:
-                            cromo.ilustracion?.colorBase || mundoColor
-                    }}
-                >
+
+                <div className="modal-cromo-arte">
                     <article
                         className={`modal-cromo-tarjeta rareza-borde-${cromo.rareza}`}
                     >
@@ -103,11 +136,10 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                             }`}
                         >
                             <img
-                                src={imagen}
+                                src={src}
                                 alt={`${cromo.nombre} - ${numero}`}
-                                onError={(evento) => {
-                                    evento.currentTarget.onerror = null;
-                                    evento.currentTarget.src = respaldo;
+                                onError={() => {
+                                    if (src !== respaldo) setSrc(respaldo);
                                 }}
                             />
                             <span className="modal-cromo-numero">
@@ -125,47 +157,69 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                         <div className="modal-cromo-tarjeta-info">
                             <h3>{cromo.nombre}</h3>
                             <p>
-                                {nombreMundo} ·{" "}
-                                {nombresTipo[cromo.tipo] || cromo.tipo}
+                                {nombreMundo} &bull; {nombresTipo[cromo.tipo] || cromo.tipo}
                             </p>
                         </div>
                     </article>
                 </div>
+
                 <div className="modal-cromo-informacion">
-                    <p className="modal-cromo-identificacion">
-                        {cromo.id || `CV-${numero}`}
-                    </p>
-                    <h2 id="modal-cromo-titulo">
-                        {cromo.nombre}
-                    </h2>
-                    <p className="modal-cromo-subtitulo">
-                        {nombreMundo} &middot; {nombresTipo[cromo.tipo] || cromo.tipo}
-                    </p>
-                    <div className="modal-cromo-etiquetas">
-                        <span className={`modal-cromo-rareza rareza-${cromo.rareza}`}>
-                            <IconoUI nombre={iconoRareza} size={13} />
-                            {nombresRareza[cromo.rareza] || cromo.rareza}
-                        </span>
-                        <span className="modal-cromo-mundo">
-                            {nombreMundo}
-                        </span>
-                        <span className="modal-cromo-tipo">
-                            {nombresTipo[cromo.tipo] || cromo.tipo}
-                        </span>
+                    <div className="modal-cromo-encabezado">
+                        <div className="modal-cromo-etiquetas">
+                            <span className={`modal-cromo-etiqueta modal-cromo-rareza rareza-${cromo.rareza}`}>
+                                <IconoUI nombre={iconoRareza} size={13} />
+                                {nombresRareza[cromo.rareza] || cromo.rareza}
+                            </span>
+                            <span className="modal-cromo-etiqueta modal-cromo-mundo">
+                                {nombreMundo}
+                            </span>
+                            <span className="modal-cromo-etiqueta modal-cromo-tipo">
+                                {nombresTipo[cromo.tipo] || cromo.tipo}
+                            </span>
+                        </div>
+
+                        <p className="modal-cromo-identificacion-desktop">
+                            {cromo.id || `CV-${numero}`} &middot; {nombreMundo}, {es ? "posición" : "position"} {posicionActual}
+                        </p>
+
+                        <p className="modal-cromo-identificacion-movil">
+                            {cromo.id || `CV-${numero}`}
+                        </p>
+
+                        <h2 id="modal-cromo-titulo" className="modal-cromo-titulo">
+                            {cromo.nombre}
+                        </h2>
+
+                        <p className="modal-cromo-subtitulo-movil">
+                            {nombreMundo} &bull; {nombresTipo[cromo.tipo] || cromo.tipo}
+                        </p>
                     </div>
+
                     <div className="modal-cromo-poder">
                         <span className="modal-cromo-poder-icono">
-                            <img src={logoMundo} alt="" aria-hidden="true" />
+                            <IconoUI nombre="rayo" size={18} />
                         </span>
-                        <div>
-                            <span>
-                                {detalleTextos.poder || (es ? "PODER" : "POWER")}
-                            </span>
-                            <p className="modal-cromo-descripcion">
-                                {cromo.descripcion || cromo.poder}
+                        <div className="modal-cromo-poder-cuerpo">
+                            <div className="modal-cromo-poder-encabezado">
+                                <span className="modal-cromo-poder-icono-movil">
+                                    <IconoUI nombre="rayo" size={16} />
+                                </span>
+                                <span className="modal-cromo-poder-etiqueta">
+                                    {detalleTextos.poder || (es ? "PODER" : "POWER")}
+                                </span>
+                            </div>
+                            <p className="modal-cromo-poder-texto">
+                                {cromo.poder || cromo.descripcion}
                             </p>
                         </div>
                     </div>
+
+                    {cromo.descripcion && cromo.descripcion !== cromo.poder && (
+                        <p className="modal-cromo-lore">
+                            {cromo.descripcion}
+                        </p>
+                    )}
+
                     <section className="modal-cromo-atributos">
                         <div className="modal-cromo-atributos-cabecera">
                             <h3>
@@ -180,7 +234,10 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                                 className="modal-cromo-atributo"
                                 key={atributo.clave}
                             >
-                                <span>{atributo.nombre.charAt(0).toLocaleUpperCase(idioma)}{atributo.nombre.slice(1)}</span>
+                                <span>
+                                    {atributo.nombre.charAt(0).toLocaleUpperCase(idioma)}
+                                    {atributo.nombre.slice(1)}
+                                </span>
                                 <div className="modal-cromo-barra">
                                     <div
                                         className="modal-cromo-barra-progreso"
@@ -196,7 +253,32 @@ function ModalDetalleCromo({ cromo, mundoNombre, mundoColor, textos, onCerrar, i
                             </div>
                         ))}
                     </section>
-                    <p className="modal-cromo-escala">{detalleTextos.notaEscala || (es ? "Escala de 10 a 99." : "Scale from 10 to 99.")}</p>
+
+                    <p className="modal-cromo-escala">
+                        {detalleTextos.notaEscala || (es ? "Escala de 10 a 99." : "Scale from 10 to 99.")}
+                    </p>
+
+                    <nav className="modal-cromo-navegacion" aria-label={es ? "Navegación de cromos" : "Cards navigation"}>
+                        {cromoAnterior ? (
+                            <button
+                                type="button"
+                                className="modal-cromo-nav-btn modal-cromo-nav-prev"
+                                onClick={() => onCambiarCromo?.(cromoAnterior)}
+                            >
+                                <span aria-hidden="true">&lt;</span> {String(cromoAnterior.numero).padStart(3, "0")} {cromoAnterior.nombre}
+                            </button>
+                        ) : <span className="modal-cromo-nav-espacio" aria-hidden="true" />}
+
+                        {cromoSiguiente ? (
+                            <button
+                                type="button"
+                                className="modal-cromo-nav-btn modal-cromo-nav-next"
+                                onClick={() => onCambiarCromo?.(cromoSiguiente)}
+                            >
+                                <span aria-hidden="true">&gt;</span> {String(cromoSiguiente.numero).padStart(3, "0")} {cromoSiguiente.nombre}
+                            </button>
+                        ) : <span className="modal-cromo-nav-espacio" aria-hidden="true" />}
+                    </nav>
                 </div>
             </section>
         </div>

@@ -15,6 +15,7 @@ import useAccesibilidad from "./hooks/useAccesibilidad.js";
 const DetalleMundo = lazy(() => import("./components/Mundos/DetalleMundo/DetalleMundo.jsx"));
 const PanelAccesibilidad = lazy(() => import("./components/PanelAccesibilidad/PanelAccesibilidad.jsx"));
 const IniciarSesion = lazy(() => import("./components/Sesion/IniciarSesion.jsx"));
+const DetalleCromo = lazy(() => import("./components/Cromos/DetalleCromo.jsx"));
 
 function Aplicacion() {
     const [idioma, setIdioma] = useState("es");
@@ -37,10 +38,10 @@ function Aplicacion() {
 
     useEffect(() => {
         document.documentElement.lang = idioma;
-        if (textos?.sitio?.nombre) {
+        if (!location.pathname.startsWith("/cromos/") && textos?.sitio?.nombre) {
             document.title = textos?.paginas?.inicio?.seo?.titulo || `${textos.sitio.nombre} · ${textos.sitio.lema || ""}`;
         }
-    }, [idioma, textos]);
+    }, [idioma, textos, location.pathname]);
 
     function cambiarIdioma(nuevoIdioma) {
         setIdioma(nuevoIdioma);
@@ -107,7 +108,7 @@ function Aplicacion() {
                 cerrarSesion={cerrarSesion}
             />}
 
-            <Routes>
+            <Routes location={location.state?.backgroundLocation || location}>
                 <Route
                     path="/"
                     element={
@@ -154,8 +155,29 @@ function Aplicacion() {
                         </Suspense>
                     }
                 />
+                <Route
+                    path="/cromos/:id"
+                    element={
+                        <Suspense fallback={<main className="estado-pagina" id="contenido-principal" role="status" aria-live="polite">{textos?.estados?.cargando || (idioma === "es" ? "Cargando…" : "Loading…")}</main>}>
+                            <DetalleCromo textos={textos} idioma={idioma} />
+                        </Suspense>
+                    }
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
+
+            {location.state?.backgroundLocation && (
+                <Routes>
+                    <Route
+                        path="/cromos/:id"
+                        element={
+                            <Suspense fallback={null}>
+                                <DetalleCromo textos={textos} idioma={idioma} />
+                            </Suspense>
+                        }
+                    />
+                </Routes>
+            )}
 
             {!rutaSesion && <Footer textos={textos} idioma={idioma} />}
 
