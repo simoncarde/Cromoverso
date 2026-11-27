@@ -1420,8 +1420,13 @@
     font-weight: 700;
 }
 
+.modal-cromo-atributo.destacada .modal-cromo-barra {
+    border-color: var(--color-mundo);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-mundo) 35%, transparent);
+}
+
 .modal-cromo-max {
-    margin-left: 4px;
+    margin-left: 5px;
     font-size: calc(11px * var(--escala-texto, 1));
     font-weight: 700;
 }
