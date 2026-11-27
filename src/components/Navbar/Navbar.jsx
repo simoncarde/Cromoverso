@@ -303,7 +303,7 @@ function Navbar({
                                         </span>
                                         <div className="navbar-cuenta-datos">
                                             <strong>{nombreUsuario}</strong>
-                                            <small>{usuario?.correo}</small>
+                                            <small>{usuario?.alias ? `@${usuario.alias}` : usuario?.correo}</small>
                                         </div>
                                     </div>
                                     <button
